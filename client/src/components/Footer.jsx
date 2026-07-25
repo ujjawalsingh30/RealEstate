@@ -152,7 +152,7 @@ const Footer = () => {
         <div className="pt-8 pb-4 flex items-center justify-center gap-2 text-xs text-gray-600 font-medium">
           <Layers size={14} className="text-[#047262]" />
           <span>Designed by</span>
-          <span className="text-[#047262] font-bold">Hexagon Digital Services</span>
+          <span className="text-[#047262] font-bold">ujjawal singh</span>
         </div>
       </div>
 
