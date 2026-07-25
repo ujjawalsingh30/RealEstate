@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 
 const Register = () => {
   const [fullName, setFullName] = useState('');
@@ -21,8 +21,18 @@ const Register = () => {
 
   return (
     <div className="min-h-[calc(100vh-100px)] flex items-center justify-center px-4 py-12 bg-gray-50">
-      <div className="bg-white rounded-[2rem] p-8 md:p-11 shadow-[0_15px_60px_rgba(0,0,0,0.06)] border border-gray-100 max-w-md w-full transition-all duration-300 my-4">
+      <div className="bg-white rounded-[2rem] p-8 md:p-11 shadow-[0_15px_60px_rgba(0,0,0,0.06)] border border-gray-100 max-w-md w-full transition-all duration-300 my-4 relative">
         
+        {/* Back Button */}
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 text-gray-500 hover:text-[#047262] mb-6 text-xs md:text-sm font-extrabold transition-all transform hover:-translate-x-1 duration-200 focus:outline-none w-fit"
+        >
+          <ArrowLeft size={18} strokeWidth={2.5} />
+          <span>Back</span>
+        </button>
+
         {/* Header Section */}
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-black text-[#047262] mb-2 tracking-tight">
