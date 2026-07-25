@@ -48,86 +48,86 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-white pt-12 md:pt-20 pb-12 px-6 md:px-12 border-t border-gray-100 relative overflow-hidden">
+    <footer className="bg-white pt-14 md:pt-20 pb-12 px-6 md:px-12 border-t border-gray-100 relative overflow-hidden w-full">
       <div className="max-w-[1400px] mx-auto">
-        {/* Main Footer Grid - Responsive breakpoints */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 pb-14 border-b border-gray-200/80">
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-12 pb-14 border-b border-gray-200/80">
           
-          {/* Column 1: Brand & Bio - Explicitly left-aligned on all viewports for consistency */}
-          <div className="flex flex-col items-start text-left space-y-4">
+          {/* Column 1: Brand & Bio - Centered on mobile, left-aligned on desktop */}
+          <div className="flex flex-col items-center text-center md:items-start md:text-left space-y-4 md:space-y-5">
             <Link to="/" className="flex items-center gap-2 cursor-pointer">
-              <img src={logo} alt="RealEstate Logo" className="w-9 h-9 md:w-10 md:h-10 object-contain" />
+              <img src={logo} alt="RealEstate Logo" className="w-10 h-10 object-contain" />
               <span className="text-[#047262] font-extrabold text-2xl tracking-tight">RealEstate</span>
             </Link>
-            <p className="text-gray-600 text-sm leading-relaxed max-w-sm">
+            <p className="text-gray-700 text-sm leading-relaxed max-w-sm font-normal">
               The most trusted platform for buying, selling, and renting
               premium real estate globally. We make property hunting seamless.
             </p>
-            {/* Social Icons */}
-            <div className="flex items-center gap-3 pt-2">
-              <a href="#" aria-label="Facebook" className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 hover:bg-[#047262] hover:text-white transition-all duration-300 shadow-sm">
+            {/* Minimalist Social Icons matching phone view */}
+            <div className="flex items-center gap-8 md:gap-6 pt-3 pb-2">
+              <a href="#" aria-label="Facebook" className="text-gray-900 hover:text-[#047262] transition-colors transform hover:scale-110 duration-200">
                 <FacebookIcon />
               </a>
-              <a href="#" aria-label="Twitter" className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 hover:bg-[#047262] hover:text-white transition-all duration-300 shadow-sm">
+              <a href="#" aria-label="Twitter" className="text-gray-900 hover:text-[#047262] transition-colors transform hover:scale-110 duration-200">
                 <TwitterIcon />
               </a>
-              <a href="#" aria-label="Instagram" className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 hover:bg-[#047262] hover:text-white transition-all duration-300 shadow-sm">
+              <a href="#" aria-label="Instagram" className="text-gray-900 hover:text-[#047262] transition-colors transform hover:scale-110 duration-200">
                 <InstagramIcon />
               </a>
-              <a href="#" aria-label="LinkedIn" className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 hover:bg-[#047262] hover:text-white transition-all duration-300 shadow-sm">
+              <a href="#" aria-label="LinkedIn" className="text-gray-900 hover:text-[#047262] transition-colors transform hover:scale-110 duration-200">
                 <LinkedinIcon />
               </a>
             </div>
           </div>
 
           {/* Column 2: Company */}
-          <div className="flex flex-col items-start text-left space-y-3.5 lg:ml-auto">
-            <h4 className="text-[#1a2b3c] font-black text-lg mb-1">Company</h4>
-            <Link to="/" className="text-gray-600 hover:text-[#047262] text-sm font-medium transition-colors">
+          <div className="flex flex-col items-start text-left space-y-3.5 lg:ml-auto pt-2 md:pt-0">
+            <h4 className="text-[#1a2b3c] font-black text-lg mb-2">Company</h4>
+            <Link to="/" className="text-gray-700 hover:text-[#047262] text-sm font-normal transition-colors py-0.5">
               Home
             </Link>
-            <Link to="/properties" className="text-gray-600 hover:text-[#047262] text-sm font-medium transition-colors">
+            <Link to="/properties" className="text-gray-700 hover:text-[#047262] text-sm font-normal transition-colors py-0.5">
               Property
             </Link>
-            <Link to="/wishlist" className="text-gray-600 hover:text-[#047262] text-sm font-medium transition-colors">
+            <Link to="/wishlist" className="text-gray-700 hover:text-[#047262] text-sm font-normal transition-colors py-0.5">
               Wishlist
             </Link>
-            <Link to="/contact-us" className="text-gray-600 hover:text-[#047262] text-sm font-medium transition-colors">
+            <Link to="/contact-us" className="text-gray-700 hover:text-[#047262] text-sm font-normal transition-colors py-0.5">
               Contact
             </Link>
           </div>
 
           {/* Column 3: Support */}
-          <div className="flex flex-col items-start text-left space-y-3.5">
-            <h4 className="text-[#1a2b3c] font-black text-lg mb-1">Support</h4>
-            <div className="flex items-center gap-3 text-sm text-gray-600 font-medium">
-              <Mail className="text-[#047262] flex-shrink-0" size={18} />
+          <div className="flex flex-col items-start text-left space-y-4 pt-2 md:pt-0">
+            <h4 className="text-[#1a2b3c] font-black text-lg mb-2">Support</h4>
+            <div className="flex items-center gap-3.5 text-sm text-gray-700 font-normal">
+              <Mail className="text-[#047262] flex-shrink-0" size={19} />
               <span className="break-all">contact@realestate.com</span>
             </div>
-            <div className="flex items-center gap-3 text-sm text-gray-600 font-medium">
-              <Phone className="text-[#047262] flex-shrink-0" size={18} />
+            <div className="flex items-center gap-3.5 text-sm text-gray-700 font-normal">
+              <Phone className="text-[#047262] flex-shrink-0" size={19} />
               <span>+91 1234567890</span>
             </div>
-            <div className="flex items-start gap-3 text-sm text-gray-600 font-medium">
-              <MapPin className="text-[#047262] flex-shrink-0 mt-0.5" size={18} />
+            <div className="flex items-start gap-3.5 text-sm text-gray-700 font-normal">
+              <MapPin className="text-[#047262] flex-shrink-0 mt-0.5" size={19} />
               <span>123 Business Hub, India</span>
             </div>
           </div>
 
           {/* Column 4: Newsletter */}
-          <div className="flex flex-col items-start text-left space-y-3.5 w-full">
+          <div className="flex flex-col items-start text-left space-y-3.5 w-full pt-2 md:pt-0">
             <h4 className="text-[#1a2b3c] font-black text-lg mb-1">Newsletter</h4>
-            <p className="text-gray-600 text-sm leading-relaxed max-w-sm">
+            <p className="text-gray-700 text-sm leading-relaxed max-w-sm font-normal">
               Subscribe to get the latest listings and market insights directly in your inbox.
             </p>
-            {/* Input pill - full width on mobile with no overflow */}
+            {/* Input pill */}
             <div className="bg-white border border-gray-200 rounded-full p-1.5 shadow-sm flex items-center justify-between focus-within:border-[#047262] transition-colors mt-2 w-full max-w-md">
               <input 
                 type="email" 
                 placeholder="Enter your email" 
                 className="px-4 py-1.5 text-sm text-gray-700 outline-none bg-transparent w-full min-w-0" 
               />
-              <button className="bg-[#047262] hover:bg-[#03594d] text-white text-xs font-extrabold px-5 md:px-6 py-2.5 rounded-full transition-colors whitespace-nowrap shadow-sm flex-shrink-0">
+              <button className="bg-[#047262] hover:bg-[#03594d] text-white text-xs font-extrabold px-6 py-2.5 rounded-full transition-colors whitespace-nowrap shadow-sm flex-shrink-0">
                 Join
               </button>
             </div>
@@ -139,7 +139,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar: Copyright & Legal */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500 font-medium text-center sm:text-left">
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 font-medium text-center md:text-left">
           <p>© 2026 RealEstate. All rights reserved.</p>
           <div className="flex flex-wrap justify-center items-center gap-6 text-xs md:text-sm">
             <a href="#" className="hover:text-[#047262] transition-colors">Privacy Policy</a>
@@ -160,7 +160,7 @@ const Footer = () => {
       {showScroll && (
         <button 
           onClick={scrollTop} 
-          className="fixed right-5 bottom-5 md:right-10 md:bottom-10 bg-[#047262] hover:bg-[#03594d] text-white p-3 md:p-3.5 rounded-full shadow-2xl z-50 transition-all transform hover:-translate-y-1 focus:outline-none border-2 border-white"
+          className="fixed right-5 bottom-5 md:right-10 md:bottom-10 bg-[#047262] hover:bg-[#03594d] text-white p-3.5 rounded-full shadow-2xl z-50 transition-all transform hover:-translate-y-1 focus:outline-none border-2 border-white"
           aria-label="Scroll to top"
         >
           <ChevronUp size={24} strokeWidth={3} />
