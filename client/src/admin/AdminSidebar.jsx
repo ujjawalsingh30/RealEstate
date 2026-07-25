@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Property = () => {
+const AdminSidebar = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const Property = () => {
   )
 }
 
-export default Property
+export default AdminSidebar

@@ -9,15 +9,21 @@ const Navbar = () => {
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-40 px-6 md:px-10 py-4 md:py-6 bg-white/40 backdrop-blur-md border-b border-white/20 shadow-sm transition-all duration-300">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
+        <div className="flex items-center justify-between max-w-[1500px] mx-auto relative">
           {/* Logo Section */}
-          <Link to="/" className="flex items-center gap-2 cursor-pointer">
+          <Link to="/" className="flex items-center gap-2 cursor-pointer z-10">
             <img src={logo} alt="RealEstate Logo" className="w-8 h-8 md:w-10 md:h-10 object-contain" />
             <span className="text-[#047262] font-bold text-xl md:text-2xl tracking-tight">RealEstate</span>
           </Link>
 
-          {/* Desktop Navigation Links (Pill Container) */}
-          <div className="hidden md:flex bg-gray-100/80 backdrop-blur-md px-8 py-3 rounded-full items-center gap-8 shadow-sm">
+          {/* Desktop Navigation Links (Centered Pill Container) */}
+          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 bg-gray-100/80 backdrop-blur-md px-8 py-3 rounded-full items-center gap-8 shadow-sm z-10">
+            <Link 
+              to="/" 
+              className="text-[#1a2b3c] font-medium text-[15px] hover:text-[#047262] transition-colors"
+            >
+              Home
+            </Link>
             <Link 
               to="/properties" 
               className="text-[#1a2b3c] font-medium text-[15px] hover:text-[#047262] transition-colors"
@@ -38,11 +44,11 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile Hamburger Icon */}
-          <div className="md:hidden flex items-center">
+          {/* Mobile Hamburger Icon & Desktop spacer balance */}
+          <div className="flex items-center z-10">
             <button 
               onClick={() => setIsOpen(true)} 
-              className="text-[#1a2b3c] focus:outline-none"
+              className="md:hidden text-[#1a2b3c] focus:outline-none"
             >
               <Menu size={28} />
             </button>

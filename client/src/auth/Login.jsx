@@ -6,14 +6,22 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [role, setRole] = useState('buyer');
   
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password });
-    // Navigate straight to buyer logged-in view for instant testing and demonstration
-    navigate('/buyer/home');
+    console.log('Login attempt:', { email, password, role });
+    // Save active role to localStorage so shared public/private routes render with the correct layout
+    localStorage.setItem('userRole', role);
+
+    // Navigate based on role selection for instant testing and demonstration
+    if (role === 'seller') {
+      navigate('/seller/home');
+    } else {
+      navigate('/buyer/home');
+    }
   };
 
   return (
@@ -35,14 +43,45 @@ const Login = () => {
           <h2 className="text-2xl md:text-3xl font-black text-[#047262] mb-2 tracking-tight">
             Welcome Back
           </h2>
-          <p className="text-gray-600 text-sm font-normal">
-            Please enter your details to sign in
+          <p className="text-gray-500 text-xs md:text-sm font-normal">
+            Sign in to access your properties and messages
           </p>
         </div>
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           
+          {/* Role Selection (Buyer / Seller Toggle) */}
+          <div>
+            <label className="block text-[#1a2b3c] text-sm font-extrabold mb-2.5 text-left">
+              Select Role
+            </label>
+            <div className="grid grid-cols-2 gap-3 p-1 bg-gray-50 rounded-2xl border border-gray-200/60">
+              <button
+                type="button"
+                onClick={() => setRole('buyer')}
+                className={`py-2.5 rounded-xl font-bold text-sm transition-all duration-200 ${
+                  role === 'buyer'
+                    ? 'bg-[#e0f5f0] text-[#047262] border border-[#047262]/20 shadow-xs'
+                    : 'text-gray-500 hover:text-gray-800 bg-transparent border border-transparent'
+                }`}
+              >
+                Buyer
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole('seller')}
+                className={`py-2.5 rounded-xl font-bold text-sm transition-all duration-200 ${
+                  role === 'seller'
+                    ? 'bg-[#e0f5f0] text-[#047262] border border-[#047262]/20 shadow-xs'
+                    : 'text-gray-500 hover:text-gray-800 bg-transparent border border-transparent'
+                }`}
+              >
+                Seller
+              </button>
+            </div>
+          </div>
+
           {/* Email Address Field */}
           <div>
             <label className="block text-[#1a2b3c] text-sm font-extrabold mb-2 text-left">

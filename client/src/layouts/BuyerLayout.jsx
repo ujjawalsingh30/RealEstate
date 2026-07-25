@@ -8,6 +8,7 @@ const BuyerLayout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    localStorage.removeItem('userRole');
     setIsMobileMenuOpen(false);
     navigate('/login');
   };
