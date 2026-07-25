@@ -14,9 +14,12 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Registration attempt:', { fullName, email, password, role });
-    // Add registration logic here, for example redirecting based on role or to login
-    // if (role === 'seller') navigate('/seller/dashboard');
-    // else navigate('/properties');
+    // Navigate based on selected role for instant demonstration & testing
+    if (role === 'seller') {
+      navigate('/seller/dashboard');
+    } else {
+      navigate('/buyer/home');
+    }
   };
 
   return (

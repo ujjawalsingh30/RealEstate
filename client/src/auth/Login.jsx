@@ -12,7 +12,8 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Login attempt:', { email, password });
-    // Add authentication logic here
+    // Navigate straight to buyer logged-in view for instant testing and demonstration
+    navigate('/buyer/home');
   };
 
   return (
