@@ -1,10 +1,15 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Filter, Search, MapPin, Bed, Bath, Maximize, Eye, 
   ShieldCheck, Heart, LayoutGrid, List, SlidersHorizontal, ArrowUpDown, CheckCircle, Home
 } from 'lucide-react';
+import { usePropertyContext } from '../context/PropertyContext';
 
 const Properties = () => {
+  const navigate = useNavigate();
+  const { properties: allProperties, wishlistIds, toggleWishlist } = usePropertyContext();
+
   // Filter States
   const [searchLocation, setSearchLocation] = useState('');
   const [priceLimit, setPriceLimit] = useState(10);
@@ -12,164 +17,6 @@ const Properties = () => {
   const [selectedBhk, setSelectedBhk] = useState('');
   const [sortBy, setSortBy] = useState('latest');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
-  const [wishlistIds, setWishlistIds] = useState([1, 2]); // Initial favorited items
-
-  // Sample Dataset Matching and Expanding the Screenshot
-  const allProperties = [
-    {
-      id: 1,
-      title: 'DLF Urban Grande Towers',
-      location: 'Sector 62 Extension, Near NH-24, Delhi',
-      priceText: '₹1,65,00,000',
-      priceVal: 1.65,
-      category: 'FLAT',
-      type: 'Flat/Apartment',
-      bhk: '3',
-      baths: '3',
-      sqft: '1850',
-      views: 69,
-      isNew: true,
-      verified: true,
-      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
-      dateAdded: '2026-07-20'
-    },
-    {
-      id: 2,
-      title: 'Emerald Sky Signature Villas',
-      location: 'Sector 150, Near Noida-Greater Noida Express, Noida',
-      priceText: '₹1,85,00,000',
-      priceVal: 1.85,
-      category: 'FLAT',
-      type: 'Flat/Apartment',
-      bhk: '4',
-      baths: '4',
-      sqft: '2400',
-      views: 30,
-      isNew: true,
-      verified: true,
-      image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80',
-      dateAdded: '2026-07-22'
-    },
-    {
-      id: 3,
-      title: 'Coral Bay Elite Residency',
-      location: 'Vibhuti Khand, Gomti Nagar Extension, Lucknow',
-      priceText: '₹56,00,000',
-      priceVal: 0.56,
-      category: 'COMMERCIAL',
-      type: 'Commercial',
-      sqft: '980',
-      saleType: 'sale',
-      legalStatus: 'OK',
-      views: 17,
-      isNew: true,
-      verified: true,
-      image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80',
-      dateAdded: '2026-07-24'
-    },
-    {
-      id: 4,
-      title: 'Prestige Golfshire Estates',
-      location: 'Nandi Hills Road, Devanahalli, Bangalore',
-      priceText: '₹4,20,00,000',
-      priceVal: 4.20,
-      category: 'VILLA',
-      type: 'Independent House/Villa',
-      bhk: '5+',
-      baths: '6',
-      sqft: '5200',
-      views: 142,
-      isNew: false,
-      verified: true,
-      image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80',
-      dateAdded: '2026-07-15'
-    },
-    {
-      id: 5,
-      title: 'Oberoi Three Sixty West',
-      location: 'Worli Sea Face, Mumbai',
-      priceText: '₹8,50,00,000',
-      priceVal: 8.50,
-      category: 'PENTHOUSE',
-      type: 'Penthouse',
-      bhk: '4',
-      baths: '5',
-      sqft: '4100',
-      views: 218,
-      isNew: true,
-      verified: true,
-      image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80',
-      dateAdded: '2026-07-25'
-    },
-    {
-      id: 6,
-      title: 'Lodha Altamount Grand Residence',
-      location: 'Altamount Road, Tardeo, Mumbai',
-      priceText: '₹6,80,00,000',
-      priceVal: 6.80,
-      category: 'FLAT',
-      type: 'Flat/Apartment',
-      bhk: '4',
-      baths: '4',
-      sqft: '3600',
-      views: 95,
-      isNew: false,
-      verified: true,
-      image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80',
-      dateAdded: '2026-07-10'
-    },
-    {
-      id: 7,
-      title: 'Embassy Manyata Tech Park Plaza',
-      location: 'Outer Ring Road, Nagavara, Bangalore',
-      priceText: '₹3,10,00,000',
-      priceVal: 3.10,
-      category: 'COMMERCIAL',
-      type: 'Commercial',
-      sqft: '3500',
-      saleType: 'lease',
-      legalStatus: 'OK',
-      views: 84,
-      isNew: false,
-      verified: true,
-      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
-      dateAdded: '2026-07-08'
-    },
-    {
-      id: 8,
-      title: 'Godrej South Estate Landmark',
-      location: 'Okhla Phase 1, South Delhi',
-      priceText: '₹2,40,00,000',
-      priceVal: 2.40,
-      category: 'FLAT',
-      type: 'Flat/Apartment',
-      bhk: '3',
-      baths: '3',
-      sqft: '2150',
-      views: 112,
-      isNew: true,
-      verified: true,
-      image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80',
-      dateAdded: '2026-07-18'
-    },
-    {
-      id: 9,
-      title: 'Emaar Palm Springs Luxury Retreat',
-      location: 'Golf Course Road, Sector 54, Gurgaon',
-      priceText: '₹5,15,00,000',
-      priceVal: 5.15,
-      category: 'VILLA',
-      type: 'Independent House/Villa',
-      bhk: '4',
-      baths: '5',
-      sqft: '4800',
-      views: 156,
-      isNew: false,
-      verified: true,
-      image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80',
-      dateAdded: '2026-07-12'
-    }
-  ];
 
   const propertyTypesList = [
     { id: 'Flat/Apartment', label: 'Flat/Apartment' },
@@ -183,12 +30,6 @@ const Properties = () => {
   const togglePropertyType = (type) => {
     setSelectedTypes((prev) => 
       prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
-    );
-  };
-
-  const toggleWishlist = (id) => {
-    setWishlistIds(prev => 
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
     );
   };
 
@@ -214,8 +55,14 @@ const Properties = () => {
         return false;
       }
       // Type filter
-      if (selectedTypes.length > 0 && !selectedTypes.includes(item.type)) {
-        return false;
+      if (selectedTypes.length > 0) {
+        const typeMatch = selectedTypes.some(t => 
+          item.type?.toLowerCase().includes(t.toLowerCase()) || 
+          t.toLowerCase().includes(item.type?.toLowerCase() || '') ||
+          (t === 'Flat/Apartment' && item.category === 'FLAT') ||
+          (t === 'Independent House/Villa' && item.category === 'VILLA')
+        );
+        if (!typeMatch) return false;
       }
       // BHK filter
       if (selectedBhk !== '' && item.bhk !== selectedBhk) {
@@ -483,7 +330,7 @@ const Properties = () => {
 
                         {/* Top Right Wishlist Button */}
                         <button
-                          onClick={() => toggleWishlist(prop.id)}
+                          onClick={() => toggleWishlist(prop.id, navigate)}
                           className="absolute top-4 right-4 w-9 h-9 bg-white/95 hover:bg-white rounded-full flex items-center justify-center text-gray-700 transition-all duration-200 shadow-md transform hover:scale-110 focus:outline-none z-10"
                           title={isFav ? "Remove from wishlist" : "Add to wishlist"}
                         >
@@ -574,7 +421,7 @@ const Properties = () => {
                           {/* Action Button */}
                           <button
                             type="button"
-                            onClick={() => alert(`Showing full brochure & details for ${prop.title}`)}
+                            onClick={() => navigate(`/properties/${prop.id}`)}
                             className="w-full py-3.5 bg-[#047262] hover:bg-[#03594d] text-white font-bold text-sm rounded-2xl transition-all duration-200 shadow-[0_4px_15px_rgba(4,114,98,0.2)] hover:shadow-[0_6px_22px_rgba(4,114,98,0.35)] transform hover:-translate-y-0.5"
                           >
                             View Details

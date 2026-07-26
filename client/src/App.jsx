@@ -7,6 +7,7 @@ import SellerLayout from './layouts/SellerLayout';
 // Pages
 import Home from './pages/Home';
 import Properties from './pages/Properties';
+import PropertyDetails from './pages/PropertyDetails';
 
 // Auth
 import Login from './auth/Login';
@@ -60,6 +61,9 @@ const App = () => {
         {/* Universal & Shared Routes (Accessible Publicly without login OR inside Buyer/Seller header if logged in) */}
         <Route element={<AuthAwareLayout />}>
           <Route path="/properties" element={<Properties />} />
+          <Route path="/properties/:id" element={<PropertyDetails />} />
+          <Route path="/property-details" element={<PropertyDetails />} />
+          <Route path="/property-details/:id" element={<PropertyDetails />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/wishlist" element={<Wishlist />} />
