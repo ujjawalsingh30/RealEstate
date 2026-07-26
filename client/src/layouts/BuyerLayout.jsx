@@ -5,11 +5,13 @@ import logo from '../assets/logo.png';
 
 const BuyerLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('userRole');
     setIsMobileMenuOpen(false);
+    setIsProfileMenuOpen(false);
     navigate('/login');
   };
 
@@ -48,7 +50,7 @@ const BuyerLayout = () => {
                 className={({ isActive }) =>
                   `text-[15px] font-medium transition-colors py-1 relative ${
                     isActive
-                      ? 'text-[#047262] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#047262] after:rounded-full'
+                      ? 'text-[#047262] font-bold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#047262] after:rounded-full'
                       : 'text-[#1a2b3c] hover:text-[#047262]'
                   }`
                 }
@@ -58,26 +60,102 @@ const BuyerLayout = () => {
             ))}
           </nav>
 
-          {/* Right: User Avatar ("SI") & Logout (Desktop) */}
+          {/* Right: User Avatar Dropdown & Logout (Desktop) */}
           <div className="hidden sm:flex items-center gap-4 md:gap-5">
-            <div 
-              className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-[#047262] hover:bg-[#03594d] text-white flex items-center justify-center font-bold text-sm md:text-base shadow-[0_4px_12px_rgba(4,114,98,0.3)] transition-all duration-200 transform hover:scale-105 select-none cursor-pointer border-2 border-white"
-              title="Logged in as Buyer (SI)"
-            >
-              SI
+            <div className="relative">
+              <div 
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-[#047262] hover:bg-[#03594d] text-white flex items-center justify-center font-bold text-sm md:text-base shadow-[0_4px_12px_rgba(4,114,98,0.3)] transition-all duration-200 transform hover:scale-105 select-none cursor-pointer border-2 border-white"
+                title="Account Options"
+              >
+                SI
+              </div>
+
+              {/* Profile Avatar Dropdown Menu */}
+              {isProfileMenuOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setIsProfileMenuOpen(false)} 
+                  />
+                  <div className="absolute right-0 mt-3 w-56 bg-white rounded-[22px] shadow-[0_12px_40px_rgba(0,0,0,0.15)] border border-gray-100/90 p-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="px-3.5 py-2.5 border-b border-gray-100 mb-1.5 text-left">
+                      <span className="block text-[10px] text-gray-400 font-black uppercase tracking-wider">Signed in as</span>
+                      <span className="text-sm font-black text-[#1a2b3c] truncate block">Buyer Account</span>
+                    </div>
+                    
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        navigate('/buyer/profile');
+                      }}
+                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-gray-700 hover:text-[#047262] hover:bg-[#e0f5f0]/60 rounded-xl transition-all text-left"
+                    >
+                      <User size={18} className="text-[#047262]" />
+                      <span>My Profile</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-all text-left mt-1 border-t border-gray-100 pt-3"
+                    >
+                      <LogOut size={18} className="text-rose-500" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
-            <button
-              onClick={handleLogout}
-              className="text-[#1a2b3c] font-medium text-[15px] hover:text-[#047262] transition-colors focus:outline-none flex items-center gap-1.5 py-2 px-1"
-            >
-              <span>Logout</span>
-            </button>
           </div>
 
           {/* Mobile Hamburger Button */}
           <div className="flex sm:hidden items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-[#047262] text-white flex items-center justify-center font-black text-sm shadow-sm">
-              SI
+            <div className="relative">
+              <div 
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                className="w-9 h-9 rounded-full bg-[#047262] text-white flex items-center justify-center font-black text-sm shadow-sm cursor-pointer select-none"
+              >
+                SI
+              </div>
+
+              {/* Mobile Avatar Dropdown Menu */}
+              {isProfileMenuOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setIsProfileMenuOpen(false)} 
+                  />
+                  <div className="absolute right-0 mt-2 w-52 bg-white rounded-[20px] shadow-xl border border-gray-100 p-2 z-50 text-left">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        navigate('/buyer/profile');
+                      }}
+                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-gray-700 hover:text-[#047262] hover:bg-[#e0f5f0]/60 rounded-xl transition-all"
+                    >
+                      <User size={17} className="text-[#047262]" />
+                      <span>My Profile</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-all border-t border-gray-100 mt-1"
+                    >
+                      <LogOut size={17} className="text-rose-500" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
             <button
               onClick={() => setIsMobileMenuOpen(true)}

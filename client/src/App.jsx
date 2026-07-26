@@ -13,6 +13,7 @@ import PropertyDetails from './pages/PropertyDetails';
 import Login from './auth/Login';
 import Register from './auth/Register';
 import ResetPassword from './auth/ResetPassword';
+import Profile from './auth/Profile';
 
 // Buyer
 import ContactUs from './buyer/ContactUs';
@@ -60,6 +61,7 @@ const App = () => {
 
         {/* Universal & Shared Routes (Accessible Publicly without login OR inside Buyer/Seller header if logged in) */}
         <Route element={<AuthAwareLayout />}>
+          <Route path="/profile" element={<Profile />} />
           <Route path="/properties" element={<Properties />} />
           <Route path="/properties/:id" element={<PropertyDetails />} />
           <Route path="/property-details" element={<PropertyDetails />} />
@@ -72,6 +74,7 @@ const App = () => {
         {/* Buyer Account Layout Routes */}
         <Route element={<BuyerLayout />}>
           <Route path="/buyer/home" element={<Home />} />
+          <Route path="/buyer/profile" element={<Profile />} />
         </Route>
 
         {/* Seller Account Layout Routes */}
@@ -80,7 +83,7 @@ const App = () => {
           <Route path="/seller/dashboard" element={<SellerDashboard />} />
           <Route path="/seller/add-property" element={<AddProperty />} />
           <Route path="/seller/my-listings" element={<MyListings />} />
-          <Route path="/seller/profile" element={<SellerDashboard />} />
+          <Route path="/seller/profile" element={<Profile />} />
           <Route path="/seller/support" element={<ContactUs />} />
         </Route>
 
@@ -88,6 +91,7 @@ const App = () => {
         <Route element={<PublicLayout />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/users" element={<UsersManager />} />
+          <Route path="/admin/profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { Menu, User, LogOut, LayoutDashboard } from 'lucide-react';
 import logo from '../assets/logo.png';
 import SellerSidebar from '../seller/SellerSidebar';
 
 const SellerLayout = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,11 +16,13 @@ const SellerLayout = () => {
     localStorage.removeItem('userRole');
     setIsMobileSidebarOpen(false);
     setIsMobileNavOpen(false);
+    setIsProfileMenuOpen(false);
     navigate('/login');
   };
 
   const handleDashboardClick = () => {
     setIsMobileNavOpen(false);
+    setIsProfileMenuOpen(false);
     navigate('/seller/dashboard');
   };
 
@@ -119,20 +122,67 @@ const SellerLayout = () => {
 
           {/* Right: User Avatar ("SS") & Logout (Desktop & Tablet) */}
           <div className="flex items-center gap-4 md:gap-5 z-10">
-            <div 
-              onClick={handleDashboardClick}
-              className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-[#047262] hover:bg-[#03594d] text-white flex items-center justify-center font-bold text-sm md:text-base shadow-[0_4px_12px_rgba(4,114,98,0.3)] transition-all duration-200 transform hover:scale-105 select-none cursor-pointer border-2 border-white"
-              title="Logged in as Seller (SS) - Click to open Dashboard"
-            >
-              SS
+            <div className="relative">
+              <div 
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-[#047262] hover:bg-[#03594d] text-white flex items-center justify-center font-bold text-sm md:text-base shadow-[0_4px_12px_rgba(4,114,98,0.3)] transition-all duration-200 transform hover:scale-105 select-none cursor-pointer border-2 border-white"
+                title="Seller Account Options"
+              >
+                SS
+              </div>
+
+              {/* Profile Avatar Dropdown Menu */}
+              {isProfileMenuOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setIsProfileMenuOpen(false)} 
+                  />
+                  <div className="absolute right-0 mt-3 w-56 bg-white rounded-[22px] shadow-[0_12px_40px_rgba(0,0,0,0.15)] border border-gray-100/90 p-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="px-3.5 py-2.5 border-b border-gray-100 mb-1.5 text-left">
+                      <span className="block text-[10px] text-gray-400 font-black uppercase tracking-wider">Signed in as</span>
+                      <span className="text-sm font-black text-[#1a2b3c] truncate block">Seller & Agent</span>
+                    </div>
+                    
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        navigate('/seller/dashboard');
+                      }}
+                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-gray-700 hover:text-[#047262] hover:bg-[#e0f5f0]/60 rounded-xl transition-all text-left"
+                    >
+                      <LayoutDashboard size={18} className="text-[#047262]" />
+                      <span>Dashboard</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        navigate('/seller/profile');
+                      }}
+                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-gray-700 hover:text-[#047262] hover:bg-[#e0f5f0]/60 rounded-xl transition-all text-left"
+                    >
+                      <User size={18} className="text-[#047262]" />
+                      <span>My Profile</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-all text-left mt-1 border-t border-gray-100 pt-3"
+                    >
+                      <LogOut size={18} className="text-rose-500" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
-            
-            <button
-              onClick={handleLogout}
-              className="hidden sm:flex text-[#1a2b3c] font-medium text-[15px] hover:text-[#047262] transition-colors focus:outline-none items-center gap-1.5 py-2 px-1"
-            >
-              <span>Logout</span>
-            </button>
 
             {/* Mobile Hamburger Icon for smaller viewports */}
             <button 
