@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Send, Clock, ChevronDown, CheckCircle, Sparkles, MessageSquare } from 'lucide-react';
 import Footer from '../components/Footer';
+import { usePropertyContext } from '../context/PropertyContext';
 
 const ContactUs = () => {
+  const { addAdminMessage } = usePropertyContext();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    subject: 'Schedule a Property Tour',
+    subject: 'Schedule a Property Tour / Seller Support Query',
     message: '',
   });
 
@@ -21,7 +24,17 @@ const ContactUs = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    const role = localStorage.getItem('userRole');
+    if (addAdminMessage) {
+      addAdminMessage({
+        senderName: formData.name || (role === 'seller' ? 'Suresh Sharma (Verified Seller)' : 'Valued User'),
+        senderRole: role ? role.toUpperCase() : 'GENERAL',
+        email: formData.email || 'contact@realtyindia.com',
+        phone: formData.phone || '+91 96925 30661',
+        subject: formData.subject || 'Platform Support & Verification Assistance',
+        message: formData.message || 'Assistance requested with listing management.'
+      });
+    }
     setIsSubmitted(true);
     // Reset notification after 6 seconds
     setTimeout(() => {

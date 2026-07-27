@@ -454,6 +454,64 @@ export const PropertyProvider = ({ children }) => {
     return found || properties[0];
   };
 
+  const [adminMessages, setAdminMessages] = useState([
+    {
+      id: 'MSG-101',
+      senderName: 'Suresh Sharma',
+      senderRole: 'SELLER',
+      email: 'sureshbarik969@gmail.com',
+      phone: '+91 96925 30661',
+      subject: 'Property Verification & Quota Expansion Request',
+      message: 'Hello Admin team, I have submitted three new premium luxury villas in Navi Mumbai. Kindly expedite the RERA document verification process so our listings can go live before the upcoming weekend real estate fair. Thanks!',
+      date: '2 hours ago',
+      unread: true,
+      resolved: false
+    },
+    {
+      id: 'MSG-102',
+      senderName: 'Rajiv Mehra (Mehra Realty)',
+      senderRole: 'SELLER',
+      email: 'rajiv.mehra@realtyindia.in',
+      phone: '+91 98112 34567',
+      subject: 'Inquiry regarding Commercial Listing Featured Placement',
+      message: 'We want to showcase our DLF Corporate Park listings on the primary Home page banner. Could you please share the pricing structure for verified featured placements and premium seller badge enhancements?',
+      date: '5 hours ago',
+      unread: true,
+      resolved: false
+    },
+    {
+      id: 'MSG-103',
+      senderName: 'Omprakash (Om)',
+      senderRole: 'BUYER',
+      email: 'omprakashkhatuasonu@gmail.com',
+      phone: '+91 98220 01122',
+      subject: 'Assistance with Scheduling Virtual 3D Site Tours',
+      message: 'Hi Support, I am looking to connect with the seller of DLF Urban Grande Towers for an onsite walkthrough this Sunday. Can your concierge team confirm if site visit appointments are available?',
+      date: '1 day ago',
+      unread: false,
+      resolved: true
+    }
+  ]);
+
+  const addAdminMessage = (newMessage) => {
+    const roleFromStorage = localStorage.getItem('userRole');
+    const computedRole = roleFromStorage ? roleFromStorage.toUpperCase() : (newMessage.senderRole || 'GENERAL');
+    const messageItem = {
+      id: `MSG-${Date.now().toString().slice(-4)}`,
+      senderName: newMessage.senderName || 'Valued Partner',
+      senderRole: computedRole,
+      email: newMessage.email || 'contact@realty.com',
+      phone: newMessage.phone || '+91 98000 00000',
+      subject: newMessage.subject || 'Platform Support & Assistance Query',
+      message: newMessage.message || 'No additional text provided.',
+      date: 'Just now',
+      unread: true,
+      resolved: false
+    };
+    setAdminMessages((prev) => [messageItem, ...prev]);
+    showToast('Your message has been transmitted directly to the Admin HQ Inbox!', 'success');
+  };
+
   const getSimilarProperties = (currentId, city) => {
     return properties.filter(
       (p) => String(p.id) !== String(currentId) && p.city && p.city.toLowerCase() === (city || '').toLowerCase()
@@ -467,7 +525,10 @@ export const PropertyProvider = ({ children }) => {
     toggleWishlist,
     getPropertyById,
     getSimilarProperties,
-    showToast
+    showToast,
+    adminMessages,
+    setAdminMessages,
+    addAdminMessage
   };
 
   return (

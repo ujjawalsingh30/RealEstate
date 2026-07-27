@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import BuyerLayout from './layouts/BuyerLayout';
 import SellerLayout from './layouts/SellerLayout';
+import AdminLayout from './layouts/AdminLayout';
 
 // Pages
 import Home from './pages/Home';
@@ -28,6 +29,8 @@ import SellerDashboard from './seller/SellerDashboard';
 // Admin
 import AdminDashboard from './admin/AdminDashboard';
 import UsersManager from './admin/UsersManager';
+import SellerRequests from './admin/SellerRequests';
+import MessageInbox from './admin/MessageInbox';
 
 // Public Layout Wrapper with standard Navbar
 const PublicLayout = () => (
@@ -88,9 +91,13 @@ const App = () => {
         </Route>
 
         {/* Admin Routes */}
-        <Route element={<PublicLayout />}>
+        <Route element={<AdminLayout />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/users" element={<UsersManager />} />
+          <Route path="/admin/seller-requests" element={<SellerRequests />} />
+          <Route path="/admin/properties" element={<Properties />} />
+          <Route path="/admin/inquiries" element={<MessageInbox />} />
+          <Route path="/admin/contact-inbox" element={<MessageInbox />} />
           <Route path="/admin/profile" element={<Profile />} />
         </Route>
       </Routes>

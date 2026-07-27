@@ -1,15 +1,18 @@
-import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { LayoutGrid, FileText, TrendingUp, MessageSquare, User, LifeBuoy, LogOut, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { LayoutGrid, FileText, TrendingUp, MessageSquare, LifeBuoy, LogOut, X, User, ChevronUp } from 'lucide-react';
 import logo from '../assets/logo.png';
 
-const SellerSidebar = ({ isMobileOpen, onCloseMobile, onLogout }) => {
+const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () => {} }) => {
+  const navigate = useNavigate();
+  const [isDesktopProfileOpen, setIsDesktopProfileOpen] = useState(false);
+  const [isMobileProfileOpen, setIsMobileProfileOpen] = useState(false);
+
   const menuItems = [
     { name: 'Dashboard', path: '/seller/dashboard', icon: <LayoutGrid size={20} /> },
     { name: 'My Listings', path: '/seller/my-listings', icon: <FileText size={20} /> },
     { name: 'Leads', path: '/seller/leads', icon: <TrendingUp size={20} /> },
     { name: 'Messages', path: '/seller/messages', icon: <MessageSquare size={20} /> },
-    { name: 'Profile', path: '/seller/profile', icon: <User size={20} /> },
     { name: 'Support', path: '/seller/support', icon: <LifeBuoy size={20} /> },
   ];
 
@@ -28,7 +31,7 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile, onLogout }) => {
             }`
           }
         >
-          <span className="flex-shrink-0">{item.icon}</span>
+          <span className="shrink-0">{item.icon}</span>
           <span>{item.name}</span>
         </NavLink>
       ))}
@@ -37,7 +40,9 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile, onLogout }) => {
 
   return (
     <>
-      {/* Desktop Fixed Left Sidebar (Docked) */}
+      {/* =====================================================================
+          DESKTOP FIXED LEFT SIDEBAR (DOCK VIEW)
+          ===================================================================== */}
       <aside className="hidden lg:flex w-64 fixed top-0 left-0 bottom-0 bg-white border-r border-gray-100/80 p-6 flex-col justify-between z-40 shadow-[2px_0_20px_rgba(0,0,0,0.01)]">
         <div>
           {/* Header & Logo (Links back to Seller Home) */}
@@ -50,23 +55,75 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile, onLogout }) => {
             </Link>
           </div>
 
-          {/* Navigation Items */}
+          {/* Navigation Items (Profile removed from list) */}
           {renderNavLinks()}
         </div>
 
-        {/* Bottom Logout Button */}
-        <div className="pt-6 border-t border-gray-100">
+        {/* Bottom Profile Avatar Dropdown (Upward Popover) */}
+        <div className="relative pt-4 border-t border-gray-100">
+          {/* Dropdown Popover Menu */}
+          {isDesktopProfileOpen && (
+            <>
+              <div 
+                className="fixed inset-0 z-40" 
+                onClick={() => setIsDesktopProfileOpen(false)} 
+              />
+              <div className="absolute bottom-full left-0 right-0 mb-3 bg-white rounded-[22px] shadow-[0_12px_40px_rgba(0,0,0,0.15)] border border-gray-100 p-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-3.5 py-2.5 border-b border-gray-100 mb-1.5 text-left">
+                  <span className="block text-[10px] text-gray-400 font-black uppercase tracking-wider">Signed in as</span>
+                  <span className="text-sm font-black text-[#1a2b3c] truncate block">Seller & Agent</span>
+                </div>
+                
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDesktopProfileOpen(false);
+                    navigate('/seller/profile');
+                  }}
+                  className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-gray-700 hover:text-[#047262] hover:bg-[#e0f5f0]/60 rounded-xl transition-all text-left"
+                >
+                  <User size={18} className="text-[#047262]" />
+                  <span>My Profile</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDesktopProfileOpen(false);
+                    onLogout();
+                  }}
+                  className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-all text-left mt-1 border-t border-gray-100 pt-3"
+                >
+                  <LogOut size={18} className="text-rose-500" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* Profile Trigger Card */}
           <button
-            onClick={onLogout}
-            className="w-full flex items-center gap-4 px-4 py-3.5 bg-red-50/50 hover:bg-red-100/70 text-red-500 hover:text-red-600 font-medium text-[15px] rounded-2xl transition-all duration-200 text-left shadow-xs"
+            type="button"
+            onClick={() => setIsDesktopProfileOpen(!isDesktopProfileOpen)}
+            className="w-full flex items-center justify-between gap-3 p-2.5 rounded-2xl bg-gray-50/70 hover:bg-gray-100/90 border border-gray-100 hover:border-gray-200/80 transition-all text-left group"
           >
-            <LogOut size={20} className="flex-shrink-0" />
-            <span>Logout</span>
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-10 h-10 rounded-full bg-[#047262] text-white font-black text-sm flex items-center justify-center shrink-0 shadow-xs border-2 border-white">
+                SS
+              </div>
+              <div className="truncate">
+                <p className="text-sm font-extrabold text-[#1a2b3c] truncate group-hover:text-[#047262] transition-colors">Seller Profile</p>
+                <p className="text-[11px] font-bold text-gray-400 truncate">Manage Account</p>
+              </div>
+            </div>
+            <ChevronUp size={18} className={`text-gray-400 transition-transform duration-200 shrink-0 ${isDesktopProfileOpen ? 'rotate-180' : ''}`} />
           </button>
         </div>
       </aside>
 
-      {/* Mobile Slide-Out Sidebar Drawer (< lg) */}
+      {/* =====================================================================
+          MOBILE SLIDE-OUT SIDEBAR DRAWER (< lg)
+          ===================================================================== */}
       {isMobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden flex">
           {/* Backdrop overlay */}
@@ -99,14 +156,59 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile, onLogout }) => {
               {renderNavLinks(onCloseMobile)}
             </div>
 
-            {/* Bottom Logout Button */}
-            <div className="pt-6 border-t border-gray-100">
+            {/* Mobile Bottom Profile Avatar Dropdown */}
+            <div className="relative pt-4 border-t border-gray-100">
+              {/* Dropdown Popover Menu */}
+              {isMobileProfileOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setIsMobileProfileOpen(false)} 
+                  />
+                  <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-[20px] shadow-xl border border-gray-100 p-2 z-50 text-left">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsMobileProfileOpen(false);
+                        onCloseMobile();
+                        navigate('/seller/profile');
+                      }}
+                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-gray-700 hover:text-[#047262] hover:bg-[#e0f5f0]/60 rounded-xl transition-all"
+                    >
+                      <User size={17} className="text-[#047262]" />
+                      <span>My Profile</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsMobileProfileOpen(false);
+                        onLogout();
+                      }}
+                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-all border-t border-gray-100 mt-1"
+                    >
+                      <LogOut size={17} className="text-rose-500" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* Mobile Profile Trigger Card */}
               <button
-                onClick={onLogout}
-                className="w-full flex items-center gap-4 px-4 py-3.5 bg-red-50 hover:bg-red-100 text-red-500 hover:text-red-600 font-bold text-sm rounded-2xl transition-all duration-200 text-left shadow-xs"
+                type="button"
+                onClick={() => setIsMobileProfileOpen(!isMobileProfileOpen)}
+                className="w-full flex items-center justify-between gap-3 p-2.5 rounded-2xl bg-gray-50/80 hover:bg-gray-100 border border-gray-100 transition-all text-left"
               >
-                <LogOut size={18} className="flex-shrink-0" />
-                <span>Logout</span>
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-9 h-9 rounded-full bg-[#047262] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-xs">
+                    SS
+                  </div>
+                  <div className="truncate">
+                    <p className="text-sm font-extrabold text-[#1a2b3c] truncate">Seller Profile</p>
+                    <p className="text-[11px] font-semibold text-gray-400 truncate">Manage Account</p>
+                  </div>
+                </div>
+                <ChevronUp size={17} className={`text-gray-400 transition-transform duration-200 shrink-0 ${isMobileProfileOpen ? 'rotate-180' : ''}`} />
               </button>
             </div>
           </aside>
