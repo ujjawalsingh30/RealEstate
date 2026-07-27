@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const Login = () => {
+  const { theme, toggleTheme } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -25,18 +27,29 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-100px)] flex items-center justify-center px-4 py-12 bg-gray-50">
-      <div className="bg-white rounded-[2rem] p-8 md:p-11 shadow-[0_15px_60px_rgba(0,0,0,0.06)] border border-gray-100 max-w-md w-full transition-all duration-300 relative">
+    <div className="min-h-[calc(100vh-100px)] flex items-center justify-center px-4 py-12 bg-gray-50 dark:bg-[#0b131e] transition-colors duration-300">
+      <div className="bg-white dark:bg-[#162231] rounded-[2rem] p-8 md:p-11 shadow-[0_15px_60px_rgba(0,0,0,0.06)] border border-gray-100 dark:border-gray-700 max-w-md w-full transition-all duration-300 relative">
         
-        {/* Back Button */}
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-1.5 text-gray-500 hover:text-[#047262] mb-6 text-xs md:text-sm font-extrabold transition-all transform hover:-translate-x-1 duration-200 focus:outline-none w-fit"
-        >
-          <ArrowLeft size={18} strokeWidth={2.5} />
-          <span>Back</span>
-        </button>
+        {/* Top Controls: Back Button & Theme Toggle */}
+        <div className="flex items-center justify-between mb-6">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400 hover:text-[#047262] dark:hover:text-white text-xs md:text-sm font-extrabold transition-all transform hover:-translate-x-1 duration-200 focus:outline-none w-fit"
+          >
+            <ArrowLeft size={18} strokeWidth={2.5} />
+            <span>Back</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="p-2 rounded-xl bg-gray-100 dark:bg-[#1b2b3f] text-[#1a2b3c] dark:text-amber-400 border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:scale-105 transition-all shadow-2xs"
+            title="Toggle Theme"
+          >
+            {theme === 'dark' ? <Sun size={17} className="animate-spin-slow" /> : <Moon size={17} />}
+          </button>
+        </div>
 
         {/* Header Section */}
         <div className="text-center mb-8">

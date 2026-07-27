@@ -34,7 +34,7 @@ import MessageInbox from './admin/MessageInbox';
 
 // Public Layout Wrapper with standard Navbar
 const PublicLayout = () => (
-  <div className="min-h-screen bg-gray-50 flex flex-col">
+  <div className="min-h-screen bg-gray-50 dark:bg-[#0b131e] flex flex-col transition-colors duration-300">
     <Navbar />
     <div className="pt-20 md:pt-24 flex-1">
       <Outlet />

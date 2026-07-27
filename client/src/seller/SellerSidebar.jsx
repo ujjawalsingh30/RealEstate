@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { LayoutGrid, FileText, TrendingUp, MessageSquare, LifeBuoy, LogOut, X, User, ChevronUp } from 'lucide-react';
+import { LayoutGrid, FileText, TrendingUp, MessageSquare, LifeBuoy, LogOut, X, User, ChevronUp, Sun, Moon } from 'lucide-react';
 import logo from '../assets/logo.png';
+import { usePropertyContext } from '../context/PropertyContext';
 
 const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () => {} }) => {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = usePropertyContext();
   const [isDesktopProfileOpen, setIsDesktopProfileOpen] = useState(false);
   const [isMobileProfileOpen, setIsMobileProfileOpen] = useState(false);
 
@@ -26,8 +28,8 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
           className={({ isActive }) =>
             `flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[15px] transition-all duration-200 ${
               isActive
-                ? 'bg-[#d8f4ec] text-[#047262] font-bold shadow-xs'
-                : 'text-gray-500 font-medium hover:text-[#047262] hover:bg-[#e0f5f0]/30'
+                ? 'bg-[#d8f4ec] dark:bg-[#047262]/20 text-[#047262] dark:text-[#0dc5a5] font-bold shadow-xs'
+                : 'text-gray-500 dark:text-gray-400 font-medium hover:text-[#047262] dark:hover:text-white hover:bg-[#e0f5f0]/30 dark:hover:bg-gray-800/50'
             }`
           }
         >
@@ -35,6 +37,21 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
           <span>{item.name}</span>
         </NavLink>
       ))}
+
+      {/* Dedicated Theme Toggle Item in Sidebar */}
+      <button
+        type="button"
+        onClick={toggleTheme}
+        className="w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-[15px] text-gray-500 dark:text-gray-300 hover:text-[#047262] dark:hover:text-amber-400 hover:bg-gray-50 dark:hover:bg-gray-800/60 font-semibold transition-all"
+      >
+        <div className="flex items-center gap-4">
+          {theme === 'dark' ? <Sun size={20} className="text-amber-400 animate-spin-slow" /> : <Moon size={20} />}
+          <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+        </div>
+        <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-400">
+          {theme === 'dark' ? 'DARK' : 'LIGHT'}
+        </span>
+      </button>
     </nav>
   );
 
@@ -43,35 +60,34 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
       {/* =====================================================================
           DESKTOP FIXED LEFT SIDEBAR (DOCK VIEW)
           ===================================================================== */}
-      <aside className="hidden lg:flex w-64 fixed top-0 left-0 bottom-0 bg-white border-r border-gray-100/80 p-6 flex-col justify-between z-40 shadow-[2px_0_20px_rgba(0,0,0,0.01)]">
+      <aside className="hidden lg:flex w-64 fixed top-0 left-0 bottom-0 bg-white dark:bg-[#111c2a] border-r border-gray-100/80 dark:border-gray-800 p-6 flex-col justify-between z-40 shadow-[2px_0_20px_rgba(0,0,0,0.01)] transition-colors duration-300">
         <div>
-          {/* Header & Logo (Links back to Seller Home) */}
+          {/* Header & Logo */}
           <div className="mb-10 px-2 pt-2">
             <Link to="/seller/home" className="flex items-center gap-3 group" title="Go to Seller Home">
               <img src={logo} alt="RealEstate Logo" className="w-9 h-9 object-contain transition-transform duration-300 group-hover:scale-105" />
-              <span className="text-[#047262] font-bold text-2xl tracking-tight">
+              <span className="text-[#047262] dark:text-[#0dc5a5] font-bold text-2xl tracking-tight">
                 RealEstate
               </span>
             </Link>
           </div>
 
-          {/* Navigation Items (Profile removed from list) */}
+          {/* Navigation Items */}
           {renderNavLinks()}
         </div>
 
         {/* Bottom Profile Avatar Dropdown (Upward Popover) */}
-        <div className="relative pt-4 border-t border-gray-100">
-          {/* Dropdown Popover Menu */}
+        <div className="relative pt-4 border-t border-gray-100 dark:border-gray-800">
           {isDesktopProfileOpen && (
             <>
               <div 
                 className="fixed inset-0 z-40" 
                 onClick={() => setIsDesktopProfileOpen(false)} 
               />
-              <div className="absolute bottom-full left-0 right-0 mb-3 bg-white rounded-[22px] shadow-[0_12px_40px_rgba(0,0,0,0.15)] border border-gray-100 p-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
-                <div className="px-3.5 py-2.5 border-b border-gray-100 mb-1.5 text-left">
+              <div className="absolute bottom-full left-0 right-0 mb-3 bg-white dark:bg-[#1b2b3f] rounded-[22px] shadow-[0_12px_40px_rgba(0,0,0,0.2)] border border-gray-100 dark:border-gray-700 p-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-3.5 py-2.5 border-b border-gray-100 dark:border-gray-700 mb-1.5 text-left">
                   <span className="block text-[10px] text-gray-400 font-black uppercase tracking-wider">Signed in as</span>
-                  <span className="text-sm font-black text-[#1a2b3c] truncate block">Seller & Agent</span>
+                  <span className="text-sm font-black text-[#1a2b3c] dark:text-white truncate block">Seller & Agent</span>
                 </div>
                 
                 <button
@@ -80,9 +96,9 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
                     setIsDesktopProfileOpen(false);
                     navigate('/seller/profile');
                   }}
-                  className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-gray-700 hover:text-[#047262] hover:bg-[#e0f5f0]/60 rounded-xl transition-all text-left"
+                  className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-gray-700 dark:text-gray-300 hover:text-[#047262] dark:hover:text-[#0dc5a5] hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-all text-left"
                 >
-                  <User size={18} className="text-[#047262]" />
+                  <User size={18} className="text-[#047262] dark:text-[#0dc5a5]" />
                   <span>My Profile</span>
                 </button>
 
@@ -92,7 +108,7 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
                     setIsDesktopProfileOpen(false);
                     onLogout();
                   }}
-                  className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-all text-left mt-1 border-t border-gray-100 pt-3"
+                  className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-all text-left mt-1 border-t border-gray-100 dark:border-gray-700 pt-3"
                 >
                   <LogOut size={18} className="text-rose-500" />
                   <span>Logout</span>
@@ -105,14 +121,14 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
           <button
             type="button"
             onClick={() => setIsDesktopProfileOpen(!isDesktopProfileOpen)}
-            className="w-full flex items-center justify-between gap-3 p-2.5 rounded-2xl bg-gray-50/70 hover:bg-gray-100/90 border border-gray-100 hover:border-gray-200/80 transition-all text-left group"
+            className="w-full flex items-center justify-between gap-3 p-2.5 rounded-2xl bg-gray-50/70 dark:bg-[#18273a] hover:bg-gray-100/90 dark:hover:bg-[#203147] border border-gray-100 dark:border-gray-800 transition-all text-left group"
           >
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-10 h-10 rounded-full bg-[#047262] text-white font-black text-sm flex items-center justify-center shrink-0 shadow-xs border-2 border-white">
+              <div className="w-10 h-10 rounded-full bg-[#047262] text-white font-black text-sm flex items-center justify-center shrink-0 shadow-xs border-2 border-white dark:border-gray-700">
                 SS
               </div>
               <div className="truncate">
-                <p className="text-sm font-extrabold text-[#1a2b3c] truncate group-hover:text-[#047262] transition-colors">Seller Profile</p>
+                <p className="text-sm font-extrabold text-[#1a2b3c] dark:text-white truncate group-hover:text-[#047262] dark:group-hover:text-[#0dc5a5] transition-colors">Seller Profile</p>
                 <p className="text-[11px] font-bold text-gray-400 truncate">Manage Account</p>
               </div>
             </div>
@@ -128,44 +144,43 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
         <div className="fixed inset-0 z-50 lg:hidden flex">
           {/* Backdrop overlay */}
           <div 
-            className="fixed inset-0 bg-black/40 backdrop-blur-xs animate-in fade-in duration-300"
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
             onClick={onCloseMobile}
           />
 
-          {/* Slide-out Panel */}
-          <aside className="relative w-72 max-w-[85vw] h-full bg-white shadow-2xl p-6 flex flex-col justify-between z-10 animate-in slide-in-from-left duration-300">
+          {/* Sidebar Drawer Container */}
+          <aside className="relative w-72 max-w-[80vw] bg-white dark:bg-[#111c2a] h-full p-6 flex flex-col justify-between shadow-2xl z-10 animate-in slide-in-from-left duration-300">
             <div>
-              {/* Mobile Header & Logo */}
-              <div className="flex items-center justify-between pb-6 mb-4 border-b border-gray-100/80">
-                <Link to="/seller/home" onClick={onCloseMobile} className="flex items-center gap-2.5 group">
+              {/* Drawer Header & Close Button */}
+              <div className="flex items-center justify-between pb-6 border-b border-gray-100 dark:border-gray-800">
+                <Link to="/seller/home" className="flex items-center gap-2.5" onClick={onCloseMobile}>
                   <img src={logo} alt="RealEstate Logo" className="w-8 h-8 object-contain" />
-                  <span className="text-[#047262] font-bold text-xl tracking-tight">
-                    RealEstate
-                  </span>
+                  <span className="text-[#047262] dark:text-[#0dc5a5] font-bold text-xl tracking-tight">RealEstate</span>
                 </Link>
                 <button
                   onClick={onCloseMobile}
-                  className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors focus:outline-none"
-                  title="Close Sidebar"
+                  className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-gray-800 transition-colors"
+                  aria-label="Close Sidebar"
                 >
-                  <X size={22} strokeWidth={2.5} />
+                  <X size={22} />
                 </button>
               </div>
 
-              {/* Navigation Items (closing mobile drawer on click) */}
-              {renderNavLinks(onCloseMobile)}
+              {/* Drawer Nav Links */}
+              <div className="mt-6">
+                {renderNavLinks(onCloseMobile)}
+              </div>
             </div>
 
-            {/* Mobile Bottom Profile Avatar Dropdown */}
-            <div className="relative pt-4 border-t border-gray-100">
-              {/* Dropdown Popover Menu */}
+            {/* Bottom Profile Section (Mobile) */}
+            <div className="relative pt-4 border-t border-gray-100 dark:border-gray-800">
               {isMobileProfileOpen && (
                 <>
                   <div 
                     className="fixed inset-0 z-40" 
                     onClick={() => setIsMobileProfileOpen(false)} 
                   />
-                  <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-[20px] shadow-xl border border-gray-100 p-2 z-50 text-left">
+                  <div className="absolute bottom-full left-0 right-0 mb-3 bg-white dark:bg-[#1b2b3f] rounded-[22px] shadow-xl border border-gray-100 dark:border-gray-700 p-2.5 z-50 text-left">
                     <button
                       type="button"
                       onClick={() => {
@@ -173,9 +188,9 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
                         onCloseMobile();
                         navigate('/seller/profile');
                       }}
-                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-gray-700 hover:text-[#047262] hover:bg-[#e0f5f0]/60 rounded-xl transition-all"
+                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-gray-700 dark:text-gray-200 hover:text-[#047262] hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-all"
                     >
-                      <User size={17} className="text-[#047262]" />
+                      <User size={17} className="text-[#047262] dark:text-[#0dc5a5]" />
                       <span>My Profile</span>
                     </button>
                     <button
@@ -184,7 +199,7 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
                         setIsMobileProfileOpen(false);
                         onLogout();
                       }}
-                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-all border-t border-gray-100 mt-1"
+                      className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-all border-t border-gray-100 dark:border-gray-700 mt-1"
                     >
                       <LogOut size={17} className="text-rose-500" />
                       <span>Logout</span>
@@ -197,14 +212,14 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
               <button
                 type="button"
                 onClick={() => setIsMobileProfileOpen(!isMobileProfileOpen)}
-                className="w-full flex items-center justify-between gap-3 p-2.5 rounded-2xl bg-gray-50/80 hover:bg-gray-100 border border-gray-100 transition-all text-left"
+                className="w-full flex items-center justify-between gap-3 p-2.5 rounded-2xl bg-gray-50/80 dark:bg-[#18273a] hover:bg-gray-100 dark:hover:bg-[#203147] border border-gray-100 dark:border-gray-800 transition-all text-left"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-9 h-9 rounded-full bg-[#047262] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-xs">
                     SS
                   </div>
                   <div className="truncate">
-                    <p className="text-sm font-extrabold text-[#1a2b3c] truncate">Seller Profile</p>
+                    <p className="text-sm font-extrabold text-[#1a2b3c] dark:text-white truncate">Seller Profile</p>
                     <p className="text-[11px] font-semibold text-gray-400 truncate">Manage Account</p>
                   </div>
                 </div>

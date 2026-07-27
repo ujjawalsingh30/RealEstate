@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useState, useMemo } from 'react';
 import { Heart, CheckCircle, AlertCircle, X } from 'lucide-react';
 import assets from '../assets/assets';
+import { useTheme } from './ThemeContext';
 
 const PropertyContext = createContext();
 
 export const usePropertyContext = () => useContext(PropertyContext);
 
 export const PropertyProvider = ({ children }) => {
+  const { theme, toggleTheme } = useTheme();
   const [wishlistIds, setWishlistIds] = useState([1, 2]);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
@@ -625,7 +627,9 @@ export const PropertyProvider = ({ children }) => {
     setSellerRequests,
     isSellerVerified,
     setIsSellerVerified,
-    addSellerRequest
+    addSellerRequest,
+    theme,
+    toggleTheme
   };
 
   return (

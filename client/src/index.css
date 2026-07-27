@@ -1,1 +1,268 @@
 @import "tailwindcss";
+
+/* Enable class-based dark mode selector in Tailwind CSS v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+@variant dark (&:where(.dark, .dark *));
+
+/* ============================================================================
+   UNIVERSAL DARK MODE THEME ENGINE & SLEEK AESTHETICS OVERRIDES
+   ============================================================================ */
+html, body {
+  transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
+}
+
+html.dark, html.dark body {
+  background-color: #0b131e !important;
+  color: #f1f5f9 !important;
+  color-scheme: dark;
+}
+
+/* ----------------------------------------------------------------------------
+   1. LEVEL 0: PAGE BACKGROUNDS (Deep Midnight Slate)
+   ---------------------------------------------------------------------------- */
+.dark .bg-gray-50, 
+.dark .bg-slate-50,
+.dark .bg-neutral-50,
+.dark .bg-[#f0f6fc],
+.dark .bg-[#f8fafc],
+.dark .bg-[#f9fafb] {
+  background-color: #0b131e !important;
+}
+
+/* ----------------------------------------------------------------------------
+   2. LEVEL 1: CARD SURFACES, NAVBARS & FOOTERS (Elevated Slate Blue)
+   ---------------------------------------------------------------------------- */
+.dark .bg-white, 
+.dark .bg-white\/95, 
+.dark .bg-white\/90,
+.dark .bg-white\/80,
+.dark .bg-white\/70,
+.dark .bg-white\/60 {
+  background-color: #162231 !important;
+  color: #f1f5f9 !important;
+}
+
+/* ----------------------------------------------------------------------------
+   3. LEVEL 2: INNER CHIPS, SEARCH PILLS & AVATAR WRAPPERS (Tertiary Slate)
+   ---------------------------------------------------------------------------- */
+.dark .bg-gray-100, 
+.dark .bg-gray-200, 
+.dark .bg-slate-100,
+.dark .bg-slate-200,
+.dark .bg-neutral-100,
+.dark .bg-neutral-200 {
+  background-color: #1e2f45 !important;
+  color: #f8fafc !important;
+}
+
+/* ----------------------------------------------------------------------------
+   4. INTELLECTUAL BADGES & ACCENTS IN DARK MODE (Glassmorphism Glows)
+   ---------------------------------------------------------------------------- */
+/* Emerald / Teal / Mint Tags & Badge Containers */
+.dark .bg-\[\#e0f5f0\], 
+.dark .bg-\[\#e0f5f0\]\/50,
+.dark .bg-\[\#d8f4ec\],
+.dark .bg-\[\#d8f4ec\]\/60,
+.dark .bg-\[\#d8f4ec\]\/30,
+.dark .bg-emerald-50,
+.dark .bg-emerald-100,
+.dark .bg-teal-50,
+.dark .bg-teal-100,
+.dark .bg-[#eaf8f4],
+.dark .bg-[#f0faf7] {
+  background-color: rgba(13, 197, 165, 0.15) !important;
+  color: #0dc5a5 !important;
+  border-color: rgba(13, 197, 165, 0.25) !important;
+}
+
+.dark .text-emerald-800,
+.dark .text-emerald-700,
+.dark .text-emerald-600,
+.dark .text-teal-800,
+.dark .text-teal-700,
+.dark .text-\[\#047262\] {
+  color: #0dc5a5 !important;
+}
+
+/* Blue & Cyan Badges & Stat Cards */
+.dark .bg-blue-50,
+.dark .bg-blue-100,
+.dark .bg-blue-100\/70,
+.dark .bg-cyan-50,
+.dark .bg-cyan-100,
+.dark .bg-cyan-100\/70,
+.dark .bg-indigo-50,
+.dark .bg-indigo-100 {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  color: #60a5fa !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+.dark .text-blue-800,
+.dark .text-blue-700,
+.dark .text-blue-600,
+.dark .text-cyan-800,
+.dark .text-cyan-700,
+.dark .text-cyan-600 {
+  color: #60a5fa !important;
+}
+
+/* Purple Badges & Stat Cards */
+.dark .bg-purple-50,
+.dark .bg-purple-100,
+.dark .bg-purple-100\/70 {
+  background-color: rgba(168, 85, 247, 0.15) !important;
+  color: #c084fc !important;
+  border-color: rgba(168, 85, 247, 0.3) !important;
+}
+
+.dark .text-purple-800,
+.dark .text-purple-700,
+.dark .text-purple-600 {
+  color: #c084fc !important;
+}
+
+/* Amber / Warning Badges (Admin Console & Statuses) */
+.dark .bg-amber-50,
+.dark .bg-amber-100,
+.dark .bg-amber-100\/80,
+.dark .bg-yellow-50,
+.dark .bg-orange-50 {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+.dark .text-amber-800, 
+.dark .text-amber-700,
+.dark .text-amber-600 {
+  color: #fcd34d !important;
+}
+
+/* Rose / Red Badges & Destructive Text (Logout, Pending SLA & Deletions) */
+.dark .bg-rose-50, 
+.dark .bg-rose-100,
+.dark .bg-rose-100\/70,
+.dark .bg-red-50,
+.dark .bg-red-100 {
+  background-color: rgba(244, 63, 94, 0.15) !important;
+  color: #fda4af !important;
+  border-color: rgba(244, 63, 94, 0.3) !important;
+}
+
+.dark .text-rose-800,
+.dark .text-rose-700,
+.dark .text-rose-600, 
+.dark .text-red-800,
+.dark .text-red-700,
+.dark .text-red-600,
+.dark .text-rose-500 {
+  color: #fb7185 !important;
+}
+
+/* ----------------------------------------------------------------------------
+   5. TYPOGRAPHY & HEADING HIERARCHY IN DARK MODE
+   ---------------------------------------------------------------------------- */
+/* Primary Headings & Dark Text -> Crisp Off-White */
+.dark .text-\[\#1a2b3c\], 
+.dark .text-gray-900, 
+.dark .text-gray-800, 
+.dark .text-gray-700, 
+.dark .text-slate-900, 
+.dark .text-slate-800,
+.dark .text-neutral-800,
+.dark .text-neutral-900,
+.dark .text-black {
+  color: #f8fafc !important;
+}
+
+/* Secondary & Body Descriptions -> Smooth Slate 400 */
+.dark .text-gray-600, 
+.dark .text-gray-500, 
+.dark .text-slate-500,
+.dark .text-slate-600,
+.dark .text-neutral-500,
+.dark .text-neutral-600 {
+  color: #94a3b8 !important;
+}
+
+/* ----------------------------------------------------------------------------
+   6. BORDERS, DIVIDERS & CARD BOUNDARIES IN DARK MODE
+   ---------------------------------------------------------------------------- */
+.dark .border-gray-100, 
+.dark .border-gray-200, 
+.dark .border-gray-300, 
+.dark .border-slate-100, 
+.dark .border-slate-200,
+.dark .border-neutral-100,
+.dark .border-neutral-200,
+.dark .border-emerald-100,
+.dark .border-blue-100,
+.dark .border-amber-100,
+.dark .border-purple-100,
+.dark .border-rose-100,
+.dark .border-cyan-100 {
+  border-color: #26374e !important;
+}
+
+.dark .divide-gray-100 > * + *,
+.dark .divide-gray-200 > * + *,
+.dark .divide-slate-100 > * + *,
+.dark .divide-slate-200 > * + * {
+  border-color: #26374e !important;
+}
+
+/* ----------------------------------------------------------------------------
+   7. FORM CONTROLS: INPUTS, SELECTS & TEXTAREAS IN DARK MODE
+   ---------------------------------------------------------------------------- */
+.dark input:not([class*="bg-transparent"]):not([class*="bg-none"]), 
+.dark select:not([class*="bg-transparent"]):not([class*="bg-none"]), 
+.dark textarea:not([class*="bg-transparent"]):not([class*="bg-none"]) {
+  background-color: #1a293c !important;
+  color: #f8fafc !important;
+  border-color: #2c3f58 !important;
+}
+
+.dark input[class*="bg-transparent"],
+.dark select[class*="bg-transparent"],
+.dark textarea[class*="bg-transparent"] {
+  color: #f8fafc !important;
+}
+
+.dark input::placeholder, 
+.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* ----------------------------------------------------------------------------
+   8. TABLES & DATA DASHBOARDS IN DARK MODE
+   ---------------------------------------------------------------------------- */
+.dark table, 
+.dark thead, 
+.dark tbody, 
+.dark tr, 
+.dark th, 
+.dark td {
+  border-color: #26374e !important;
+}
+
+.dark thead th {
+  background-color: #13202e !important;
+  color: #94a3b8 !important;
+}
+
+.dark tbody tr:hover {
+  background-color: #1b2a3d !important;
+}
+
+/* ----------------------------------------------------------------------------
+   9. ELEVATED SHADOWS & HOVER GLOWS
+   ---------------------------------------------------------------------------- */
+.dark .shadow-sm, 
+.dark .shadow-md, 
+.dark .shadow-lg,
+.dark .shadow-xl,
+.dark .shadow-2xl,
+.dark [class*="shadow-[0_"] {
+  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.45) !important;
+}
