@@ -3,13 +3,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import { 
   Building, MapPin, DollarSign, Home, Maximize, Check, Plus, 
   Image as ImageIcon, Upload, FileText, Sparkles, ArrowLeft, 
-  ShieldCheck, CheckCircle2, Shield, Dumbbell, Coffee, Car, Wifi, Trash2
+  ShieldCheck, CheckCircle2, Shield, Dumbbell, Coffee, Car, Wifi, Trash2, Lock, Clock
 } from 'lucide-react';
 import { usePropertyContext } from '../context/PropertyContext';
 
 const AddProperty = () => {
   const navigate = useNavigate();
-  const { setProperties, showToast } = usePropertyContext();
+  const { setProperties, showToast, isSellerVerified, setIsSellerVerified } = usePropertyContext();
 
   // Form State
   const [formData, setFormData] = useState({
@@ -152,6 +152,69 @@ const AddProperty = () => {
     
     navigate('/seller/my-listings');
   };
+
+  if (!isSellerVerified) {
+    return (
+      <div className="p-6 sm:p-10 md:p-14 max-w-4xl mx-auto text-center font-sans antialiased min-h-[75vh] flex flex-col justify-center items-center">
+        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-amber-50 text-amber-600 border border-amber-200/60 flex items-center justify-center mx-auto mb-6 shadow-md shadow-amber-500/10 animate-pulse">
+          <ShieldCheck size={48} className="text-amber-500" />
+        </div>
+        
+        <span className="px-3.5 py-1 rounded-full bg-amber-100 text-amber-900 font-extrabold text-xs uppercase tracking-wider mb-4 inline-block shadow-2xs">
+          ⏳ Admin Verification in Progress
+        </span>
+
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1a2b3c] tracking-tight mb-4">
+          Property Upload Quota Locked
+        </h1>
+
+        <p className="text-gray-600 font-medium text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-8">
+          To maintain marketplace safety and zero-fraud inventory, all newly registered seller accounts must undergo RERA SLA verification by the <span className="text-[#047262] font-black">Root Administrator</span> before property listings can be published.
+        </p>
+
+        <div className="w-full bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.04)] text-left space-y-4 mb-8">
+          <h3 className="font-extrabold text-sm text-[#1a2b3c] uppercase tracking-wider flex items-center gap-2">
+            <CheckCircle2 size={18} className="text-[#047262]" />
+            <span>How to complete SLA onboarding:</span>
+          </h3>
+          <ul className="space-y-2.5 text-xs sm:text-sm font-bold text-gray-500 list-disc pl-5">
+            <li>Your account registration has automatically dispatched an SLA verification packet to <span className="text-[#1a2b3c]">Admin HQ</span>.</li>
+            <li>An administrator will review your broker initials, contact coordinates, and Government RERA deed in <span className="text-[#047262]">Seller Requests</span>.</li>
+            <li>Once approved in the Admin Console, your property upload quota will unlock instantaneously!</li>
+          </ul>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Link
+            to="/seller/dashboard"
+            className="px-7 py-3.5 bg-gray-900 hover:bg-black text-white font-black text-sm rounded-2xl transition-all shadow-md active:scale-95 flex items-center gap-2"
+          >
+            <ArrowLeft size={16} />
+            <span>Back to Dashboard</span>
+          </Link>
+          <Link
+            to="/seller/support"
+            className="px-7 py-3.5 bg-white hover:bg-gray-50 text-[#047262] border border-gray-200 font-extrabold text-sm rounded-2xl transition-all shadow-xs active:scale-95"
+          >
+            Contact Admin Concierge
+          </Link>
+          {/* Quick simulation / override for seamless testing */}
+          <button
+            type="button"
+            onClick={() => {
+              localStorage.setItem('sellerVerified', 'true');
+              if (setIsSellerVerified) setIsSellerVerified(true);
+              if (showToast) showToast('⚡ [Demo Mode]: Account instantly verified! You may now publish properties!', 'success');
+            }}
+            className="w-full sm:w-auto mt-2 px-6 py-2.5 bg-[#e0f5f0] hover:bg-[#047262] text-[#047262] hover:text-white font-black text-xs rounded-xl transition-all border border-[#047262]/20"
+            title="Click to simulate admin approval for testing"
+          >
+            ⚡ [Demo Toggle]: Simulate Admin Approval & Unlock Form
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 sm:p-6 md:p-8 lg:p-12 max-w-[1400px] mx-auto text-left font-sans antialiased bg-gray-50 min-h-screen">

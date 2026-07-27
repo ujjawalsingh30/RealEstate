@@ -512,6 +512,98 @@ export const PropertyProvider = ({ children }) => {
     showToast('Your message has been transmitted directly to the Admin HQ Inbox!', 'success');
   };
 
+  const [isSellerVerified, setIsSellerVerified] = useState(() => {
+    return localStorage.getItem('sellerVerified') !== 'false';
+  });
+
+  const [sellerRequests, setSellerRequests] = useState([
+    {
+      id: 'REQ-9214',
+      sellerName: 'Suresh Sharma',
+      agencyName: 'Sharma & Sons Real Estate Pvt Ltd',
+      initials: 'SS',
+      avatarColor: 'bg-emerald-100 text-emerald-800',
+      email: 'sureshbarik969@gmail.com',
+      phone: '+91 96925 30661',
+      reraNumber: 'RERA-MH-2026-44120',
+      requestType: 'New Licensed Agent Verification & Quota Upgrade',
+      documents: ['Govt PAN & Aadhaar', 'RERA Certificate', 'Agency Registration Deed'],
+      submittedDate: 'Just now',
+      status: 'Pending Review'
+    },
+    {
+      id: 'REQ-9215',
+      sellerName: 'Rajiv Mehra',
+      agencyName: 'Mehra Luxury Realty Group',
+      initials: 'RM',
+      avatarColor: 'bg-blue-100 text-blue-800',
+      email: 'rajiv.mehra@realtyindia.in',
+      phone: '+91 98112 34567',
+      reraNumber: 'RERA-DL-2025-89102',
+      requestType: 'Commercial Property Portfolio Authorization (50+ Towers)',
+      documents: ['Tax Clearance 2025-26', 'Municipal Commercial Audit'],
+      submittedDate: '3 hours ago',
+      status: 'Pending Review'
+    },
+    {
+      id: 'REQ-9210',
+      sellerName: 'Hexagon Real Estate',
+      agencyName: 'Hexagon Infra Services Pvt Ltd',
+      initials: 'HE',
+      avatarColor: 'bg-purple-100 text-purple-800',
+      email: 'hexagonsservices@gmail.com',
+      phone: '+91 85668 89666',
+      reraNumber: 'RERA-KA-2025-11003',
+      requestType: 'Annual Background Screening & RERA Renewal',
+      documents: ['RERA Renewal Certificate 2026', 'Agent Liability Bond'],
+      submittedDate: '5 hours ago',
+      status: 'Approved'
+    },
+    {
+      id: 'REQ-9208',
+      sellerName: 'Ankit Jaiswal',
+      agencyName: 'Jaiswal Urban Homes & Developers',
+      initials: 'AJ',
+      avatarColor: 'bg-amber-100 text-amber-800',
+      email: 'harshitjaiswal270702@gmail.com',
+      phone: '+91 98200 12345',
+      reraNumber: 'RERA-UP-2025-55421',
+      requestType: 'Independent Villa Layout Showcase Approval',
+      documents: ['Town Planning Sanction Letter'],
+      submittedDate: '1 day ago',
+      status: 'Approved'
+    }
+  ]);
+
+  const addSellerRequest = (newReq) => {
+    const initials = (newReq.name || 'New Seller')
+      .split(' ')
+      .map((w) => w[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+
+    const reqItem = {
+      id: `REQ-${Math.floor(1000 + Math.random() * 9000)}`,
+      sellerName: newReq.name || 'New Seller Entity',
+      agencyName: newReq.agencyName || (newReq.name ? `${newReq.name} Real Estate Group` : 'Independent Agency'),
+      initials,
+      avatarColor: 'bg-emerald-100 text-emerald-800',
+      email: newReq.email || 'seller.new@realtyindia.in',
+      phone: newReq.phone || '+91 98990 12345',
+      reraNumber: newReq.reraNumber || `RERA-MH-2026-${Math.floor(10000 + Math.random() * 90000)}`,
+      requestType: 'New Licensed Agent Onboarding & Property Upload License',
+      documents: ['Govt PAN Card', 'RERA Registration Deed'],
+      submittedDate: 'Just now',
+      status: 'Pending Review'
+    };
+
+    setSellerRequests((prev) => [reqItem, ...prev]);
+    localStorage.setItem('sellerVerified', 'false');
+    setIsSellerVerified(false);
+    showToast('Your seller onboarding credentials have been submitted to Admin HQ for SLA verification!', 'info');
+  };
+
   const getSimilarProperties = (currentId, city) => {
     return properties.filter(
       (p) => String(p.id) !== String(currentId) && p.city && p.city.toLowerCase() === (city || '').toLowerCase()
@@ -528,7 +620,12 @@ export const PropertyProvider = ({ children }) => {
     showToast,
     adminMessages,
     setAdminMessages,
-    addAdminMessage
+    addAdminMessage,
+    sellerRequests,
+    setSellerRequests,
+    isSellerVerified,
+    setIsSellerVerified,
+    addSellerRequest
   };
 
   return (

@@ -6,101 +6,33 @@ import {
 import { usePropertyContext } from '../context/PropertyContext';
 
 const SellerRequests = () => {
-  const { showToast } = usePropertyContext();
-
-  // Initial rich dataset for seller SLA and verification requests
-  const [requests, setRequests] = useState([
-    {
-      id: 'REQ-9214',
-      sellerName: 'Suresh Sharma',
-      agencyName: 'Sharma & Sons Real Estate Pvt Ltd',
-      initials: 'SS',
-      avatarColor: 'bg-emerald-100 text-emerald-800',
-      email: 'sureshbarik969@gmail.com',
-      phone: '+91 96925 30661',
-      reraNumber: 'RERA-MH-2026-44120',
-      requestType: 'New Licensed Agent Verification & Quota Upgrade',
-      documents: ['Govt PAN & Aadhaar', 'RERA Certificate', 'Agency Registration Deed'],
-      submittedDate: 'Just now',
-      status: 'Pending Review'
-    },
-    {
-      id: 'REQ-9215',
-      sellerName: 'Rajiv Mehra',
-      agencyName: 'Mehra Luxury Realty Group',
-      initials: 'RM',
-      avatarColor: 'bg-blue-100 text-blue-800',
-      email: 'rajiv.mehra@realtyindia.in',
-      phone: '+91 98112 34567',
-      reraNumber: 'RERA-DL-2025-89102',
-      requestType: 'Commercial Property Portfolio Authorization (50+ Towers)',
-      documents: ['Tax Clearance 2025-26', 'Municipal Commercial Audit'],
-      submittedDate: '3 hours ago',
-      status: 'Pending Review'
-    },
-    {
-      id: 'REQ-9210',
-      sellerName: 'Hexagon Real Estate',
-      agencyName: 'Hexagon Infra Services Pvt Ltd',
-      initials: 'HE',
-      avatarColor: 'bg-purple-100 text-purple-800',
-      email: 'hexagonsservices@gmail.com',
-      phone: '+91 85668 89666',
-      reraNumber: 'RERA-KA-2025-11003',
-      requestType: 'Annual Background Screening & RERA Renewal',
-      documents: ['RERA Renewal Certificate 2026', 'Agent Liability Bond'],
-      submittedDate: '5 hours ago',
-      status: 'Approved'
-    },
-    {
-      id: 'REQ-9208',
-      sellerName: 'Ankit Jaiswal',
-      agencyName: 'Jaiswal Urban Homes & Developers',
-      initials: 'AJ',
-      avatarColor: 'bg-amber-100 text-amber-800',
-      email: 'harshitjaiswal270702@gmail.com',
-      phone: '+91 98200 12345',
-      reraNumber: 'RERA-UP-2025-55421',
-      requestType: 'Independent Villa Layout Showcase Approval',
-      documents: ['Town Planning Sanction Letter'],
-      submittedDate: '1 day ago',
-      status: 'Approved'
-    },
-    {
-      id: 'REQ-9195',
-      sellerName: 'Vikatan Rao',
-      agencyName: 'Vikatan Realty Advisors',
-      initials: 'VR',
-      avatarColor: 'bg-rose-100 text-rose-800',
-      email: 'vikatan.advisors@gmail.com',
-      phone: '+91 97411 65432',
-      reraNumber: 'RERA-TS-2025-77312',
-      requestType: 'Expedited Seller Broker License',
-      documents: ['Basic Trade License'],
-      submittedDate: '3 days ago',
-      status: 'Rejected'
-    }
-  ]);
+  const { sellerRequests = [], setSellerRequests, setIsSellerVerified, showToast } = usePropertyContext();
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
 
-  // Handle Approve
+  // Handle Approve (Unlocks seller property uploads!)
   const handleApprove = (id, agencyName) => {
-    setRequests((prev) =>
-      prev.map((req) => (req.id === id ? { ...req, status: 'Approved' } : req))
-    );
+    if (setSellerRequests) {
+      setSellerRequests((prev) =>
+        prev.map((req) => (req.id === id ? { ...req, status: 'Approved' } : req))
+      );
+    }
+    localStorage.setItem('sellerVerified', 'true');
+    if (setIsSellerVerified) setIsSellerVerified(true);
     if (showToast) {
-      showToast(`Verified and approved licensing request for "${agencyName}"!`, 'success');
+      showToast(`Approved SLA request for "${agencyName}"! Seller account unlocked for listing uploads!`, 'success');
     }
   };
 
   // Handle Reject / Clarification
   const handleReject = (id, agencyName) => {
-    setRequests((prev) =>
-      prev.map((req) => (req.id === id ? { ...req, status: 'Rejected' } : req))
-    );
+    if (setSellerRequests) {
+      setSellerRequests((prev) =>
+        prev.map((req) => (req.id === id ? { ...req, status: 'Rejected' } : req))
+      );
+    }
     if (showToast) {
       showToast(`Request for "${agencyName}" marked for clarification / rejection.`, 'error');
     }
@@ -109,7 +41,9 @@ const SellerRequests = () => {
   // Handle Delete Request Archive
   const handleDelete = (id, agencyName) => {
     if (window.confirm(`Are you sure you want to permanently delete archive record for "${agencyName}"?`)) {
-      setRequests((prev) => prev.filter((req) => req.id !== id));
+      if (setSellerRequests) {
+        setSellerRequests((prev) => prev.filter((req) => req.id !== id));
+      }
       if (showToast) {
         showToast(`Archived record for "${agencyName}" permanently removed.`, 'info');
       }
@@ -125,7 +59,7 @@ const SellerRequests = () => {
 
   // Computed filtered list
   const filteredRequests = useMemo(() => {
-    return requests.filter((req) => {
+    return sellerRequests.filter((req) => {
       const matchesSearch = 
         req.sellerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         req.agencyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -136,9 +70,9 @@ const SellerRequests = () => {
 
       return matchesSearch && matchesStatus;
     });
-  }, [requests, searchQuery, statusFilter]);
+  }, [sellerRequests, searchQuery, statusFilter]);
 
-  const pendingCount = requests.filter((r) => r.status === 'Pending Review').length;
+  const pendingCount = sellerRequests.filter((r) => r.status === 'Pending Review').length;
 
   return (
     <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-[1650px] mx-auto text-left font-sans antialiased bg-gray-50 min-h-screen">
@@ -190,7 +124,7 @@ const SellerRequests = () => {
       <div className="flex flex-wrap gap-2.5 mb-8">
         {['ALL', 'Pending Review', 'Approved', 'Rejected'].map((st) => {
           const isActive = statusFilter === st;
-          const count = st === 'ALL' ? requests.length : requests.filter(r => r.status === st).length;
+          const count = st === 'ALL' ? sellerRequests.length : sellerRequests.filter(r => r.status === st).length;
           return (
             <button
               key={st}

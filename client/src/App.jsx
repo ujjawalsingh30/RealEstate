@@ -96,9 +96,13 @@ const App = () => {
           <Route path="/admin/users" element={<UsersManager />} />
           <Route path="/admin/seller-requests" element={<SellerRequests />} />
           <Route path="/admin/properties" element={<Properties />} />
+          <Route path="/admin/message-inbox" element={<MessageInbox />} />
+          <Route path="/admin/message inbox" element={<MessageInbox />} />
+          <Route path="/admin/messages" element={<MessageInbox />} />
           <Route path="/admin/inquiries" element={<MessageInbox />} />
           <Route path="/admin/contact-inbox" element={<MessageInbox />} />
           <Route path="/admin/profile" element={<Profile />} />
+          <Route path="/admin/*" element={<AdminDashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>

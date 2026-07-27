@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { usePropertyContext } from '../context/PropertyContext';
 
 const Register = () => {
+  const { addSellerRequest, showToast } = usePropertyContext();
+
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,11 +16,14 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Registration attempt:', { fullName, email, password, role });
-    // Navigate based on selected role for instant demonstration & testing
+    localStorage.setItem('userRole', role);
     if (role === 'seller') {
+      if (addSellerRequest) {
+        addSellerRequest({ name: fullName, email });
+      }
       navigate('/seller/dashboard');
     } else {
+      if (showToast) showToast('Account successfully registered as Buyer!', 'success');
       navigate('/buyer/home');
     }
   };

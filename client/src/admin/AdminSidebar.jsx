@@ -12,8 +12,8 @@ const AdminSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =>
   const [isMobileProfileOpen, setIsMobileProfileOpen] = useState(false);
 
   const menuItems = [
-    { name: 'Overview', path: '/admin/dashboard', icon: <LayoutGrid size={20} /> },
-    { name: 'Users', path: '/admin/users', icon: <Users size={20} /> },
+    { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutGrid size={20} /> },
+    { name: 'Users Manager', path: '/admin/users', icon: <Users size={20} /> },
     { name: 'Seller Requests', path: '/admin/seller-requests', icon: <ShieldCheck size={20} /> },
     { name: 'Properties', path: '/admin/properties', icon: <Building size={20} /> },
     { name: 'Message Inbox', path: '/admin/message-inbox', icon: <Inbox size={20} /> },
