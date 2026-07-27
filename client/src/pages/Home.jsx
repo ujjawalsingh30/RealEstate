@@ -7,7 +7,7 @@ import Footer from '../components/Footer'
 
 const Home = () => {
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0b131e] text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <Hero/>
       <BrowseByCategory/>
       <WhyChooseUs/>

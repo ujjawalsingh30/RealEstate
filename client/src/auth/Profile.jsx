@@ -3,13 +3,15 @@ import { useNavigate, Link } from 'react-router-dom';
 import { 
   User, Mail, Phone, MapPin, ShieldCheck, Edit3, CheckCircle2, 
   Key, Bell, Lock, LogOut, Building, Heart, MessageSquare, 
-  Award, ExternalLink, Save, Camera, Check, AlertCircle, Briefcase
+  Award, ExternalLink, Save, Camera, Check, AlertCircle, Briefcase, Sun, Moon
 } from 'lucide-react';
 import { usePropertyContext } from '../context/PropertyContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Profile = () => {
   const navigate = useNavigate();
   const { properties, wishlistIds, showToast } = usePropertyContext();
+  const { theme, toggleTheme } = useTheme();
   
   // Detect current role from localStorage (defaults to buyer if none)
   const role = localStorage.getItem('userRole') || 'buyer';
@@ -141,7 +143,7 @@ const Profile = () => {
   const wishlistCount = wishlistIds ? wishlistIds.length : 2;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] py-6 sm:py-10 px-3 sm:px-6 md:px-8 lg:px-12 font-sans antialiased text-left">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b131e] py-6 sm:py-10 px-3 sm:px-6 md:px-8 lg:px-12 font-sans antialiased text-left transition-colors duration-300">
       <div className="max-w-[1360px] mx-auto">
         
         {/* =========================================================================
@@ -160,17 +162,17 @@ const Profile = () => {
 
           {/* Floating Profile Details Over the Banner */}
           <div className="-mt-20 sm:-mt-24 px-4 sm:px-8 max-w-[1280px] mx-auto z-20 relative">
-            <div className="bg-white rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 md:p-9 shadow-[0_12px_45px_rgba(0,0,0,0.07)] border border-gray-100/90 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="bg-white dark:bg-[#162231] rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 md:p-9 shadow-[0_12px_45px_rgba(0,0,0,0.07)] border border-gray-100/90 dark:border-gray-800 flex flex-col md:flex-row items-center justify-between gap-6 transition-all">
               
               {/* Left: Avatar Initial Circle + Name & Role */}
               <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-5 sm:gap-7 w-full md:w-auto">
                 <div className="relative group shrink-0">
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-[28px] sm:rounded-[34px] bg-gradient-to-br from-[#047262] to-[#1a2b3c] text-white flex items-center justify-center font-black text-3xl sm:text-4xl shadow-xl border-4 border-white">
+                  <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-[28px] sm:rounded-[34px] bg-gradient-to-br from-[#047262] to-[#1a2b3c] text-white flex items-center justify-center font-black text-3xl sm:text-4xl shadow-xl border-4 border-white dark:border-gray-800">
                     {roleInfo.initials}
                   </div>
                   <button 
                     title="Change Avatar" 
-                    className="absolute bottom-1 right-1 w-9 h-9 rounded-xl bg-white text-[#1a2b3c] hover:bg-[#047262] hover:text-white flex items-center justify-center shadow-lg border border-gray-100 transition-all cursor-pointer"
+                    className="absolute bottom-1 right-1 w-9 h-9 rounded-xl bg-white dark:bg-[#1b2b3f] text-[#1a2b3c] dark:text-gray-200 hover:bg-[#047262] hover:text-white flex items-center justify-center shadow-lg border border-gray-100 dark:border-gray-700 transition-all cursor-pointer"
                   >
                     <Camera size={16} />
                   </button>
@@ -178,34 +180,46 @@ const Profile = () => {
 
                 <div className="space-y-1.5 flex-1">
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1a2b3c] tracking-tight">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1a2b3c] dark:text-white tracking-tight">
                       {formData.fullName}
                     </h1>
-                    <span className="inline-flex items-center gap-1 bg-[#047262]/15 text-[#047262] font-black text-[11px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider">
-                      <CheckCircle2 size={13} className="fill-[#047262] text-white" />
+                    <span className="inline-flex items-center gap-1 bg-[#047262]/15 dark:bg-[#0dc5a5]/15 text-[#047262] dark:text-[#0dc5a5] font-black text-[11px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider">
+                      <CheckCircle2 size={13} className="fill-[#047262] dark:fill-[#0dc5a5] text-white" />
                       {roleInfo.badgeText}
                     </span>
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-5 text-gray-500 font-medium text-xs sm:text-sm pt-1">
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-5 text-gray-500 dark:text-gray-400 font-medium text-xs sm:text-sm pt-1">
                     <span className="flex items-center gap-1.5">
-                      <Mail size={15} className="text-[#047262]" />
+                      <Mail size={15} className="text-[#047262] dark:text-[#0dc5a5]" />
                       {formData.email}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <Phone size={15} className="text-[#047262]" />
+                      <Phone size={15} className="text-[#047262] dark:text-[#0dc5a5]" />
                       {formData.phone}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <MapPin size={15} className="text-[#047262]" />
+                      <MapPin size={15} className="text-[#047262] dark:text-[#0dc5a5]" />
                       {formData.location}
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Right: Actions */}
-              <div className="flex items-center gap-3 w-full sm:w-auto justify-center md:justify-end shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-gray-100">
+              {/* Right: Actions & Theme Toggle */}
+              <div className="flex items-center flex-wrap gap-2.5 sm:gap-3 w-full sm:w-auto justify-center md:justify-end shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-gray-100 dark:border-gray-800">
+                
+                {/* Dedicated Profile Theme Toggle */}
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  title="Switch Display Theme"
+                  className="p-3.5 bg-gray-100 dark:bg-[#1b2b3f] hover:bg-gray-200 dark:hover:bg-[#23354c] text-gray-700 dark:text-amber-400 border border-gray-200/80 dark:border-gray-700 rounded-2xl transition-all flex items-center justify-center gap-2 font-bold text-sm"
+                >
+                  {theme === 'dark' ? <Sun size={18} className="animate-spin-slow" /> : <Moon size={18} />}
+                  <span className="hidden sm:inline-block text-xs uppercase">{theme === 'dark' ? 'Light' : 'Dark'}</span>
+                </button>
+
                 <button
                   onClick={() => {
                     setIsEditing(!isEditing);
@@ -224,9 +238,9 @@ const Profile = () => {
                 <button
                   onClick={handleLogout}
                   title="Logout Account"
-                  className="p-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-2xl transition-all flex items-center justify-center font-bold text-sm gap-2"
+                  className="p-3.5 bg-gray-100 dark:bg-rose-500/15 hover:bg-gray-200 dark:hover:bg-rose-500/25 text-gray-700 dark:text-rose-400 rounded-2xl transition-all flex items-center justify-center font-bold text-sm gap-2"
                 >
-                  <LogOut size={18} className="text-gray-600" />
+                  <LogOut size={18} className="text-gray-600 dark:text-rose-400" />
                   <span className="sm:hidden md:inline lg:hidden xl:inline">Logout</span>
                 </button>
               </div>

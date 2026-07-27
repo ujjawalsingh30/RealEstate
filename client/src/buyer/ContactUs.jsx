@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Send, Clock, ChevronDown, CheckCircle, Sparkles, MessageSquare } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, Clock, ChevronDown, CheckCircle, Sparkles, MessageSquare, Sun, Moon } from 'lucide-react';
 import Footer from '../components/Footer';
 import { usePropertyContext } from '../context/PropertyContext';
+import { useTheme } from '../context/ThemeContext';
 
 const ContactUs = () => {
   const { addAdminMessage } = usePropertyContext();
+  const { theme, toggleTheme } = useTheme();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -100,19 +102,32 @@ const ContactUs = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50/70">
+    <div className="min-h-screen bg-gray-50/70 dark:bg-[#0b131e] transition-colors duration-300">
       
       {/* Header Banner Section */}
-      <section className="bg-white pt-12 md:pt-16 pb-16 px-6 md:px-12 border-b border-gray-100">
+      <section className="bg-white dark:bg-[#162231] pt-10 md:pt-16 pb-16 px-6 md:px-12 border-b border-gray-100 dark:border-gray-800 relative transition-colors">
+        {/* Top Right Theme Toggle Switch */}
+        <div className="max-w-[1200px] mx-auto flex justify-end mb-4 md:-mt-4">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            title="Switch Theme"
+            className="px-4 py-2 bg-gray-100 dark:bg-[#1b2b3f] hover:bg-gray-200 dark:hover:bg-[#23354c] text-gray-700 dark:text-amber-400 border border-gray-200 dark:border-gray-700 rounded-xl font-bold text-xs flex items-center gap-2 transition-all shadow-2xs"
+          >
+            {theme === 'dark' ? <Sun size={16} className="animate-spin-slow text-amber-400" /> : <Moon size={16} />}
+            <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+          </button>
+        </div>
+
         <div className="max-w-[1200px] mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#e0f5f0] text-[#047262] font-extrabold text-xs tracking-wider uppercase mb-5 shadow-xs">
             <Sparkles size={14} />
             <span>Client Concierge & Support</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#1a2b3c] tracking-tight max-w-3xl mx-auto leading-[1.15] mb-4">
-            We're Here to Help You Find Your <span className="text-[#047262]">Dream Property</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#1a2b3c] dark:text-white tracking-tight max-w-3xl mx-auto leading-[1.15] mb-4">
+            We're Here to Help You Find Your <span className="text-[#047262] dark:text-[#0dc5a5]">Dream Property</span>
           </h1>
-          <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto leading-relaxed font-normal">
+          <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed font-normal">
             Whether you need assistance scheduling a private showing, verifying pricing details,
             or exploring customized neighborhood insights, our real estate specialists are ready.
           </p>

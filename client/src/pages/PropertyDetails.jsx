@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   MapPin, Bed, Bath, Maximize, Building, CheckCircle, 
-  MessageSquare, ShieldCheck, Heart, ChevronRight, ChevronUp, Armchair, Home
+  MessageSquare, ShieldCheck, Heart, ChevronRight, ChevronUp, Armchair, Home, Sun, Moon
 } from 'lucide-react';
 import { usePropertyContext } from '../context/PropertyContext';
+import { useTheme } from '../context/ThemeContext';
 
 const PropertyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getPropertyById, getSimilarProperties, wishlistIds, toggleWishlist } = usePropertyContext();
+  const { theme, toggleTheme } = useTheme();
   
   const property = getPropertyById(id || '1');
   const similarProperties = getSimilarProperties(property.id, property.city);
@@ -50,25 +52,38 @@ const PropertyDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#ffffff] text-gray-900 font-sans antialiased">
+    <div className="min-h-screen bg-white dark:bg-[#0b131e] text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-300">
       {/* Main Content Area */}
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 pt-6 sm:pt-10 pb-20">
         
-        {/* Breadcrumb Navigation */}
-        <nav aria-label="Breadcrumb" className="mb-6 sm:mb-8 text-xs sm:text-sm font-semibold text-gray-400 flex items-center flex-wrap gap-2">
-          <Link to="/" className="hover:text-[#047262] transition-colors flex items-center gap-1">
-            <Home size={15} />
-            <span>Home</span>
-          </Link>
-          <ChevronRight size={14} className="text-gray-300 shrink-0" />
-          <Link to="/properties" className="hover:text-[#047262] transition-colors">
-            Listings
-          </Link>
-          <ChevronRight size={14} className="text-gray-300 shrink-0" />
-          <span className="text-gray-800 font-bold truncate max-w-[220px] sm:max-w-none">
-            {property.title}
-          </span>
-        </nav>
+        {/* Breadcrumb & Theme Controls Bar */}
+        <div className="mb-6 sm:mb-8 flex items-center justify-between flex-wrap gap-4">
+          <nav aria-label="Breadcrumb" className="text-xs sm:text-sm font-semibold text-gray-400 dark:text-gray-400 flex items-center flex-wrap gap-2">
+            <Link to="/" className="hover:text-[#047262] dark:hover:text-[#0dc5a5] transition-colors flex items-center gap-1">
+              <Home size={15} />
+              <span>Home</span>
+            </Link>
+            <ChevronRight size={14} className="text-gray-300 dark:text-gray-600 shrink-0" />
+            <Link to="/properties" className="hover:text-[#047262] dark:hover:text-[#0dc5a5] transition-colors">
+              Listings
+            </Link>
+            <ChevronRight size={14} className="text-gray-300 dark:text-gray-600 shrink-0" />
+            <span className="text-gray-800 dark:text-gray-200 font-bold truncate max-w-[220px] sm:max-w-none">
+              {property.title}
+            </span>
+          </nav>
+
+          {/* Theme Toggle Button */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            title="Toggle Light/Dark Theme"
+            className="px-3.5 py-2 rounded-xl bg-gray-100 dark:bg-[#1b2b3f] hover:bg-gray-200 dark:hover:bg-[#22354c] text-gray-700 dark:text-amber-400 border border-gray-200 dark:border-gray-700 font-bold text-xs flex items-center gap-2 transition-all shadow-2xs"
+          >
+            {theme === 'dark' ? <Sun size={15} className="animate-spin-slow text-amber-400" /> : <Moon size={15} />}
+            <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+          </button>
+        </div>
 
         {/* Hero Photo Gallery Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 mb-10 sm:mb-14">

@@ -1,43 +1,59 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { MapPin, Bed, Bath, Maximize, Heart, Trash2, Home, ChevronRight } from 'lucide-react';
+import { MapPin, Bed, Bath, Maximize, Heart, Trash2, Home, ChevronRight, Sun, Moon } from 'lucide-react';
 import { usePropertyContext } from '../context/PropertyContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Wishlist = () => {
   const navigate = useNavigate();
   const { properties, wishlistIds, toggleWishlist } = usePropertyContext();
+  const { theme, toggleTheme } = useTheme();
 
   const savedProperties = properties.filter(p => wishlistIds.includes(p.id));
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-between font-sans antialiased">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0b131e] flex flex-col justify-between font-sans antialiased transition-colors duration-300">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 pt-8 sm:pt-12 pb-24 w-full">
         
         {/* Breadcrumb Navigation */}
-        <nav aria-label="Breadcrumb" className="mb-6 sm:mb-8 text-xs sm:text-sm font-semibold text-gray-400 flex items-center gap-2">
-          <Link to="/" className="hover:text-[#047262] transition-colors flex items-center gap-1">
+        <nav aria-label="Breadcrumb" className="mb-6 sm:mb-8 text-xs sm:text-sm font-semibold text-gray-400 dark:text-gray-400 flex items-center gap-2">
+          <Link to="/" className="hover:text-[#047262] dark:hover:text-[#0dc5a5] transition-colors flex items-center gap-1">
             <Home size={15} />
             <span>Home</span>
           </Link>
-          <ChevronRight size={14} className="text-gray-300 shrink-0" />
-          <span className="text-gray-800 font-bold">My Wishlist</span>
+          <ChevronRight size={14} className="text-gray-300 dark:text-gray-600 shrink-0" />
+          <span className="text-gray-800 dark:text-gray-200 font-bold">My Wishlist</span>
         </nav>
 
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-black text-[#1a2b3c] tracking-tight mb-2">
+            <h1 className="text-3xl sm:text-4xl font-black text-[#1a2b3c] dark:text-white tracking-tight mb-2">
               My Wishlist
             </h1>
-            <p className="text-gray-500 text-sm sm:text-base">
+            <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
               You have {savedProperties.length} property saved in your wishlist.
             </p>
           </div>
-          <button 
-            onClick={() => navigate('/properties')}
-            className="px-6 py-3 bg-[#047262] hover:bg-[#03594d] text-white font-bold text-sm rounded-2xl transition-all shadow-md"
-          >
-            Browse More Listings
-          </button>
+
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle Button */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              title="Toggle Theme"
+              className="p-3.5 bg-white dark:bg-[#162231] hover:bg-gray-100 dark:hover:bg-[#1e2f45] text-gray-700 dark:text-amber-400 border border-gray-200 dark:border-gray-700 rounded-2xl transition-all flex items-center gap-2 font-bold text-sm shadow-xs"
+            >
+              {theme === 'dark' ? <Sun size={18} className="animate-spin-slow text-amber-400" /> : <Moon size={18} />}
+              <span className="hidden sm:inline text-xs">{theme === 'dark' ? 'Light' : 'Dark'}</span>
+            </button>
+
+            <button 
+              onClick={() => navigate('/properties')}
+              className="px-6 py-3.5 bg-[#047262] hover:bg-[#03594d] text-white font-bold text-sm rounded-2xl transition-all shadow-md"
+            >
+              Browse More Listings
+            </button>
+          </div>
         </div>
 
         {savedProperties.length === 0 ? (

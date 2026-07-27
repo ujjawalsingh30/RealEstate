@@ -2,13 +2,15 @@ import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Filter, Search, MapPin, Bed, Bath, Maximize, Eye, 
-  ShieldCheck, Heart, LayoutGrid, List, SlidersHorizontal, ArrowUpDown, CheckCircle, Home, X
+  ShieldCheck, Heart, LayoutGrid, List, SlidersHorizontal, ArrowUpDown, CheckCircle, Home, X, Sun, Moon
 } from 'lucide-react';
 import { usePropertyContext } from '../context/PropertyContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Properties = () => {
   const navigate = useNavigate();
   const { properties: allProperties, wishlistIds, toggleWishlist } = usePropertyContext();
+  const { theme, toggleTheme } = useTheme();
 
   // Filter & UI States
   const [searchLocation, setSearchLocation] = useState('');
@@ -93,7 +95,7 @@ const Properties = () => {
   }, [allProperties, searchLocation, priceLimit, selectedTypes, selectedBhk, sortBy]);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] py-5 sm:py-8 px-3 sm:px-6 md:px-8 lg:px-12 font-sans text-left antialiased">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b131e] py-5 sm:py-8 px-3 sm:px-6 md:px-8 lg:px-12 font-sans text-left antialiased transition-colors duration-300">
       <div className="max-w-[1500px] mx-auto">
         
         {/* =========================================================================
@@ -146,8 +148,16 @@ const Properties = () => {
               <option value="views">Most Viewed</option>
             </select>
 
-            {/* View Mode Toggle on Phone */}
-            <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-gray-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+            {/* View Mode & Theme Toggle on Phone */}
+            <div className="flex items-center gap-1 bg-white dark:bg-[#162231] p-1 rounded-xl border border-gray-200/90 dark:border-gray-700 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+              <button
+                type="button"
+                onClick={toggleTheme}
+                title="Toggle Theme"
+                className="p-2 rounded-lg text-gray-500 dark:text-amber-400 hover:bg-gray-100 dark:hover:bg-[#1e2f45] transition-all"
+              >
+                {theme === 'dark' ? <Sun size={17} className="animate-spin-slow" /> : <Moon size={17} />}
+              </button>
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg transition-all ${
@@ -510,7 +520,7 @@ const Properties = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="bg-gray-50/80 border border-gray-200/80 rounded-xl px-3.5 py-2 text-sm font-bold text-[#1a2b3c] outline-none focus:border-[#047262] hover:border-gray-300 transition-colors cursor-pointer"
+                    className="bg-gray-50/80 dark:bg-[#1b2b3f] border border-gray-200/80 dark:border-gray-700 rounded-xl px-3.5 py-2 text-sm font-bold text-[#1a2b3c] dark:text-gray-100 outline-none focus:border-[#047262] hover:border-gray-300 transition-colors cursor-pointer"
                   >
                     <option value="latest">Latest First</option>
                     <option value="price-low-high">Price: Low to High</option>
@@ -518,6 +528,17 @@ const Properties = () => {
                     <option value="views">Most Viewed</option>
                   </select>
                 </div>
+
+                {/* Desktop Theme Toggle Switch */}
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  title="Toggle Display Theme"
+                  className="px-4 py-2 bg-gray-100 dark:bg-[#1b2b3f] hover:bg-gray-200 dark:hover:bg-[#23354c] text-gray-700 dark:text-amber-400 border border-gray-200/80 dark:border-gray-700 rounded-xl transition-all flex items-center gap-2 font-bold text-xs shadow-2xs"
+                >
+                  {theme === 'dark' ? <Sun size={15} className="animate-spin-slow" /> : <Moon size={15} />}
+                  <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                </button>
               </div>
             </div>
 
