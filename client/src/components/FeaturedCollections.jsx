@@ -13,7 +13,7 @@ const FeaturedCollections = () => {
   const featuredList = properties.slice(0, 6);
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 md:px-8 bg-white text-center font-sans antialiased border-t border-gray-100/80">
+    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 md:px-8 bg-white dark:bg-[#0b131e] text-center font-sans antialiased border-t border-gray-100/80 dark:border-gray-800 transition-colors duration-300">
       <div className="max-w-[1500px] mx-auto">
         
         {/* ===================================================================
@@ -40,8 +40,8 @@ const FeaturedCollections = () => {
             return (
               <div
                 key={prop.id}
-                onClick={() => navigate(`/property/${prop.id}`)}
-                className="bg-white rounded-[28px] sm:rounded-[32px] border border-gray-100 shadow-[0_8px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(4,114,98,0.12)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col group cursor-pointer"
+                onClick={() => navigate(`/properties/${prop.id}`)}
+                className="bg-white dark:bg-[#162231] rounded-[28px] sm:rounded-[32px] border border-gray-100 dark:border-gray-800 shadow-[0_8px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(4,114,98,0.12)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col group cursor-pointer"
               >
                 {/* Photo & Price Overlay */}
                 <div className="relative h-64 sm:h-72 overflow-hidden bg-gray-100 shrink-0">
@@ -162,6 +162,21 @@ const FeaturedCollections = () => {
                         </div>
                       </>
                     )}
+                  </div>
+
+                  {/* View Details Action Button */}
+                  <div className="pt-5 mt-auto">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/properties/${prop.id}`);
+                      }}
+                      className="w-full py-3.5 px-4 bg-[#e0f5f0]/80 dark:bg-[#1e2f45] group-hover:bg-[#047262] dark:group-hover:bg-[#0dc5a5] text-[#047262] dark:text-[#0dc5a5] group-hover:text-white dark:group-hover:text-slate-950 rounded-2xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all duration-300 shadow-xs active:scale-95"
+                    >
+                      <span>View Details</span>
+                      <ArrowRight size={17} strokeWidth={2.5} className="transform group-hover:translate-x-1.5 transition-transform duration-300" />
+                    </button>
                   </div>
 
                 </div>
