@@ -43,3 +43,5 @@ app.listen(port, () => {
   console.log(`🌟 Server running on PORT: ${port}`);
   console.log(`👉 Test API at: http://localhost:${port}`);
 });
+
+export default app;
