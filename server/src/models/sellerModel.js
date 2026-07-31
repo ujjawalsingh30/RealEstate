@@ -37,6 +37,16 @@ const sellerSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    location: {
+      type: String,
+      default: 'Noida Extension, Delhi NCR',
+      trim: true
+    },
+    bio: {
+      type: String,
+      default: 'Senior Real Estate Consultant specializing in luxury residential apartments, villas, and commercial spaces.',
+      trim: true
+    },
     // Status controls Admin verification workflow: pending -> approved/rejected
     status: {
       type: String,

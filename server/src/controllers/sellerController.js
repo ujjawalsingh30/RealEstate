@@ -197,15 +197,21 @@ export const getSellerProfile = async (req, res) => {
  */
 export const updateSellerProfile = async (req, res) => {
   try {
-    const { name, phone, agencyName, reraNumber, profileImage } = req.body;
+    const { name, fullName, phone, agencyName, agency, reraNumber, reraId, profileImage, location, bio } = req.body;
     
+    const targetName = name || fullName;
+    const targetAgency = agencyName || agency;
+    const targetRera = reraNumber || reraId;
+
     const updatedSeller = await Seller.findByIdAndUpdate(
       req.seller.id,
       { 
-        ...(name && { name: name.trim() }),
+        ...(targetName && { name: targetName.trim() }),
         ...(phone !== undefined && { phone }),
-        ...(agencyName && { agencyName: agencyName.trim() }),
-        ...(reraNumber && { reraNumber: reraNumber.trim() }),
+        ...(targetAgency && { agencyName: targetAgency.trim() }),
+        ...(targetRera && { reraNumber: targetRera.trim() }),
+        ...(location !== undefined && { location: location.trim() }),
+        ...(bio !== undefined && { bio: bio.trim() }),
         ...(profileImage !== undefined && { profileImage })
       },
       { new: true, runValidators: true }

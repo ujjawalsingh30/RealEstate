@@ -3,18 +3,21 @@ import { useNavigate, Link } from 'react-router-dom';
 import { 
   User, Mail, Phone, MapPin, ShieldCheck, Edit3, CheckCircle2, 
   Key, Bell, Lock, LogOut, Building, Heart, MessageSquare, 
-  Award, ExternalLink, Save, Camera, Check, AlertCircle, Briefcase, Sun, Moon
+  Award, ExternalLink, Save, Camera, Check, AlertCircle, Briefcase, Sun, Moon, Loader2
 } from 'lucide-react';
 import { usePropertyContext } from '../context/PropertyContext';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import api from '../config/api';
 
 const Profile = () => {
   const navigate = useNavigate();
   const { properties, wishlistIds, showToast } = usePropertyContext();
   const { theme, toggleTheme } = useTheme();
+  const { user: authUser, role: authRole, updateProfile: updateAuthProfile, logout: authLogout } = useAuth();
   
-  // Detect current role from localStorage (defaults to buyer if none)
-  const role = localStorage.getItem('userRole') || 'buyer';
+  // Detect current role from context or localStorage (defaults to buyer if none)
+  const role = authRole || localStorage.getItem('userRole') || 'buyer';
 
   // Role themed metadata and labels
   const getRoleBadge = () => {
@@ -70,9 +73,11 @@ const Profile = () => {
 
   const roleInfo = getRoleBadge();
 
-  // Profile Form States (Loaded from LocalStorage or defaults)
-  const [activeTab, setActiveTab] = useState('personal'); // 'personal', 'security', 'notifications'
+  // Profile Form States
+  const [activeTab, setActiveTab] = useState('personal');
   const [isEditing, setIsEditing] = useState(false);
+  const [loadingServerData, setLoadingServerData] = useState(false);
+  const [savingToServer, setSavingToServer] = useState(false);
   
   const [formData, setFormData] = useState(() => {
     const saved = localStorage.getItem(`realestate_profile_${role}`);
@@ -84,20 +89,72 @@ const Profile = () => {
       }
     }
     return {
-      fullName: roleInfo.defaultName,
-      email: roleInfo.defaultEmail,
-      phone: roleInfo.defaultPhone,
-      location: roleInfo.defaultLocation,
-      bio: roleInfo.defaultBio,
-      agency: roleInfo.agencyName,
-      reraId: roleInfo.reraId,
-      // Notification settings
+      fullName: authUser?.name || roleInfo.defaultName,
+      email: authUser?.email || roleInfo.defaultEmail,
+      phone: authUser?.phone || roleInfo.defaultPhone,
+      location: authUser?.location || roleInfo.defaultLocation,
+      bio: authUser?.bio || roleInfo.defaultBio,
+      agency: authUser?.agencyName || roleInfo.agencyName,
+      reraId: authUser?.reraNumber || roleInfo.reraId,
       emailAlerts: true,
       priceDrops: true,
       whatsappNotify: true,
       weeklyNewsletter: false
     };
   });
+
+  // Fetch live user profile data directly from backend server on mount
+  useEffect(() => {
+    const fetchServerProfile = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+
+      try {
+        setLoadingServerData(true);
+        let serverUser = null;
+
+        if (role === 'admin') {
+          const res = await api.get('/admin/verify');
+          serverUser = res.data?.admin || res.data?.user;
+        } else {
+          const res = await api.get(`/${role}/profile`);
+          serverUser = res.data?.seller || res.data?.buyer || res.data?.user;
+        }
+
+        if (serverUser) {
+          setFormData((prev) => {
+            const updated = {
+              ...prev,
+              fullName: serverUser.name || serverUser.fullName || prev.fullName,
+              email: serverUser.email || prev.email,
+              phone: serverUser.phone || prev.phone,
+              location: serverUser.location || prev.location,
+              bio: serverUser.bio || prev.bio,
+              agency: serverUser.agencyName || serverUser.agency || prev.agency,
+              reraId: serverUser.reraNumber || serverUser.reraId || prev.reraId,
+            };
+            localStorage.setItem(`realestate_profile_${role}`, JSON.stringify(updated));
+            return updated;
+          });
+        }
+      } catch (error) {
+        console.warn('Unable to synchronize server profile data; using local profile state.', error?.message);
+      } finally {
+        setLoadingServerData(false);
+      }
+    };
+
+    fetchServerProfile();
+  }, [role]);
+
+  const getInitials = (name) => {
+    if (!name) return roleInfo.initials;
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name[0] ? (name[0].toUpperCase() + (name[1]?.toUpperCase() || '')) : roleInfo.initials;
+  };
 
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
@@ -113,12 +170,42 @@ const Profile = () => {
     }));
   };
 
-  const handleSaveProfile = (e) => {
+  const handleSaveProfile = async (e) => {
     e.preventDefault();
-    localStorage.setItem(`realestate_profile_${role}`, JSON.stringify(formData));
-    setIsEditing(false);
-    if (showToast) {
-      showToast('Profile updated successfully!', 'success');
+    try {
+      setSavingToServer(true);
+
+      if (role === 'seller' || role === 'buyer') {
+        const payload = {
+          name: formData.fullName,
+          phone: formData.phone,
+          location: formData.location,
+          bio: formData.bio,
+          ...(role === 'seller' && {
+            agencyName: formData.agency,
+            reraNumber: formData.reraId
+          })
+        };
+        await api.put(`/${role}/profile`, payload);
+        if (updateAuthProfile) {
+          updateAuthProfile(payload);
+        }
+      }
+
+      localStorage.setItem(`realestate_profile_${role}`, JSON.stringify(formData));
+      setIsEditing(false);
+      if (showToast) {
+        showToast('Profile updated directly on the server successfully!', 'success');
+      }
+    } catch (error) {
+      console.error('Failed to update server profile:', error);
+      localStorage.setItem(`realestate_profile_${role}`, JSON.stringify(formData));
+      setIsEditing(false);
+      if (showToast) {
+        showToast(`Saved locally (Server sync note: ${error.response?.data?.message || 'Network error'})`, 'warning');
+      }
+    } finally {
+      setSavingToServer(false);
     }
   };
 
@@ -133,7 +220,13 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('userRole');
+    if (authLogout) {
+      authLogout();
+    } else {
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('authUser');
+    }
     if (showToast) showToast('You have successfully logged out.', 'info');
     navigate('/login');
   };
@@ -168,7 +261,7 @@ const Profile = () => {
               <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-5 sm:gap-7 w-full md:w-auto">
                 <div className="relative group shrink-0">
                   <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-[28px] sm:rounded-[34px] bg-gradient-to-br from-[#047262] to-[#1a2b3c] text-white flex items-center justify-center font-black text-3xl sm:text-4xl shadow-xl border-4 border-white dark:border-gray-800">
-                    {roleInfo.initials}
+                    {getInitials(formData.fullName)}
                   </div>
                   <button 
                     title="Change Avatar" 
@@ -180,8 +273,11 @@ const Profile = () => {
 
                 <div className="space-y-1.5 flex-1">
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1a2b3c] dark:text-white tracking-tight">
-                      {formData.fullName}
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1a2b3c] dark:text-white tracking-tight flex items-center gap-2">
+                      <span>{formData.fullName}</span>
+                      {loadingServerData && (
+                        <Loader2 size={18} className="animate-spin text-[#047262] opacity-75" title="Synchronizing with server..." />
+                      )}
                     </h1>
                     <span className="inline-flex items-center gap-1 bg-[#047262]/15 dark:bg-[#0dc5a5]/15 text-[#047262] dark:text-[#0dc5a5] font-black text-[11px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider">
                       <CheckCircle2 size={13} className="fill-[#047262] dark:fill-[#0dc5a5] text-white" />
@@ -679,10 +775,20 @@ const Profile = () => {
                     </button>
                     <button
                       type="submit"
-                      className="px-8 py-3.5 bg-[#047262] hover:bg-[#03594d] text-white rounded-2xl font-black text-sm flex items-center gap-2 shadow-lg shadow-[#047262]/30 active:scale-95 transition-all"
+                      disabled={savingToServer}
+                      className="px-8 py-3.5 bg-[#047262] hover:bg-[#03594d] disabled:opacity-60 text-white rounded-2xl font-black text-sm flex items-center gap-2 shadow-lg shadow-[#047262]/30 active:scale-95 transition-all"
                     >
-                      <Save size={18} />
-                      <span>Save Profile Changes</span>
+                      {savingToServer ? (
+                        <>
+                          <Loader2 size={18} className="animate-spin" />
+                          <span>Saving to Server...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Save size={18} />
+                          <span>Save Profile Changes</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 )}

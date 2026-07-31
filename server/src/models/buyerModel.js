@@ -27,6 +27,16 @@ const buyerSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    location: {
+      type: String,
+      default: 'Sector 62, Noida',
+      trim: true
+    },
+    bio: {
+      type: String,
+      default: 'Active property buyer seeking verified luxury apartments and independent villas near tech hubs.',
+      trim: true
+    },
     // Array of saved favorite property IDs
     wishlist: [
       {

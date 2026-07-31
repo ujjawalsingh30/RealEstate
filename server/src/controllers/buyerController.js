@@ -170,13 +170,17 @@ export const getBuyerProfile = async (req, res) => {
  */
 export const updateBuyerProfile = async (req, res) => {
   try {
-    const { name, phone, profileImage, wishlist } = req.body;
+    const { name, fullName, phone, profileImage, wishlist, location, bio } = req.body;
     
+    const targetName = name || fullName;
+
     const updatedBuyer = await Buyer.findByIdAndUpdate(
       req.buyer.id,
       { 
-        ...(name && { name: name.trim() }),
+        ...(targetName && { name: targetName.trim() }),
         ...(phone !== undefined && { phone }),
+        ...(location !== undefined && { location: location.trim() }),
+        ...(bio !== undefined && { bio: bio.trim() }),
         ...(profileImage !== undefined && { profileImage }),
         ...(wishlist && { wishlist })
       },
