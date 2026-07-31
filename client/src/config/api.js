@@ -1,22 +1,26 @@
 import axios from 'axios';
 
-// Detect whether running in development (npm run dev) or production (Vercel build)
-const getFallbackUrl = () => {
-  if (import.meta.env.MODE === 'development') {
-    return 'http://localhost:4000/api';
+// Normalize URL to ensure it always correctly ends in '/api' (handles both 'http://localhost:4000' and 'http://localhost:4000/api')
+const formatApiUrl = (url) => {
+  if (!url) return 'http://localhost:4000/api';
+  const trimmed = url.trim().replace(/\/$/, '');
+  return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+};
+
+const getBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_BACKEND_URL;
+  if (envUrl) {
+    return formatApiUrl(envUrl);
   }
-  // If in production on cloud without explicit VITE_BACKEND_URL set, default to relative '/api' or warning
   return 'http://localhost:4000/api';
 };
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_URL || getFallbackUrl();
+const BACKEND_URL = getBaseUrl();
 
-// Diagnostic Safety Check: Warn immediately if a live Vercel cloud app attempts to contact local desktop loopback IP
-if (import.meta.env.PROD && BACKEND_URL.includes('localhost') && window.location.hostname !== 'localhost') {
-  console.error(
-    '🚨 [Vercel Deployment Alert]: Your React app running on Vercel is attempting to contact http://localhost:4000! Because localhost only exists on your local laptop, Chrome CORS policies block this immediately. To resolve: Deploy your Express backend server to Render.com or Vercel, and paste the HTTPS backend server URL into VITE_BACKEND_URL in your Vercel Project Settings.'
-  );
+if (typeof window !== 'undefined') {
+  console.log(`📡 [RealEstate API Engine]: Routing requests to: ${BACKEND_URL}`);
 }
+
 
 const api = axios.create({
   baseURL: BACKEND_URL,

@@ -24,7 +24,14 @@ connectCloudinary();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: true, // Echoes requesting domain back in Access-Control-Allow-Origin to allow both localhost & Vercel
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'token', 'Accept', 'Origin', 'X-Requested-With'],
+  credentials: true
+}));
+app.options('/*path', cors()); // Pre-flight options handling compliant with Express v5 / path-to-regexp v8
+
 
 // API Routes
 app.use('/api/admin', adminRoutes);

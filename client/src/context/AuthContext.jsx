@@ -37,13 +37,20 @@ export const AuthProvider = ({ children }) => {
           }
         }
       } catch (error) {
-        console.warn('Session verification failed, clearing tokens:', error.response?.data?.message);
-        // Do not force logout on temporary networking glitches unless unauthorized
-        if (error.response?.status === 401) {
-          logout();
+        console.warn('Session verification failed, clearing tokens:', error.response?.data?.message || error.message);
+        const status = error.response?.status;
+        // Clean up stored session if token is invalid (401), role doesn't match token (403), or account was removed (404)
+        if (status === 401 || status === 403 || status === 404) {
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('userData');
+          localStorage.removeItem('userRole');
+          setToken(null);
+          setUser(null);
+          setRole('buyer');
         }
       }
     };
+
 
     verifySession();
   }, [token]);
