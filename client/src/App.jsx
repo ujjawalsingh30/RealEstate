@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import BuyerLayout from './layouts/BuyerLayout';
 import SellerLayout from './layouts/SellerLayout';
 import AdminLayout from './layouts/AdminLayout';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
 import Home from './pages/Home';
@@ -42,11 +43,12 @@ const PublicLayout = () => (
   </div>
 );
 
-// Auth-Aware Layout Wrapper for shared routes (viewable without login OR with login)
+// Auth-Aware Layout Wrapper for shared routes
 const AuthAwareLayout = () => {
   const role = localStorage.getItem('userRole');
   if (role === 'seller') return <SellerLayout />;
   if (role === 'buyer') return <BuyerLayout />;
+  if (role === 'admin') return <AdminLayout />;
   return <PublicLayout />;
 };
 
@@ -62,27 +64,34 @@ const App = () => {
           <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
 
-        {/* Universal & Shared Routes (Accessible Publicly without login OR inside Buyer/Seller header if logged in) */}
+        {/* Universal & Shared Public Routes (Accessible with or without login) */}
         <Route element={<AuthAwareLayout />}>
-          <Route path="/profile" element={<Profile />} />
           <Route path="/properties" element={<Properties />} />
           <Route path="/properties/:id" element={<PropertyDetails />} />
           <Route path="/property/:id" element={<PropertyDetails />} />
           <Route path="/property-details" element={<PropertyDetails />} />
           <Route path="/property-details/:id" element={<PropertyDetails />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/wishlist" element={<Wishlist />} />
         </Route>
 
-        {/* Buyer Account Layout Routes */}
-        <Route element={<BuyerLayout />}>
+        {/* Protected Universal Private Routes (Requires Login as any role) */}
+        <Route element={<ProtectedRoute allowedRoles={['buyer', 'seller', 'admin']}><AuthAwareLayout /></ProtectedRoute>}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+
+        {/* Protected Buyer Account Layout Routes (Only accessible by Buyers) */}
+        <Route element={<ProtectedRoute allowedRole="buyer"><BuyerLayout /></ProtectedRoute>}>
           <Route path="/buyer/home" element={<Home />} />
           <Route path="/buyer/profile" element={<Profile />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/buyer/messages" element={<Messages />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/buyer/wishlist" element={<Wishlist />} />
+          <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/buyer/contact-us" element={<ContactUs />} />
         </Route>
 
-        {/* Seller Account Layout Routes */}
-        <Route element={<SellerLayout />}>
+        {/* Protected Seller Account Layout Routes */}
+        <Route element={<ProtectedRoute allowedRole="seller"><SellerLayout /></ProtectedRoute>}>
           <Route path="/seller/home" element={<Home />} />
           <Route path="/seller/dashboard" element={<SellerDashboard />} />
           <Route path="/seller/add-property" element={<AddProperty />} />
@@ -91,8 +100,8 @@ const App = () => {
           <Route path="/seller/support" element={<ContactUs />} />
         </Route>
 
-        {/* Admin Routes */}
-        <Route element={<AdminLayout />}>
+        {/* Protected Admin Account Routes */}
+        <Route element={<ProtectedRoute allowedRole="admin"><AdminLayout /></ProtectedRoute>}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/users" element={<UsersManager />} />
           <Route path="/admin/seller-requests" element={<SellerRequests />} />

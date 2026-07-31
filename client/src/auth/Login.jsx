@@ -1,28 +1,43 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, ArrowLeft, Sun, Moon } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft, Sun, Moon, Loader2, AlertCircle } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import { usePropertyContext } from '../context/PropertyContext';
 
 const Login = () => {
   const { theme, toggleTheme } = useTheme();
+  const { loginUser, loading } = useAuth();
+  const { showToast } = usePropertyContext();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState('buyer');
+  const [errorMessage, setErrorMessage] = useState('');
   
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password, role });
-    // Save active role to localStorage so shared public/private routes render with the correct layout
-    localStorage.setItem('userRole', role);
+    setErrorMessage('');
 
-    // Navigate based on role selection for instant testing and demonstration
-    if (role === 'seller') {
-      navigate('/seller/home');
+    const res = await loginUser(email, password, role);
+
+    if (res.success) {
+      if (showToast) showToast(res.message || 'Welcome back! Login successful.', 'success');
+
+      // Navigate based on verified role
+      if (role === 'admin') {
+        navigate('/admin/dashboard');
+      } else if (role === 'seller') {
+        navigate('/seller/home');
+      } else {
+        navigate('/buyer/home');
+      }
     } else {
-      navigate('/buyer/home');
+      setErrorMessage(res.message || 'Login failed. Please check your credentials.');
+      if (showToast) showToast(res.message || 'Login failed', 'error');
     }
   };
 
@@ -52,73 +67,92 @@ const Login = () => {
         </div>
 
         {/* Header Section */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <h2 className="text-2xl md:text-3xl font-black text-[#047262] mb-2 tracking-tight">
             Welcome Back
           </h2>
-          <p className="text-gray-500 text-xs md:text-sm font-normal">
-            Sign in to access your properties and messages
+          <p className="text-gray-500 dark:text-gray-400 text-xs md:text-sm font-normal">
+            Sign in to access your properties, dashboard, and messages
           </p>
         </div>
+
+        {/* Error Notification Badge */}
+        {errorMessage && (
+          <div className="mb-6 p-3.5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl flex items-center gap-2.5 text-red-700 dark:text-red-300 text-xs font-bold animate-fadeIn">
+            <AlertCircle size={18} className="shrink-0 text-red-500" />
+            <span>{errorMessage}</span>
+          </div>
+        )}
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           
-          {/* Role Selection (Buyer / Seller Toggle) */}
+          {/* Role Selection (Buyer / Seller / Admin Toggle) */}
           <div>
-            <label className="block text-[#1a2b3c] text-sm font-extrabold mb-2.5 text-left">
-              Select Role
+            <label className="block text-[#1a2b3c] dark:text-gray-200 text-sm font-extrabold mb-2.5 text-left">
+              Select Account Role
             </label>
-            <div className="grid grid-cols-2 gap-3 p-1 bg-gray-50 rounded-2xl border border-gray-200/60">
+            <div className="grid grid-cols-3 gap-2 p-1.5 bg-gray-50 dark:bg-[#111c29] rounded-2xl border border-gray-200/60 dark:border-gray-700">
               <button
                 type="button"
-                onClick={() => setRole('buyer')}
-                className={`py-2.5 rounded-xl font-bold text-sm transition-all duration-200 ${
+                onClick={() => { setRole('buyer'); setErrorMessage(''); }}
+                className={`py-2 rounded-xl font-extrabold text-xs md:text-sm transition-all duration-200 ${
                   role === 'buyer'
-                    ? 'bg-[#e0f5f0] text-[#047262] border border-[#047262]/20 shadow-xs'
-                    : 'text-gray-500 hover:text-gray-800 bg-transparent border border-transparent'
+                    ? 'bg-[#e0f5f0] dark:bg-[#047262]/30 text-[#047262] dark:text-[#2de2c5] border border-[#047262]/20 shadow-xs'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white bg-transparent border border-transparent'
                 }`}
               >
                 Buyer
               </button>
               <button
                 type="button"
-                onClick={() => setRole('seller')}
-                className={`py-2.5 rounded-xl font-bold text-sm transition-all duration-200 ${
+                onClick={() => { setRole('seller'); setErrorMessage(''); }}
+                className={`py-2 rounded-xl font-extrabold text-xs md:text-sm transition-all duration-200 ${
                   role === 'seller'
-                    ? 'bg-[#e0f5f0] text-[#047262] border border-[#047262]/20 shadow-xs'
-                    : 'text-gray-500 hover:text-gray-800 bg-transparent border border-transparent'
+                    ? 'bg-[#e0f5f0] dark:bg-[#047262]/30 text-[#047262] dark:text-[#2de2c5] border border-[#047262]/20 shadow-xs'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white bg-transparent border border-transparent'
                 }`}
               >
                 Seller
+              </button>
+              <button
+                type="button"
+                onClick={() => { setRole('admin'); setErrorMessage(''); }}
+                className={`py-2 rounded-xl font-extrabold text-xs md:text-sm transition-all duration-200 ${
+                  role === 'admin'
+                    ? 'bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-400 border border-amber-300/50 shadow-xs'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white bg-transparent border border-transparent'
+                }`}
+              >
+                Admin
               </button>
             </div>
           </div>
 
           {/* Email Address Field */}
           <div>
-            <label className="block text-[#1a2b3c] text-sm font-extrabold mb-2 text-left">
+            <label className="block text-[#1a2b3c] dark:text-gray-200 text-sm font-extrabold mb-2 text-left">
               Email Address
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@company.com"
+              placeholder={role === 'admin' ? 'admin@realestate.com' : 'name@company.com'}
               required
-              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 outline-none focus:border-[#047262] focus:ring-4 focus:ring-[#047262]/10 transition-all duration-200"
+              className="w-full px-4 py-3 bg-white dark:bg-[#1b2b3f] border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-[#047262] dark:focus:border-amber-400 focus:ring-4 focus:ring-[#047262]/10 transition-all duration-200"
             />
           </div>
 
           {/* Password Field */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-[#1a2b3c] text-sm font-extrabold text-left">
+              <label className="block text-[#1a2b3c] dark:text-gray-200 text-sm font-extrabold text-left">
                 Password
               </label>
               <Link
                 to="/reset-password"
-                className="text-xs font-bold text-[#047262] hover:underline transition-colors"
+                className="text-xs font-bold text-[#047262] dark:text-amber-400 hover:underline transition-colors"
               >
                 Forgot password?
               </Link>
@@ -131,12 +165,12 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full pl-4 pr-11 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 outline-none focus:border-[#047262] focus:ring-4 focus:ring-[#047262]/10 transition-all duration-200"
+                className="w-full pl-4 pr-11 py-3 bg-white dark:bg-[#1b2b3f] border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-[#047262] dark:focus:border-amber-400 focus:ring-4 focus:ring-[#047262]/10 transition-all duration-200"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 dark:hover:text-white focus:outline-none transition-colors"
                 aria-label="Toggle password visibility"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -147,9 +181,17 @@ const Login = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-[#047262] hover:bg-[#03594d] text-white font-extrabold text-base py-3.5 rounded-xl shadow-[0_8px_20px_rgba(4,114,98,0.25)] hover:shadow-[0_12px_25px_rgba(4,114,98,0.35)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 mt-2"
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-2 bg-[#047262] hover:bg-[#03594d] disabled:bg-gray-400 text-white font-extrabold text-base py-3.5 rounded-xl shadow-[0_8px_20px_rgba(4,114,98,0.25)] hover:shadow-[0_12px_25px_rgba(4,114,98,0.35)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 mt-2 cursor-pointer"
           >
-            Sign In
+            {loading ? (
+              <>
+                <Loader2 size={19} className="animate-spin" />
+                <span>Authenticating...</span>
+              </>
+            ) : (
+              <span>Sign In as {role.charAt(0).toUpperCase() + role.slice(1)}</span>
+            )}
           </button>
         </form>
 
