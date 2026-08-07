@@ -1,40 +1,84 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   ShieldCheck, Search, Filter, Mail, Phone, FileText, 
-  CheckCircle2, XCircle, Clock, AlertCircle, Trash2, ExternalLink, Building, Check
+  CheckCircle2, XCircle, Clock, AlertCircle, Trash2, ExternalLink, Building, Check, Loader2
 } from 'lucide-react';
 import { usePropertyContext } from '../context/PropertyContext';
+import api from '../config/api';
 
 const SellerRequests = () => {
-  const { sellerRequests = [], setSellerRequests, setIsSellerVerified, showToast } = usePropertyContext();
+  const { showToast } = usePropertyContext();
+
+  const [sellerRequests, setSellerRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
 
+  // Fetch live sellers from backend
+  useEffect(() => {
+    const fetchSellers = async () => {
+      try {
+        const response = await api.get('/admin/sellers');
+        if (response.data.success) {
+          const formatted = response.data.sellers.map(s => ({
+            id: s._id,
+            sellerName: s.name,
+            agencyName: s.agencyName || 'Independent',
+            email: s.email,
+            phone: s.phone || 'N/A',
+            reraNumber: s.reraNumber || 'Not Provided',
+            status: s.status === 'pending' ? 'Pending Review' : s.status === 'approved' ? 'Approved' : 'Rejected',
+            submittedDate: new Date(s.createdAt).toLocaleDateString(),
+            requestType: 'New Seller Registration',
+            documents: ['Identity Proof', 'Agency License'],
+            initials: (s.agencyName || s.name).charAt(0).toUpperCase(),
+            avatarColor: 'bg-emerald-100 text-emerald-700'
+          }));
+          setSellerRequests(formatted);
+        }
+      } catch (err) {
+        console.error('Failed to fetch sellers:', err);
+        if (showToast) showToast('Failed to load seller requests.', 'error');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSellers();
+  }, []);
+
   // Handle Approve (Unlocks seller property uploads!)
-  const handleApprove = (id, agencyName) => {
-    if (setSellerRequests) {
-      setSellerRequests((prev) =>
-        prev.map((req) => (req.id === id ? { ...req, status: 'Approved' } : req))
-      );
-    }
-    localStorage.setItem('sellerVerified', 'true');
-    if (setIsSellerVerified) setIsSellerVerified(true);
-    if (showToast) {
-      showToast(`Approved SLA request for "${agencyName}"! Seller account unlocked for listing uploads!`, 'success');
+  const handleApprove = async (id, agencyName) => {
+    try {
+      const res = await api.put(`/admin/sellers/${id}/status`, { status: 'approved' });
+      if (res.data.success) {
+        setSellerRequests((prev) =>
+          prev.map((req) => (req.id === id ? { ...req, status: 'Approved' } : req))
+        );
+        if (showToast) {
+          showToast(`Approved SLA request for "${agencyName}"! Seller account unlocked.`, 'success');
+        }
+      }
+    } catch (err) {
+      if (showToast) showToast('Failed to approve seller.', 'error');
     }
   };
 
   // Handle Reject / Clarification
-  const handleReject = (id, agencyName) => {
-    if (setSellerRequests) {
-      setSellerRequests((prev) =>
-        prev.map((req) => (req.id === id ? { ...req, status: 'Rejected' } : req))
-      );
-    }
-    if (showToast) {
-      showToast(`Request for "${agencyName}" marked for clarification / rejection.`, 'error');
+  const handleReject = async (id, agencyName) => {
+    try {
+      const res = await api.put(`/admin/sellers/${id}/status`, { status: 'rejected' });
+      if (res.data.success) {
+        setSellerRequests((prev) =>
+          prev.map((req) => (req.id === id ? { ...req, status: 'Rejected' } : req))
+        );
+        if (showToast) {
+          showToast(`Request for "${agencyName}" rejected.`, 'error');
+        }
+      }
+    } catch (err) {
+      if (showToast) showToast('Failed to reject seller.', 'error');
     }
   };
 
@@ -73,6 +117,15 @@ const SellerRequests = () => {
   }, [sellerRequests, searchQuery, statusFilter]);
 
   const pendingCount = sellerRequests.filter((r) => r.status === 'Pending Review').length;
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
+        <Loader2 size={32} className="animate-spin text-[#047262]" />
+        <p className="text-gray-500 font-bold">Loading seller requests...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-[1650px] mx-auto text-left font-sans antialiased bg-gray-50 min-h-screen">

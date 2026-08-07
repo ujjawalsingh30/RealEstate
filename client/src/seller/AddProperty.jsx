@@ -6,10 +6,14 @@ import {
   ShieldCheck, CheckCircle2, Shield, Dumbbell, Coffee, Car, Wifi, Trash2, Lock, Clock
 } from 'lucide-react';
 import { usePropertyContext } from '../context/PropertyContext';
+import { useAuth } from '../context/AuthContext';
 
 const AddProperty = () => {
   const navigate = useNavigate();
-  const { setProperties, showToast, isSellerVerified, setIsSellerVerified } = usePropertyContext();
+  const { setProperties, showToast } = usePropertyContext();
+  const { user } = useAuth();
+  
+  const isSellerVerified = user?.status === 'approved';
 
   // Form State
   const [formData, setFormData] = useState({

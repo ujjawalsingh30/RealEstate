@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import Admin from '../models/adminModel.js';
+import Seller from '../models/sellerModel.js';
 
 /**
  * @desc    Authenticate Admin & Generate JWT Token (Uses Mongoose AdminModel + Auto-Seed)
@@ -148,6 +149,71 @@ export const adminLogout = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'Error during logout.'
+    });
+  }
+};
+
+/**
+ * @desc    Get all sellers (for admin dashboard/approvals)
+ * @route   GET /api/admin/sellers
+ * @access  Private (Admin Only)
+ */
+export const getAllSellers = async (req, res) => {
+  try {
+    const sellers = await Seller.find({}).select('-password').sort({ createdAt: -1 });
+    return res.status(200).json({
+      success: true,
+      sellers
+    });
+  } catch (error) {
+    console.error('❌ Get All Sellers Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error retrieving sellers.'
+    });
+  }
+};
+
+/**
+ * @desc    Update a seller's verification status
+ * @route   PUT /api/admin/sellers/:id/status
+ * @access  Private (Admin Only)
+ */
+export const updateSellerStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    
+    // Validate status
+    if (!['pending', 'approved', 'rejected'].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid status value.'
+      });
+    }
+
+    const seller = await Seller.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    if (!seller) {
+      return res.status(404).json({
+        success: false,
+        message: 'Seller not found.'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `Seller status updated to ${status}.`,
+      seller
+    });
+  } catch (error) {
+    console.error('❌ Update Seller Status Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error updating seller status.'
     });
   }
 };

@@ -5,26 +5,43 @@ import {
   TrendingUp, Plus, ArrowUpRight, ShieldCheck, Sparkles, Eye 
 } from 'lucide-react';
 import { usePropertyContext } from '../context/PropertyContext';
+import { useAuth } from '../context/AuthContext';
+import api from '../config/api';
 
 const SellerDashboard = () => {
-  const { isSellerVerified, setIsSellerVerified, properties = [], showToast } = usePropertyContext();
+  const { properties = [], showToast } = usePropertyContext();
+  const { user, updateProfile } = useAuth();
+  
+  // Real status check against the database user object
+  const isSellerVerified = user?.status === 'approved';
+  
   const [isChecking, setIsChecking] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null);
   const navigate = useNavigate();
 
-  const handleCheckStatus = () => {
+  const handleCheckStatus = async () => {
     setIsChecking(true);
     setStatusMessage(null);
     
-    // Check global verification status
-    setTimeout(() => {
-      setIsChecking(false);
-      if (isSellerVerified) {
-        setStatusMessage('✔ Good news! Your account SLA has been verified by Admin HQ. Your property dashboard is now fully unlocked!');
-      } else {
-        setStatusMessage('⏳ Verification in progress: Your registration credentials are currently under review in the Admin Seller Requests console. Once an Admin clicks "Approve", your account will be immediately unlocked!');
+    try {
+      // Force refresh profile from backend via updateProfile empty payload or explicit call
+      const res = await api.get('/seller/profile');
+      if (res.data?.seller) {
+        // Sync local storage / context with latest DB status
+        updateProfile(res.data.seller);
+        if (res.data.seller.status === 'approved') {
+          setStatusMessage('✔ Good news! Your account SLA has been verified by Admin HQ. Your property dashboard is now fully unlocked!');
+        } else if (res.data.seller.status === 'rejected') {
+          setStatusMessage('❌ Verification rejected. Please contact Admin HQ for clarification.');
+        } else {
+          setStatusMessage('⏳ Verification in progress: Your registration credentials are currently under review in the Admin Console. Once an Admin clicks "Approve", your account will be unlocked!');
+        }
       }
-    }, 1000);
+    } catch (err) {
+      setStatusMessage('Error checking status. Please try again.');
+    } finally {
+      setIsChecking(false);
+    }
   };
 
   // ==========================================================================
@@ -132,14 +149,19 @@ const SellerDashboard = () => {
               </Link>
               <button
                 type="button"
-                onClick={() => {
-                  localStorage.setItem('sellerVerified', 'false');
-                  if (setIsSellerVerified) setIsSellerVerified(false);
-                  if (showToast) showToast('Switched to Unverified / Approval Pending view for demonstration!', 'info');
+                onClick={async () => {
+                  try {
+                    await api.put(`/seller/profile`, { status: 'pending' });
+                    const res = await api.get('/seller/profile');
+                    if (res.data?.seller) updateProfile(res.data.seller);
+                    if (showToast) showToast('Switched to Unverified / Approval Pending view for demonstration!', 'info');
+                  } catch (err) {
+                    console.error(err);
+                  }
                 }}
                 className="px-5 py-3 bg-white/10 hover:bg-white/20 text-gray-300 font-extrabold text-xs rounded-xl transition-all border border-white/10"
               >
-                ⚡ [Test Toggle]: Reset to Unverified State
+                ⚡ [Test Toggle]: Reset DB Status to Unverified
               </button>
             </div>
           </div>
@@ -209,15 +231,21 @@ const SellerDashboard = () => {
         <div className="mt-8">
           <button
             type="button"
-            onClick={() => {
-              localStorage.setItem('sellerVerified', 'true');
-              if (setIsSellerVerified) setIsSellerVerified(true);
-              if (showToast) showToast('⚡ [Demo Mode]: Admin SLA approved! Seller account unlocked!', 'success');
+            onClick={async () => {
+              try {
+                // For demo/testing: allow a seller to approve themselves
+                await api.put(`/admin/sellers/${user?._id}/status`, { status: 'approved' });
+                const res = await api.get('/seller/profile');
+                if (res.data?.seller) updateProfile(res.data.seller);
+                if (showToast) showToast('⚡ [Demo Mode]: Admin SLA approved! Seller account unlocked!', 'success');
+              } catch (err) {
+                console.error("Demo approval failed. Make sure you're an admin, or test using the admin dashboard instead.", err);
+              }
             }}
             className="px-6 py-2.5 bg-gray-200/80 hover:bg-gray-300 text-gray-700 font-extrabold text-xs rounded-xl transition-all"
-            title="Click to simulate Admin accepting the request in SellerRequests"
+            title="Attempts to auto-approve (May fail if backend restricts PUT /admin to real admins only)"
           >
-            ⚡ [Demo Toggle]: Simulate Admin Accepting Request & Unlock Quota
+            ⚡ [Demo Toggle]: Attempt Auto-Approve Verification
           </button>
         </div>
 
