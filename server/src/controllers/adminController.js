@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import Admin from '../models/adminModel.js';
+import Buyer from '../models/buyerModel.js';
 import Seller from '../models/sellerModel.js';
 
 /**
@@ -180,19 +181,20 @@ export const getAllSellers = async (req, res) => {
  * @access  Private (Admin Only)
  */
 export const updateSellerStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
   try {
-    const { status } = req.body;
-    
     // Validate status
-    if (!['pending', 'approved', 'rejected'].includes(status)) {
+    if (!['pending', 'approved', 'rejected', 'blocked'].includes(status)) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid status value.'
+        message: 'Invalid status value. Must be pending, approved, rejected, or blocked.'
       });
     }
 
     const seller = await Seller.findByIdAndUpdate(
-      req.params.id,
+      id,
       { status },
       { new: true, runValidators: true }
     ).select('-password');
@@ -204,16 +206,186 @@ export const updateSellerStatus = async (req, res) => {
       });
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       message: `Seller status updated to ${status}.`,
       seller
     });
+
   } catch (error) {
     console.error('❌ Update Seller Status Error:', error);
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
       message: 'Server error updating seller status.'
     });
+  }
+};
+
+/**
+ * @desc    Delete a seller account completely
+ * @route   DELETE /api/admin/sellers/:id
+ * @access  Private (Admin)
+ */
+export const deleteSeller = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const seller = await Seller.findByIdAndDelete(id);
+
+    if (!seller) {
+      return res.status(404).json({
+        success: false,
+        message: 'Seller not found.'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Seller completely removed from the system.'
+    });
+  } catch (error) {
+    console.error('❌ Delete Seller Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error while deleting seller.'
+    });
+  }
+};
+
+// ============================================================================
+// UNIFIED USER MANAGEMENT (ADMIN / BUYER / SELLER)
+// ============================================================================
+
+/**
+ * @desc    Get all users across all roles (Admin, Buyer, Seller)
+ * @route   GET /api/admin/users
+ * @access  Private (Admin Only)
+ */
+export const getAllUsers = async (req, res) => {
+  try {
+    const [admins, buyers, sellers] = await Promise.all([
+      Admin.find({}).select('-password').lean(),
+      Buyer.find({}).select('-password').lean(),
+      Seller.find({}).select('-password').lean()
+    ]);
+
+    const formattedAdmins = admins.map(u => ({
+      id: u._id,
+      name: u.name,
+      email: u.email,
+      phone: '',
+      role: 'ADMIN',
+      status: 'Active', // Admins are always active
+      joined: new Date(u.createdAt).toISOString().split('T')[0],
+      initials: u.name.charAt(0).toUpperCase(),
+      avatarColor: 'bg-emerald-100 text-emerald-800'
+    }));
+
+    const formattedBuyers = buyers.map(u => ({
+      id: u._id,
+      name: u.name,
+      email: u.email,
+      phone: u.phone || '',
+      role: 'BUYER',
+      status: u.status === 'suspended' ? 'Suspended' : 'Active',
+      joined: new Date(u.createdAt).toISOString().split('T')[0],
+      initials: u.name.charAt(0).toUpperCase(),
+      avatarColor: 'bg-blue-100 text-blue-800'
+    }));
+
+    const formattedSellers = sellers.map(u => ({
+      id: u._id,
+      name: u.name,
+      email: u.email,
+      phone: u.phone || '',
+      role: 'SELLER',
+      status: u.status === 'approved' ? 'Active' : 'Suspended',
+      joined: new Date(u.createdAt).toISOString().split('T')[0],
+      initials: u.name.charAt(0).toUpperCase(),
+      avatarColor: 'bg-teal-100 text-teal-800'
+    }));
+
+    const allUsers = [...formattedAdmins, ...formattedBuyers, ...formattedSellers].sort((a, b) => new Date(b.joined) - new Date(a.joined));
+
+    res.status(200).json({
+      success: true,
+      users: allUsers
+    });
+
+  } catch (error) {
+    console.error('❌ Get All Users Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error retrieving all users.'
+    });
+  }
+};
+
+/**
+ * @desc    Update unified user status (suspend or activate)
+ * @route   PUT /api/admin/users/:role/:id/status
+ * @access  Private (Admin Only)
+ */
+export const updateUserStatusUnified = async (req, res) => {
+  const { role, id } = req.params;
+  const { status } = req.body; // Expects 'Active' or 'Suspended'
+
+  if (role.toUpperCase() === 'ADMIN') {
+    return res.status(403).json({ success: false, message: 'Cannot modify admin status.' });
+  }
+
+  try {
+    let updatedUser;
+    if (role.toUpperCase() === 'BUYER') {
+      const newStatus = status === 'Suspended' ? 'suspended' : 'active';
+      updatedUser = await Buyer.findByIdAndUpdate(id, { status: newStatus }, { new: true });
+    } else if (role.toUpperCase() === 'SELLER') {
+      const newStatus = status === 'Suspended' ? 'blocked' : 'approved';
+      updatedUser = await Seller.findByIdAndUpdate(id, { status: newStatus }, { new: true });
+    }
+
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `User status updated to ${status}.`
+    });
+
+  } catch (error) {
+    console.error('❌ Update Unified User Status Error:', error);
+    res.status(500).json({ success: false, message: 'Server error updating user status.' });
+  }
+};
+
+/**
+ * @desc    Delete unified user
+ * @route   DELETE /api/admin/users/:role/:id
+ * @access  Private (Admin Only)
+ */
+export const deleteUnifiedUser = async (req, res) => {
+  const { role, id } = req.params;
+
+  if (role.toUpperCase() === 'ADMIN') {
+    return res.status(403).json({ success: false, message: 'Cannot delete admin account.' });
+  }
+
+  try {
+    let deletedUser;
+    if (role.toUpperCase() === 'BUYER') {
+      deletedUser = await Buyer.findByIdAndDelete(id);
+    } else if (role.toUpperCase() === 'SELLER') {
+      deletedUser = await Seller.findByIdAndDelete(id);
+    }
+
+    if (!deletedUser) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    res.status(200).json({ success: true, message: 'User permanently deleted.' });
+  } catch (error) {
+    console.error('❌ Delete Unified User Error:', error);
+    res.status(500).json({ success: false, message: 'Server error deleting user.' });
   }
 };

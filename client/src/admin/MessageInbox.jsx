@@ -38,13 +38,14 @@ const MessageInbox = () => {
     return adminMessages.find((m) => m.id === selectedMsgId) || filteredMessages[0] || null;
   }, [adminMessages, selectedMsgId, filteredMessages]);
 
-  // Handle Select & Automatically Mark Read
   const handleSelectMessage = (id) => {
     setSelectedMsgId(id);
     setReplyText('');
-    setAdminMessages((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, unread: false } : m))
-    );
+    
+    const msg = adminMessages.find(m => m.id === id);
+    if (msg && msg.unread) {
+      setAdminMessages((prev) => prev.map((m) => (m.id === id ? { ...m, unread: false } : m)));
+    }
   };
 
   // Toggle Read/Unread
@@ -103,14 +104,14 @@ const MessageInbox = () => {
   const buyerCount = adminMessages.filter((m) => m.senderRole === 'BUYER').length;
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-[1650px] mx-auto text-left font-sans antialiased bg-gray-50 min-h-screen">
+    <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-[1650px] mx-auto text-left font-sans antialiased bg-gray-50 dark:bg-[#0b131e] min-h-screen transition-colors duration-300">
       
       {/* =====================================================================
           HEADER SECTION
           ===================================================================== */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8 pb-6 border-b border-gray-200/80">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8 pb-6 border-b border-gray-200/80 dark:border-gray-800">
         <div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#1a2b3c] tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#1a2b3c] dark:text-white tracking-tight flex items-center gap-3">
             <span>Admin HQ Contact Inbox</span>
             {unreadCount > 0 && (
               <span className="bg-[#047262] text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider animate-pulse shadow-sm">
@@ -118,7 +119,7 @@ const MessageInbox = () => {
               </span>
             )}
           </h1>
-          <p className="text-gray-500 font-medium text-xs sm:text-sm md:text-base mt-1.5">
+          <p className="text-gray-500 dark:text-gray-400 font-medium text-xs sm:text-sm md:text-base mt-1.5">
             Real-time reception of support inquiries, quota expansion queries, and general guidance messages from platform sellers.
           </p>
         </div>
@@ -131,7 +132,7 @@ const MessageInbox = () => {
             placeholder="Search tickets, names, or emails..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full sm:w-80 pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-2xl font-bold text-sm text-[#1a2b3c] focus:outline-none focus:border-[#047262] shadow-xs transition-all"
+            className="w-full sm:w-80 pl-10 pr-4 py-3 bg-white dark:bg-[#111c2a] border border-gray-200 dark:border-gray-700 rounded-2xl font-bold text-sm text-[#1a2b3c] dark:text-white focus:outline-none focus:border-[#047262] dark:focus:border-[#0dc5a5] shadow-xs transition-all"
           />
         </div>
       </div>
@@ -153,12 +154,12 @@ const MessageInbox = () => {
               onClick={() => setActiveTab(tab.key)}
               className={`px-5 py-2.5 rounded-2xl font-extrabold text-xs sm:text-sm transition-all flex items-center gap-2 border shadow-2xs ${
                 isActive
-                  ? 'bg-[#1a2b3c] text-white border-[#1a2b3c] shadow-md'
-                  : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200'
+                  ? 'bg-[#1a2b3c] dark:bg-[#0dc5a5] text-white dark:text-[#1a2b3c] border-[#1a2b3c] dark:border-[#0dc5a5] shadow-md'
+                  : 'bg-white dark:bg-[#111c2a] hover:bg-gray-50 dark:hover:bg-[#1b2b3f] text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700'
               }`}
             >
               <span>{tab.label}</span>
-              <span className={`px-2 py-0.5 rounded-lg text-[11px] font-black ${isActive ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'}`}>
+              <span className={`px-2 py-0.5 rounded-lg text-[11px] font-black ${isActive ? 'bg-white/20 dark:bg-black/20 text-white dark:text-black' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'}`}>
                 {tab.count}
               </span>
             </button>
@@ -176,80 +177,80 @@ const MessageInbox = () => {
            ------------------------------------------------------------------- */}
         <div className="lg:col-span-5 space-y-3 lg:max-h-[750px] lg:overflow-y-auto pr-1">
           {filteredMessages.length === 0 ? (
-            <div className="bg-white rounded-[28px] p-10 text-center border border-gray-100 shadow-sm">
-              <div className="w-14 h-14 rounded-2xl bg-gray-100 text-gray-400 flex items-center justify-center mx-auto mb-3">
+            <div className="bg-white dark:bg-[#111c2a] rounded-[28px] p-10 text-center border border-gray-100 dark:border-gray-800 shadow-sm">
+              <div className="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-[#1b2b3f] text-gray-400 dark:text-gray-500 flex items-center justify-center mx-auto mb-3">
                 <Inbox size={26} />
               </div>
-              <h3 className="font-bold text-[#1a2b3c] text-base mb-1">No Support Tickets Found</h3>
-              <p className="text-xs text-gray-400">There are currently no messages matching your tab filter or search query.</p>
+              <h3 className="font-bold text-[#1a2b3c] dark:text-white text-base mb-1">No Support Tickets Found</h3>
+              <p className="text-xs text-gray-400 dark:text-gray-500">There are currently no messages matching your tab filter or search query.</p>
             </div>
           ) : (
             filteredMessages.map((msg) => {
               const isSelected = activeMsg && activeMsg.id === msg.id;
               return (
-                <div
-                  key={msg.id}
-                  onClick={() => handleSelectMessage(msg.id)}
-                  className={`p-5 rounded-[26px] border transition-all cursor-pointer relative group ${
-                    isSelected
-                      ? 'bg-white border-[#047262] shadow-[0_8px_30px_rgba(4,114,98,0.12)] scale-[1.01]'
-                      : 'bg-white/80 hover:bg-white border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:border-gray-200'
-                  }`}
-                >
-                  {/* Top Row: Sender Info & Role Tag */}
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${msg.unread ? 'bg-[#047262] animate-pulse' : 'bg-gray-200'}`} title={msg.unread ? 'Unread Message' : 'Read'} />
-                      <h4 className="font-black text-sm text-[#1a2b3c] truncate group-hover:text-[#047262] transition-colors">
-                        {msg.senderName}
-                      </h4>
+                  <div
+                    key={msg.id}
+                    onClick={() => handleSelectMessage(msg.id)}
+                    className={`p-5 rounded-[26px] border transition-all cursor-pointer relative group ${
+                      isSelected
+                        ? 'bg-white dark:bg-[#1b2b3f] border-[#047262] dark:border-[#0dc5a5] shadow-[0_8px_30px_rgba(4,114,98,0.12)] scale-[1.01]'
+                        : 'bg-white/80 dark:bg-[#111c2a]/80 hover:bg-white dark:hover:bg-[#1b2b3f] border-gray-100 dark:border-gray-800 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:border-gray-200 dark:hover:border-gray-700'
+                    }`}
+                  >
+                    {/* Top Row: Sender Info & Role Tag */}
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${msg.unread ? 'bg-[#047262] dark:bg-[#0dc5a5] animate-pulse' : 'bg-gray-200 dark:bg-gray-700'}`} title={msg.unread ? 'Unread Message' : 'Read'} />
+                        <h4 className="font-black text-sm text-[#1a2b3c] dark:text-white truncate group-hover:text-[#047262] dark:group-hover:text-[#0dc5a5] transition-colors">
+                          {msg.senderName}
+                        </h4>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        {msg.senderRole === 'SELLER' && (
+                          <span className="px-2.5 py-0.5 rounded-lg bg-[#e0f5f0] dark:bg-[#047262]/20 text-[#047262] dark:text-[#0dc5a5] font-black text-[10px] uppercase tracking-wider">
+                            SELLER
+                          </span>
+                        )}
+                        {msg.senderRole === 'BUYER' && (
+                          <span className="px-2.5 py-0.5 rounded-lg bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400 font-black text-[10px] uppercase tracking-wider">
+                            BUYER
+                          </span>
+                        )}
+                        <span className="text-[11px] font-bold text-gray-400 dark:text-gray-500">{msg.date}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      {msg.senderRole === 'SELLER' && (
-                        <span className="px-2.5 py-0.5 rounded-lg bg-[#e0f5f0] text-[#047262] font-black text-[10px] uppercase tracking-wider">
-                          SELLER
-                        </span>
-                      )}
-                      {msg.senderRole === 'BUYER' && (
-                        <span className="px-2.5 py-0.5 rounded-lg bg-blue-100 text-blue-700 font-black text-[10px] uppercase tracking-wider">
-                          BUYER
-                        </span>
-                      )}
-                      <span className="text-[11px] font-bold text-gray-400">{msg.date}</span>
-                    </div>
-                  </div>
 
-                  {/* Subject */}
-                  <p className={`text-xs font-extrabold truncate mb-1.5 ${msg.unread ? 'text-[#1a2b3c]' : 'text-gray-600'}`}>
-                    {msg.subject}
-                  </p>
+                    {/* Subject */}
+                    <p className={`text-xs font-extrabold truncate mb-1.5 ${msg.unread ? 'text-[#1a2b3c] dark:text-white' : 'text-gray-600 dark:text-gray-400'}`}>
+                      {msg.subject}
+                    </p>
 
-                  {/* Body Snippet */}
-                  <p className="text-xs font-medium text-gray-400 line-clamp-2 leading-relaxed">
-                    {msg.message}
-                  </p>
+                    {/* Body Snippet */}
+                    <p className="text-xs font-medium text-gray-400 dark:text-gray-500 line-clamp-2 leading-relaxed">
+                      {msg.message}
+                    </p>
 
-                  {/* Bottom Ticket ID & Status tag */}
-                  <div className="mt-3 pt-2.5 border-t border-gray-50 flex items-center justify-between text-[11px]">
-                    <span className="font-extrabold text-gray-400">{msg.id}</span>
-                    <div className="flex items-center gap-2">
-                      {msg.resolved ? (
-                        <span className="text-emerald-600 font-black inline-flex items-center gap-1">
-                          <CheckCircle2 size={13} />
-                          <span>Resolved</span>
-                        </span>
-                      ) : (
-                        <span className="text-amber-600 font-black inline-flex items-center gap-1">
-                          <Clock size={13} />
-                          <span>Open Ticket</span>
-                        </span>
-                      )}
-                      <button
-                        type="button"
-                        onClick={(e) => handleDeleteMessage(msg.id, e)}
-                        className="p-1 text-gray-300 hover:text-rose-500 transition-colors ml-1"
-                        title="Delete ticket"
-                      >
+                    {/* Bottom Ticket ID & Status tag */}
+                    <div className="mt-3 pt-2.5 border-t border-gray-50 dark:border-gray-800 flex items-center justify-between text-[11px]">
+                      <span className="font-extrabold text-gray-400 dark:text-gray-500">{msg.id}</span>
+                      <div className="flex items-center gap-2">
+                        {msg.resolved ? (
+                          <span className="text-emerald-600 dark:text-emerald-400 font-black inline-flex items-center gap-1">
+                            <CheckCircle2 size={13} />
+                            <span>Resolved</span>
+                          </span>
+                        ) : (
+                          <span className="text-amber-600 dark:text-amber-400 font-black inline-flex items-center gap-1">
+                            <Clock size={13} />
+                            <span>Open Ticket</span>
+                          </span>
+                        )}
+                        <button
+                          type="button"
+                          onClick={(e) => handleDeleteMessage(msg.id, e)}
+                          className="p-1 text-gray-300 dark:text-gray-600 hover:text-rose-500 dark:hover:text-rose-400 transition-colors ml-1"
+                          title="Delete ticket"
+                        >
                         <Trash2 size={13} />
                       </button>
                     </div>
@@ -265,33 +266,33 @@ const MessageInbox = () => {
            ------------------------------------------------------------------- */}
         <div className="lg:col-span-7">
           {!activeMsg ? (
-            <div className="bg-white rounded-[36px] p-16 border border-gray-100 text-center shadow-sm">
-              <MessageSquare size={36} className="text-gray-300 mx-auto mb-4" />
-              <h3 className="font-black text-[#1a2b3c] text-lg mb-1">Select a Support Ticket</h3>
-              <p className="text-gray-400 text-xs sm:text-sm max-w-sm mx-auto">
+            <div className="bg-white dark:bg-[#111c2a] rounded-[36px] p-16 border border-gray-100 dark:border-gray-800 text-center shadow-sm">
+              <MessageSquare size={36} className="text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+              <h3 className="font-black text-[#1a2b3c] dark:text-white text-lg mb-1">Select a Support Ticket</h3>
+              <p className="text-gray-400 dark:text-gray-500 text-xs sm:text-sm max-w-sm mx-auto">
                 Choose any incoming communication card from the left pane to examine details, download attachments, and transmit an official response.
               </p>
             </div>
           ) : (
-            <div className="bg-white rounded-[36px] border border-gray-100 shadow-[0_8px_45px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col">
+            <div className="bg-white dark:bg-[#111c2a] rounded-[36px] border border-gray-100 dark:border-gray-800 shadow-[0_8px_45px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col">
               
               {/* Reader Header */}
-              <div className="p-6 sm:p-8 bg-gray-50/70 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-6 sm:p-8 bg-gray-50/70 dark:bg-gray-800/20 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-start sm:items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-[#1a2b3c] text-white font-black text-lg flex items-center justify-center shrink-0 shadow-sm">
+                  <div className="w-14 h-14 rounded-2xl bg-[#1a2b3c] dark:bg-[#1b2b3f] text-white font-black text-lg flex items-center justify-center shrink-0 shadow-sm">
                     {activeMsg.senderName.charAt(0).toUpperCase()}
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <h2 className="text-lg sm:text-xl font-black text-[#1a2b3c]">
+                      <h2 className="text-lg sm:text-xl font-black text-[#1a2b3c] dark:text-white">
                         {activeMsg.senderName}
                       </h2>
-                      <span className="px-2.5 py-0.5 rounded-md bg-gray-200/80 text-gray-700 font-extrabold text-xs">
+                      <span className="px-2.5 py-0.5 rounded-md bg-gray-200/80 dark:bg-gray-700/80 text-gray-700 dark:text-gray-300 font-extrabold text-xs">
                         {activeMsg.id}
                       </span>
                     </div>
-                    <div className="flex flex-wrap items-center gap-4 text-xs font-bold text-gray-500">
-                      <span className="inline-flex items-center gap-1 text-[#047262]">
+                    <div className="flex flex-wrap items-center gap-4 text-xs font-bold text-gray-500 dark:text-gray-400">
+                      <span className="inline-flex items-center gap-1 text-[#047262] dark:text-[#0dc5a5]">
                         <Mail size={13} />
                         <span>{activeMsg.email}</span>
                       </span>
@@ -303,25 +304,24 @@ const MessageInbox = () => {
                   </div>
                 </div>
 
-                {/* Reader Action Toolbar */}
                 <div className="flex items-center gap-2 self-start sm:self-center">
                   <button
                     type="button"
                     onClick={() => toggleResolved(activeMsg.id, activeMsg.resolved)}
                     className={`px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-1.5 shadow-2xs ${
                       activeMsg.resolved
-                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                        : 'bg-amber-100 hover:bg-amber-200 text-amber-900'
+                        ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30'
+                        : 'bg-amber-100 dark:bg-amber-500/20 hover:bg-amber-200 dark:hover:bg-amber-500/30 text-amber-900 dark:text-amber-400'
                     }`}
                   >
-                    <CheckCircle2 size={15} className={activeMsg.resolved ? 'text-emerald-600' : 'text-amber-700'} />
+                    <CheckCircle2 size={15} className={activeMsg.resolved ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-700 dark:text-amber-400'} />
                     <span>{activeMsg.resolved ? 'Resolved ✔' : 'Mark Resolved'}</span>
                   </button>
                   
                   <button
                     type="button"
                     onClick={(e) => handleDeleteMessage(activeMsg.id, e)}
-                    className="p-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl transition-all"
+                    className="p-2.5 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl transition-all"
                     title="Delete Message"
                   >
                     <Trash2 size={16} />
@@ -331,35 +331,35 @@ const MessageInbox = () => {
 
               {/* Subject & Main Body Content */}
               <div className="p-6 sm:p-8 space-y-6 flex-1">
-                <div className="pb-5 border-b border-gray-100 flex items-center justify-between">
+                <div className="pb-5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] font-black uppercase text-gray-400 tracking-wider block mb-1">Subject / Support Inquiry Title</span>
-                    <h3 className="text-base sm:text-lg font-black text-[#1a2b3c] leading-snug">
+                    <span className="text-[10px] font-black uppercase text-gray-400 dark:text-gray-500 tracking-wider block mb-1">Subject / Support Inquiry Title</span>
+                    <h3 className="text-base sm:text-lg font-black text-[#1a2b3c] dark:text-white leading-snug">
                       {activeMsg.subject}
                     </h3>
                   </div>
-                  <span className="text-xs font-bold text-gray-400 shrink-0 bg-gray-50 px-3 py-1 rounded-lg">
+                  <span className="text-xs font-bold text-gray-400 dark:text-gray-500 shrink-0 bg-gray-50 dark:bg-gray-800/50 px-3 py-1 rounded-lg">
                     Received {activeMsg.date}
                   </span>
                 </div>
 
                 <div className="py-2">
-                  <span className="text-[10px] font-black uppercase text-gray-400 tracking-wider block mb-3">Message Content</span>
-                  <div className="p-6 rounded-[24px] bg-gray-50/80 border border-gray-100 font-medium text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
+                  <span className="text-[10px] font-black uppercase text-gray-400 dark:text-gray-500 tracking-wider block mb-3">Message Content</span>
+                  <div className="p-6 rounded-[24px] bg-gray-50/80 dark:bg-[#1b2b3f] border border-gray-100 dark:border-gray-800 font-medium text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
                     {activeMsg.message}
                   </div>
                 </div>
 
                 {/* Live Official Admin Response Form */}
-                <div className="pt-4 border-t border-gray-100">
+                <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
                   <form onSubmit={handleSendReply} className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <label className="block text-xs font-black uppercase tracking-wider text-[#047262] flex items-center gap-1.5">
-                        <Sparkles size={14} className="fill-[#047262]" />
+                      <label className="block text-xs font-black uppercase tracking-wider text-[#047262] dark:text-[#0dc5a5] flex items-center gap-1.5">
+                        <Sparkles size={14} className="fill-[#047262] dark:fill-[#0dc5a5]" />
                         <span>Transmit Official Resolution Reply to {activeMsg.senderName}</span>
                       </label>
                       {activeMsg.resolved && (
-                        <span className="text-xs font-bold text-emerald-600">This ticket is already resolved.</span>
+                        <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">This ticket is already resolved.</span>
                       )}
                     </div>
 
@@ -368,12 +368,12 @@ const MessageInbox = () => {
                       placeholder="e.g. Hello Suresh, our auditing team has completed your license verification and expanded your property showcase quota to 50 active towers..."
                       value={replyText}
                       onChange={(e) => setReplyText(e.target.value)}
-                      className="w-full p-4 bg-white border border-gray-200 rounded-[20px] font-medium text-sm text-[#1a2b3c] focus:outline-none focus:border-[#047262] transition-all shadow-xs leading-relaxed"
+                      className="w-full p-4 bg-white dark:bg-[#111c2a] border border-gray-200 dark:border-gray-700 rounded-[20px] font-medium text-sm text-[#1a2b3c] dark:text-white focus:outline-none focus:border-[#047262] dark:focus:border-[#0dc5a5] transition-all shadow-xs leading-relaxed"
                     />
 
                     <div className="flex items-center justify-between">
-                      <p className="text-[11px] text-gray-400 font-semibold">
-                        Replying will transmit an automated email to <span className="font-bold text-gray-600">{activeMsg.email}</span> and set ticket status to Resolved.
+                      <p className="text-[11px] text-gray-400 dark:text-gray-500 font-semibold">
+                        Replying will transmit an automated email to <span className="font-bold text-gray-600 dark:text-gray-400">{activeMsg.email}</span> and set ticket status to Resolved.
                       </p>
                       <button
                         type="submit"

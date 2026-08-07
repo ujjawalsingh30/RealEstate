@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useMemo } from 'react';
+import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
 import { Heart, CheckCircle, AlertCircle, X } from 'lucide-react';
 import assets from '../assets/assets';
 import { useTheme } from './ThemeContext';
@@ -458,60 +458,73 @@ export const PropertyProvider = ({ children }) => {
 
   const [adminMessages, setAdminMessages] = useState([
     {
-      id: 'MSG-101',
-      senderName: 'Suresh Sharma',
-      senderRole: 'SELLER',
-      email: 'sureshbarik969@gmail.com',
-      phone: '+91 96925 30661',
-      subject: 'Property Verification & Quota Expansion Request',
-      message: 'Hello Admin team, I have submitted three new premium luxury villas in Navi Mumbai. Kindly expedite the RERA document verification process so our listings can go live before the upcoming weekend real estate fair. Thanks!',
-      date: '2 hours ago',
+      id: 1,
+      senderName: 'John Doe',
+      email: 'john.doe@example.com',
+      phone: '+91 9876543210',
+      subject: 'Inquiry about DLF Urban Grande',
+      message: 'I am interested in the 3 BHK flat. Is it still available for a site visit this weekend?',
+      date: '2026-07-28',
       unread: true,
-      resolved: false
+      resolved: false,
+      senderRole: 'BUYER'
     },
     {
-      id: 'MSG-102',
-      senderName: 'Rajiv Mehra (Mehra Realty)',
-      senderRole: 'SELLER',
-      email: 'rajiv.mehra@realtyindia.in',
-      phone: '+91 98112 34567',
-      subject: 'Inquiry regarding Commercial Listing Featured Placement',
-      message: 'We want to showcase our DLF Corporate Park listings on the primary Home page banner. Could you please share the pricing structure for verified featured placements and premium seller badge enhancements?',
-      date: '5 hours ago',
-      unread: true,
-      resolved: false
-    },
-    {
-      id: 'MSG-103',
-      senderName: 'Omprakash (Om)',
-      senderRole: 'BUYER',
-      email: 'omprakashkhatuasonu@gmail.com',
-      phone: '+91 98220 01122',
-      subject: 'Assistance with Scheduling Virtual 3D Site Tours',
-      message: 'Hi Support, I am looking to connect with the seller of DLF Urban Grande Towers for an onsite walkthrough this Sunday. Can your concierge team confirm if site visit appointments are available?',
-      date: '1 day ago',
+      id: 2,
+      senderName: 'Sarah Smith',
+      email: 'sarah.smith@example.com',
+      phone: '+91 9123456780',
+      subject: 'Seller Account Verification',
+      message: 'I have uploaded my RERA certificate for verification. Please approve my seller account.',
+      date: '2026-07-27',
       unread: false,
-      resolved: true
+      resolved: false,
+      senderRole: 'SELLER'
+    },
+    {
+      id: 3,
+      senderName: 'Mike Johnson',
+      email: 'mike.j@example.com',
+      phone: '+91 9988776655',
+      subject: 'Issue with property listing',
+      message: 'My property images are not loading on the live site. Can you please check?',
+      date: '2026-07-26',
+      unread: false,
+      resolved: true,
+      senderRole: 'SELLER'
     }
   ]);
 
-  const addAdminMessage = (newMessage) => {
+  const addAdminMessage = async (newMessage) => {
     const roleFromStorage = localStorage.getItem('userRole');
     const computedRole = roleFromStorage ? roleFromStorage.toUpperCase() : (newMessage.senderRole || 'GENERAL');
-    const messageItem = {
-      id: `MSG-${Date.now().toString().slice(-4)}`,
+    
+    const messagePayload = {
       senderName: newMessage.senderName || 'Valued Partner',
       senderRole: computedRole,
       email: newMessage.email || 'contact@realty.com',
       phone: newMessage.phone || '+91 98000 00000',
       subject: newMessage.subject || 'Platform Support & Assistance Query',
-      message: newMessage.message || 'No additional text provided.',
-      date: 'Just now',
-      unread: true,
-      resolved: false
+      message: newMessage.message || 'No additional text provided.'
     };
-    setAdminMessages((prev) => [messageItem, ...prev]);
-    showToast('Your message has been transmitted directly to the Admin HQ Inbox!', 'success');
+
+    try {
+      const res = await fetch('http://localhost:5000/api/messages/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(messagePayload)
+      });
+      const data = await res.json();
+      
+      if (data.success) {
+        showToast('Your message has been transmitted directly to the Admin HQ Inbox!', 'success');
+      } else {
+        showToast('Failed to send message: ' + data.message, 'error');
+      }
+    } catch (err) {
+      console.error("Error sending message:", err);
+      showToast('Error transmitting message to server.', 'error');
+    }
   };
 
   const [isSellerVerified, setIsSellerVerified] = useState(() => {
@@ -656,7 +669,7 @@ export const PropertyProvider = ({ children }) => {
           )}
           <div className="flex flex-col pr-2">
             <span className="text-[11px] font-extrabold uppercase tracking-wider text-gray-400 mb-0.5">
-              {toast.type === 'error' ? 'Authentication Required' : 'Wishlist Update'}
+              {toast.type === 'error' ? 'System Notice' : 'Notification'}
             </span>
             <span className="text-sm font-bold text-[#1a2b3c] leading-snug">
               {toast.message}

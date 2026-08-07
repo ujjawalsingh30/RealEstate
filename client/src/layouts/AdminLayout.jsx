@@ -20,7 +20,7 @@ const AdminLayout = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-[#0b131e] flex flex-col font-sans antialiased transition-colors duration-300">
       
       {/* Mobile Top App Bar (Visible on < 1024px) */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0f1926]/95 backdrop-blur-md px-5 py-3.5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between shadow-xs">
+      <header className="lg:hidden relative z-40 bg-white/95 dark:bg-[#0f1926]/95 backdrop-blur-md px-5 py-3.5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between shadow-xs">
         <Link to="/admin/dashboard" className="flex items-center gap-2.5">
           <img src={logo} alt="RealEstate Logo" className="w-8 h-8 object-contain" />
           <span className="text-[#047262] dark:text-[#0dc5a5] font-bold text-xl tracking-tight">RealEstate</span>
@@ -48,17 +48,19 @@ const AdminLayout = () => {
         </div>
       </header>
 
-      {/* Docked Desktop Sidebar + Mobile Slide-Out Drawer */}
-      <AdminSidebar
-        isMobileOpen={isMobileSidebarOpen}
-        onCloseMobile={() => setIsMobileSidebarOpen(false)}
-        onLogout={handleLogout}
-      />
+      <div className="flex flex-1 w-full">
+        {/* Docked Desktop Sidebar + Mobile Slide-Out Drawer */}
+        <AdminSidebar
+          isMobileOpen={isMobileSidebarOpen}
+          onCloseMobile={() => setIsMobileSidebarOpen(false)}
+          onLogout={handleLogout}
+        />
 
-      {/* Main Admin Content Area (shifted right by 64 (256px) on Desktop) */}
-      <main className="flex-1 lg:pl-64 pt-16 lg:pt-0 min-h-screen bg-gray-50 dark:bg-[#0b131e] flex flex-col transition-colors duration-300">
-        <Outlet />
-      </main>
+        {/* Main Admin Content Area */}
+        <main className="flex-1 min-h-screen bg-gray-50 dark:bg-[#0b131e] flex flex-col transition-colors duration-300 w-full overflow-hidden">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 };

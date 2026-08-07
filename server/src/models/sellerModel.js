@@ -50,7 +50,7 @@ const sellerSchema = new mongoose.Schema(
     // Status controls Admin verification workflow: pending -> approved/rejected
     status: {
       type: String,
-      enum: ['pending', 'approved', 'rejected'],
+      enum: ['pending', 'approved', 'rejected', 'blocked'],
       default: 'pending'
     },
     role: {

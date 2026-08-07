@@ -44,6 +44,12 @@ const buyerSchema = new mongoose.Schema(
         trim: true
       }
     ],
+    // Status controls Admin verification workflow: active/suspended
+    status: {
+      type: String,
+      enum: ['active', 'suspended'],
+      default: 'active'
+    },
     role: {
       type: String,
       default: 'buyer',

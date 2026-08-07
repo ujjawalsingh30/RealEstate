@@ -193,24 +193,24 @@ const MyListings = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-[1650px] mx-auto text-left font-sans antialiased bg-gray-50 min-h-screen">
+    <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-[1650px] mx-auto text-left font-sans antialiased bg-transparent min-h-[90vh]">
       
       {/* =====================================================================
           HEADER SECTION: Title & Add Property Action Button
           ===================================================================== */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 sm:mb-10 pb-6 border-b border-gray-200/80">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 sm:mb-10 pb-6 border-b border-gray-200/80 dark:border-gray-800">
         <div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#1a2b3c] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#1a2b3c] dark:text-white tracking-tight">
             My Listings
           </h1>
-          <p className="text-gray-500 font-medium text-xs sm:text-sm md:text-base mt-1.5">
+          <p className="text-gray-500 dark:text-gray-400 font-medium text-xs sm:text-sm md:text-base mt-1.5">
             Manage your listed properties, track impressions, and modify inventory availability status.
           </p>
         </div>
 
         <Link
           to="/seller/add-property"
-          className="w-full sm:w-auto px-6 py-3.5 bg-[#047262] hover:bg-[#03594d] active:scale-95 text-white font-extrabold text-sm sm:text-base rounded-[20px] shadow-[0_6px_25px_rgba(4,114,98,0.3)] transition-all flex items-center justify-center gap-2.5 shrink-0 group"
+          className="w-full sm:w-auto px-6 py-3.5 bg-[#047262] hover:bg-[#03594d] dark:bg-[#0dc5a5] dark:text-[#0b131e] dark:hover:bg-[#0bb395] active:scale-95 text-white font-extrabold text-sm sm:text-base rounded-[20px] shadow-[0_6px_25px_rgba(4,114,98,0.3)] dark:shadow-[0_6px_25px_rgba(13,197,165,0.2)] transition-all flex items-center justify-center gap-2.5 shrink-0 group"
         >
           <Plus size={20} className="stroke-[3] group-hover:rotate-90 transition-transform duration-200" />
           <span>Add New Listing</span>
@@ -221,17 +221,17 @@ const MyListings = () => {
           PROPERTY CARDS GRID (Responsive: 1 -> 2 -> 3 -> 4 Columns)
           ===================================================================== */}
       {listings.length === 0 ? (
-        <div className="bg-white rounded-[32px] p-12 text-center max-w-xl mx-auto my-12 border border-gray-100 shadow-sm">
-          <div className="w-20 h-20 rounded-3xl bg-[#047262]/10 text-[#047262] flex items-center justify-center mx-auto mb-6">
+        <div className="bg-white dark:bg-[#162231] rounded-[32px] p-12 text-center max-w-xl mx-auto my-12 border border-gray-100 dark:border-[#28394e] shadow-sm transition-colors">
+          <div className="w-20 h-20 rounded-3xl bg-[#047262]/10 dark:bg-[#0dc5a5]/10 text-[#047262] dark:text-[#0dc5a5] flex items-center justify-center mx-auto mb-6">
             <Building size={36} />
           </div>
-          <h3 className="text-xl font-bold text-[#1a2b3c] mb-2">No Active Properties Listed Yet</h3>
-          <p className="text-gray-500 text-sm mb-6">
+          <h3 className="text-xl font-bold text-[#1a2b3c] dark:text-white mb-2">No Active Properties Listed Yet</h3>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
             You haven't added any luxury apartments or villas to your portfolio yet. Click below to publish your first verified listing!
           </p>
           <Link
             to="/seller/add-property"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#047262] text-white font-bold rounded-2xl shadow-md hover:bg-[#03594d] transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#047262] hover:bg-[#03594d] dark:bg-[#0dc5a5] dark:text-[#0b131e] dark:hover:bg-[#0bb395] text-white font-bold rounded-2xl shadow-md transition-colors"
           >
             <Plus size={18} />
             <span>Post Your First Property</span>
@@ -242,11 +242,11 @@ const MyListings = () => {
           {listings.map((property) => (
             <div
               key={property.id}
-              className="bg-white rounded-[26px] sm:rounded-[30px] border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_14px_45px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col justify-between overflow-hidden group"
+              className="bg-white dark:bg-[#162231] rounded-[26px] sm:rounded-[30px] border border-gray-100 dark:border-[#28394e] shadow-[0_4px_20px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_14px_45px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col justify-between overflow-hidden group"
             >
               {/* Card Header & Image Overlay */}
               <div>
-                <div className="relative h-56 sm:h-60 overflow-hidden bg-gray-100">
+                <div className="relative h-56 sm:h-60 overflow-hidden bg-gray-100 dark:bg-gray-800">
                   <img
                     src={property.image}
                     alt={property.title}
@@ -288,11 +288,11 @@ const MyListings = () => {
                   {/* Category Pill & View Count */}
                   <div className="flex items-center justify-between gap-2 mb-2.5">
                     <span className={`text-[11px] font-black tracking-widest uppercase ${
-                      property.category === 'VILLA' ? 'text-purple-600' : property.category === 'COMMERCIAL' ? 'text-amber-600' : 'text-[#047262]'
+                      property.category === 'VILLA' ? 'text-purple-600 dark:text-purple-400' : property.category === 'COMMERCIAL' ? 'text-amber-600 dark:text-amber-400' : 'text-[#047262] dark:text-[#0dc5a5]'
                     }`}>
                       {property.category}
                     </span>
-                    <span className="flex items-center gap-1 text-xs font-bold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100">
+                    <span className="flex items-center gap-1 text-xs font-bold text-gray-400 dark:text-gray-400 bg-gray-50 dark:bg-[#1b2b3f] px-2 py-0.5 rounded-lg border border-gray-100 dark:border-gray-700">
                       <Eye size={13} />
                       <span>{property.views}</span>
                     </span>
@@ -301,34 +301,34 @@ const MyListings = () => {
                   {/* Title */}
                   <h3 
                     onClick={() => navigate(`/properties/${property.id}`)}
-                    className="font-extrabold text-base sm:text-lg text-[#1a2b3c] hover:text-[#047262] transition-colors cursor-pointer line-clamp-1 mb-2"
+                    className="font-extrabold text-base sm:text-lg text-[#1a2b3c] dark:text-white hover:text-[#047262] dark:hover:text-[#0dc5a5] transition-colors cursor-pointer line-clamp-1 mb-2"
                     title={property.title}
                   >
                     {property.title}
                   </h3>
 
                   {/* Location */}
-                  <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-gray-500 mb-6">
-                    <MapPin size={15} className="text-gray-400 shrink-0" />
+                  <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-400 mb-6">
+                    <MapPin size={15} className="text-gray-400 dark:text-gray-500 shrink-0" />
                     <span className="truncate" title={property.location}>{property.location}</span>
                   </div>
 
                   {/* Features Specifications Row (Beds, Baths, SqFt) */}
-                  <div className="grid grid-cols-3 gap-2 py-3 px-3 rounded-2xl bg-gray-50/80 border border-gray-100 text-center">
+                  <div className="grid grid-cols-3 gap-2 py-3 px-3 rounded-2xl bg-gray-50/80 dark:bg-[#111c2a]/50 border border-gray-100 dark:border-gray-800 text-center">
                     <div className="flex flex-col items-center">
-                      <Home size={17} className="text-gray-400 mb-1" />
-                      <span className="text-sm font-black text-[#1a2b3c]">{property.specs.beds}</span>
-                      <span className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider">{property.specs.label1}</span>
+                      <Home size={17} className="text-gray-400 dark:text-gray-500 mb-1" />
+                      <span className="text-sm font-black text-[#1a2b3c] dark:text-gray-200">{property.specs.beds}</span>
+                      <span className="text-[10px] font-extrabold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{property.specs.label1}</span>
                     </div>
-                    <div className="flex flex-col items-center border-x border-gray-200/60 px-1">
-                      <Bath size={17} className="text-gray-400 mb-1" />
-                      <span className="text-sm font-black text-[#1a2b3c]">{property.specs.baths}</span>
-                      <span className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider">{property.specs.label2}</span>
+                    <div className="flex flex-col items-center border-x border-gray-200/60 dark:border-gray-700/50 px-1">
+                      <Bath size={17} className="text-gray-400 dark:text-gray-500 mb-1" />
+                      <span className="text-sm font-black text-[#1a2b3c] dark:text-gray-200">{property.specs.baths}</span>
+                      <span className="text-[10px] font-extrabold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{property.specs.label2}</span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <Maximize size={17} className="text-gray-400 mb-1" />
-                      <span className="text-sm font-black text-[#1a2b3c]">{property.specs.sqft}</span>
-                      <span className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider">{property.specs.label3}</span>
+                      <Maximize size={17} className="text-gray-400 dark:text-gray-500 mb-1" />
+                      <span className="text-sm font-black text-[#1a2b3c] dark:text-gray-200">{property.specs.sqft}</span>
+                      <span className="text-[10px] font-extrabold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{property.specs.label3}</span>
                     </div>
                   </div>
                 </div>
@@ -347,8 +347,8 @@ const MyListings = () => {
                     }}
                     className={`w-full flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs ${
                       property.status === 'Available'
-                        ? 'bg-[#047262]/10 text-[#047262] border-[#047262]/30 hover:bg-[#047262]/15'
-                        : 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100/80'
+                        ? 'bg-[#047262]/10 dark:bg-[#0dc5a5]/10 text-[#047262] dark:text-[#0dc5a5] border-[#047262]/30 dark:border-[#0dc5a5]/30 hover:bg-[#047262]/15 dark:hover:bg-[#0dc5a5]/20'
+                        : 'bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-500/30 hover:bg-blue-100/80 dark:hover:bg-blue-500/20'
                     }`}
                   >
                     <span className="truncate">{property.status}</span>
@@ -357,14 +357,14 @@ const MyListings = () => {
 
                   {/* Dropdown Options Menu */}
                   {openDropdownId === property.id && (
-                    <div className="absolute left-0 right-0 bottom-full mb-1.5 bg-white rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.18)] border border-gray-200 overflow-hidden z-30 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="absolute left-0 right-0 bottom-full mb-1.5 bg-white dark:bg-[#1b2b3f] rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.18)] dark:shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-30 animate-in fade-in zoom-in-95 duration-150">
                       <button
                         type="button"
                         onClick={() => handleStatusChange(property.id, 'Available')}
                         className={`w-full text-left px-4 py-2.5 text-xs sm:text-sm font-extrabold transition-colors flex items-center justify-between ${
                           property.status === 'Available'
                             ? 'bg-[#047262] text-white'
-                            : 'text-[#1a2b3c] hover:bg-gray-100'
+                            : 'text-[#1a2b3c] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#203147]'
                         }`}
                       >
                         <span>Available</span>
@@ -374,10 +374,10 @@ const MyListings = () => {
                       <button
                         type="button"
                         onClick={() => handleStatusChange(property.id, 'Sold')}
-                        className={`w-full text-left px-4 py-2.5 text-xs sm:text-sm font-extrabold transition-colors flex items-center justify-between border-t border-gray-100 ${
+                        className={`w-full text-left px-4 py-2.5 text-xs sm:text-sm font-extrabold transition-colors flex items-center justify-between border-t border-gray-100 dark:border-gray-700 ${
                           property.status === 'Sold'
                             ? 'bg-blue-600 text-white'
-                            : 'text-[#1a2b3c] hover:bg-gray-100'
+                            : 'text-[#1a2b3c] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#203147]'
                         }`}
                       >
                         <span>Sold</span>
@@ -391,9 +391,9 @@ const MyListings = () => {
                 <button
                   onClick={() => startEditing(property)}
                   title="Edit Property Information"
-                  className="px-3.5 py-2.5 bg-gray-100 hover:bg-gray-200/90 text-[#1a2b3c] font-extrabold text-xs sm:text-sm rounded-xl transition-all flex items-center gap-1.5 shrink-0 active:scale-95"
+                  className="px-3.5 py-2.5 bg-gray-100 hover:bg-gray-200/90 dark:bg-gray-800 dark:hover:bg-gray-700 text-[#1a2b3c] dark:text-gray-200 font-extrabold text-xs sm:text-sm rounded-xl transition-all flex items-center gap-1.5 shrink-0 active:scale-95"
                 >
-                  <Edit3 size={15} className="text-gray-600" />
+                  <Edit3 size={15} className="text-gray-600 dark:text-gray-400" />
                   <span>Edit</span>
                 </button>
 
@@ -401,7 +401,7 @@ const MyListings = () => {
                 <button
                   onClick={() => handleDelete(property.id, property.title)}
                   title="Delete Property Listing"
-                  className="p-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl transition-all shrink-0 active:scale-90 shadow-2xs"
+                  className="p-2.5 bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl transition-all shrink-0 active:scale-90 shadow-2xs"
                 >
                   <Trash2 size={17} />
                 </button>
@@ -419,15 +419,15 @@ const MyListings = () => {
         <div className="fixed inset-0 z-[999] flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity" onClick={() => setEditingProperty(null)} />
           
-          <div className="bg-white rounded-[32px] p-6 sm:p-8 max-w-lg w-full z-10 shadow-[0_20px_60px_rgba(0,0,0,0.2)] border border-gray-100 animate-in fade-in zoom-in-95 duration-200 text-left">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-6">
+          <div className="bg-white dark:bg-[#162231] rounded-[32px] p-6 sm:p-8 max-w-lg w-full z-10 shadow-[0_20px_60px_rgba(0,0,0,0.2)] dark:shadow-2xl border border-gray-100 dark:border-[#28394e] animate-in fade-in zoom-in-95 duration-200 text-left transition-colors">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-[#28394e] mb-6">
               <div>
-                <h3 className="text-xl font-black text-[#1a2b3c]">Edit Property Listing</h3>
-                <p className="text-xs text-gray-500 font-medium mt-0.5">Modify listing specifications and asking price.</p>
+                <h3 className="text-xl font-black text-[#1a2b3c] dark:text-white">Edit Property Listing</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mt-0.5">Modify listing specifications and asking price.</p>
               </div>
               <button
                 onClick={() => setEditingProperty(null)}
-                className="p-2 bg-gray-100 hover:bg-gray-200 rounded-xl text-gray-500 transition-colors"
+                className="p-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-xl text-gray-500 dark:text-gray-400 transition-colors"
               >
                 <X size={18} />
               </button>
@@ -435,44 +435,44 @@ const MyListings = () => {
 
             <form onSubmit={handleSaveEdit} className="space-y-4">
               <div>
-                <label className="block text-xs font-black uppercase text-gray-500 mb-1.5">Property Title</label>
+                <label className="block text-xs font-black uppercase text-gray-500 dark:text-gray-400 mb-1.5">Property Title</label>
                 <input
                   type="text"
                   required
                   value={editForm.title}
                   onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl font-bold text-sm text-[#1a2b3c] focus:border-[#047262] focus:outline-none focus:bg-white transition-all"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-[#1b2b3f] border border-gray-200 dark:border-[#28394e] rounded-2xl font-bold text-sm text-[#1a2b3c] dark:text-white focus:border-[#047262] dark:focus:border-[#0dc5a5] focus:outline-none focus:bg-white dark:focus:bg-[#162231] transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-black uppercase text-gray-500 mb-1.5">Location / City</label>
+                <label className="block text-xs font-black uppercase text-gray-500 dark:text-gray-400 mb-1.5">Location / City</label>
                 <input
                   type="text"
                   required
                   value={editForm.location}
                   onChange={(e) => setEditForm({ ...editForm, location: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl font-bold text-sm text-[#1a2b3c] focus:border-[#047262] focus:outline-none focus:bg-white transition-all"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-[#1b2b3f] border border-gray-200 dark:border-[#28394e] rounded-2xl font-bold text-sm text-[#1a2b3c] dark:text-white focus:border-[#047262] dark:focus:border-[#0dc5a5] focus:outline-none focus:bg-white dark:focus:bg-[#162231] transition-all"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-black uppercase text-gray-500 mb-1.5">Price Text</label>
+                  <label className="block text-xs font-black uppercase text-gray-500 dark:text-gray-400 mb-1.5">Price Text</label>
                   <input
                     type="text"
                     required
                     value={editForm.priceText}
                     onChange={(e) => setEditForm({ ...editForm, priceText: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl font-black text-sm text-[#047262] focus:border-[#047262] focus:outline-none focus:bg-white transition-all"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-[#1b2b3f] border border-gray-200 dark:border-[#28394e] rounded-2xl font-black text-sm text-[#047262] dark:text-[#0dc5a5] focus:border-[#047262] dark:focus:border-[#0dc5a5] focus:outline-none focus:bg-white dark:focus:bg-[#162231] transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-black uppercase text-gray-500 mb-1.5">Category</label>
+                  <label className="block text-xs font-black uppercase text-gray-500 dark:text-gray-400 mb-1.5">Category</label>
                   <select
                     value={editForm.category}
                     onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl font-bold text-sm text-[#1a2b3c] focus:border-[#047262] focus:outline-none transition-all"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-[#1b2b3f] border border-gray-200 dark:border-[#28394e] rounded-2xl font-bold text-sm text-[#1a2b3c] dark:text-white focus:border-[#047262] dark:focus:border-[#0dc5a5] focus:outline-none transition-all"
                   >
                     <option value="FLAT">FLAT</option>
                     <option value="VILLA">VILLA</option>
@@ -489,7 +489,7 @@ const MyListings = () => {
                     type="text"
                     value={editForm.beds}
                     onChange={(e) => setEditForm({ ...editForm, beds: e.target.value })}
-                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl font-bold text-sm text-center text-[#1a2b3c] focus:outline-none focus:border-[#047262]"
+                    className="w-full px-3 py-2.5 bg-gray-50 dark:bg-[#1b2b3f] border border-gray-200 dark:border-[#28394e] rounded-xl font-bold text-sm text-center text-[#1a2b3c] dark:text-white focus:outline-none focus:border-[#047262] dark:focus:border-[#0dc5a5]"
                   />
                 </div>
                 <div>
@@ -498,7 +498,7 @@ const MyListings = () => {
                     type="text"
                     value={editForm.baths}
                     onChange={(e) => setEditForm({ ...editForm, baths: e.target.value })}
-                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl font-bold text-sm text-center text-[#1a2b3c] focus:outline-none focus:border-[#047262]"
+                    className="w-full px-3 py-2.5 bg-gray-50 dark:bg-[#1b2b3f] border border-gray-200 dark:border-[#28394e] rounded-xl font-bold text-sm text-center text-[#1a2b3c] dark:text-white focus:outline-none focus:border-[#047262] dark:focus:border-[#0dc5a5]"
                   />
                 </div>
                 <div>
@@ -507,22 +507,22 @@ const MyListings = () => {
                     type="text"
                     value={editForm.sqft}
                     onChange={(e) => setEditForm({ ...editForm, sqft: e.target.value })}
-                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl font-bold text-sm text-center text-[#1a2b3c] focus:outline-none focus:border-[#047262]"
+                    className="w-full px-3 py-2.5 bg-gray-50 dark:bg-[#1b2b3f] border border-gray-200 dark:border-[#28394e] rounded-xl font-bold text-sm text-center text-[#1a2b3c] dark:text-white focus:outline-none focus:border-[#047262] dark:focus:border-[#0dc5a5]"
                   />
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-gray-100 flex items-center justify-end gap-3 mt-4">
+              <div className="pt-6 border-t border-gray-100 dark:border-[#28394e] flex items-center justify-end gap-3 mt-4">
                 <button
                   type="button"
                   onClick={() => setEditingProperty(null)}
-                  className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-sm transition-all"
+                  className="px-6 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl text-sm transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-7 py-3 bg-[#047262] hover:bg-[#03594d] active:scale-95 text-white font-extrabold rounded-xl text-sm shadow-md shadow-[#047262]/25 transition-all flex items-center gap-2"
+                  className="px-7 py-3 bg-[#047262] hover:bg-[#03594d] dark:bg-[#0dc5a5] dark:text-[#0b131e] dark:hover:bg-[#0bb395] active:scale-95 text-white font-extrabold rounded-xl text-sm shadow-md shadow-[#047262]/25 dark:shadow-none transition-all flex items-center gap-2"
                 >
                   <Save size={17} />
                   <span>Save Details</span>
