@@ -60,7 +60,7 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
       {/* =====================================================================
           DESKTOP LEFT SIDEBAR
           ===================================================================== */}
-      <aside className="hidden lg:flex w-64 shrink-0 bg-white dark:bg-[#111c2a] border-r border-gray-100/80 dark:border-gray-800 p-6 flex-col justify-between z-40 shadow-[2px_0_20px_rgba(0,0,0,0.01)] transition-colors duration-300">
+      <aside className="hidden lg:flex w-64 shrink-0 sticky top-0 h-screen bg-white dark:bg-[#111c2a] border-r border-gray-100/80 dark:border-gray-800 p-6 flex-col justify-between z-40 shadow-[2px_0_20px_rgba(0,0,0,0.01)] transition-colors duration-300 overflow-y-auto">
         <div>
           {/* Header & Logo */}
           <div className="mb-10 px-2 pt-2">
