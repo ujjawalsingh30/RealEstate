@@ -18,10 +18,10 @@ const MessageInbox = () => {
   const filteredMessages = useMemo(() => {
     return adminMessages.filter((msg) => {
       const matchesSearch = 
-        msg.senderName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        msg.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        msg.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        msg.message.toLowerCase().includes(searchQuery.toLowerCase());
+        (msg.senderName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (msg.subject || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (msg.email || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (msg.message || '').toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesTab = 
         activeTab === 'ALL' ||
@@ -70,18 +70,7 @@ const MessageInbox = () => {
     }
   };
 
-  // Delete Message
-  const handleDeleteMessage = (id, e) => {
-    if (e) e.stopPropagation();
-    if (window.confirm('Permanently remove this support contact message from Admin HQ?')) {
-      const nextList = adminMessages.filter((m) => m.id !== id);
-      setAdminMessages(nextList);
-      if (selectedMsgId === id && nextList.length > 0) {
-        setSelectedMsgId(nextList[0].id);
-      }
-      if (showToast) showToast('Support contact ticket removed.', 'info');
-    }
-  };
+  // Delete Message function removed
 
   // Send Reply
   const handleSendReply = (e) => {
@@ -245,15 +234,7 @@ const MessageInbox = () => {
                             <span>Open Ticket</span>
                           </span>
                         )}
-                        <button
-                          type="button"
-                          onClick={(e) => handleDeleteMessage(msg.id, e)}
-                          className="p-1 text-gray-300 dark:text-gray-600 hover:text-rose-500 dark:hover:text-rose-400 transition-colors ml-1"
-                          title="Delete ticket"
-                        >
-                        <Trash2 size={13} />
-                      </button>
-                    </div>
+                      </div>
                   </div>
                 </div>
               );
@@ -316,15 +297,6 @@ const MessageInbox = () => {
                   >
                     <CheckCircle2 size={15} className={activeMsg.resolved ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-700 dark:text-amber-400'} />
                     <span>{activeMsg.resolved ? 'Resolved ✔' : 'Mark Resolved'}</span>
-                  </button>
-                  
-                  <button
-                    type="button"
-                    onClick={(e) => handleDeleteMessage(activeMsg.id, e)}
-                    className="p-2.5 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl transition-all"
-                    title="Delete Message"
-                  >
-                    <Trash2 size={16} />
                   </button>
                 </div>
               </div>

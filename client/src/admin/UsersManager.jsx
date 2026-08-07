@@ -61,26 +61,7 @@ const UsersManager = () => {
     }
   };
 
-  // Delete User
-  const deleteUser = async (id, name, role) => {
-    if (role === 'ADMIN') {
-      if (showToast) showToast('Cannot delete an admin account.', 'error');
-      return;
-    }
-    if (window.confirm(`Are you sure you want to permanently delete platform account for "${name}"? This action cannot be undone.`)) {
-      try {
-        const res = await api.delete(`/admin/users/${role}/${id}`);
-        if (res.data.success) {
-          setUsersList((prev) => prev.filter((user) => user.id !== id));
-          if (showToast) {
-            showToast(`Account for "${name}" permanently removed.`, 'info');
-          }
-        }
-      } catch (err) {
-        if (showToast) showToast('Failed to delete user.', 'error');
-      }
-    }
-  };
+  // Delete User function removed
 
   // Filter & Search computation
   const filteredUsers = useMemo(() => {
@@ -364,17 +345,6 @@ const UsersManager = () => {
                           </button>
                         )}
 
-                        {/* Delete User Button */}
-                        {user.role !== 'ADMIN' && (
-                          <button
-                            type="button"
-                            onClick={() => deleteUser(user.id, user.name, user.role)}
-                            className="p-2.5 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-500 dark:text-rose-400 rounded-xl transition-all shadow-2xs active:scale-90"
-                            title="Permanently Delete User Account"
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        )}
                       </div>
                     </td>
 

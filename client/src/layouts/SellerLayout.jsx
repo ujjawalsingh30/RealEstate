@@ -94,8 +94,8 @@ const SellerLayout = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0b131e] flex flex-col font-sans antialiased transition-colors duration-300">
       
-      {/* Mobile Top App Bar (Visible on < 1024px) */}
-      <header className="lg:hidden relative z-40 bg-white/95 dark:bg-[#0f1926]/95 backdrop-blur-md px-6 py-3.5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between shadow-xs">
+      {/* Seller Top Navbar */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#0f1926]/95 backdrop-blur-md px-6 md:px-12 py-3.5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between shadow-[0_2px_15px_rgba(0,0,0,0.03)] transition-all">
         <div className="max-w-[1500px] mx-auto flex items-center justify-between relative w-full">
           
           {/* Left: Brand Logo */}
@@ -256,7 +256,7 @@ const SellerLayout = () => {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col bg-white dark:bg-[#0b131e] transition-colors duration-300">
+      <main className="flex-1 pt-20 md:pt-22 flex flex-col bg-white dark:bg-[#0b131e] transition-colors duration-300">
         <Outlet />
       </main>
     </div>

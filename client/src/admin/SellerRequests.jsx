@@ -99,24 +99,7 @@ const SellerRequests = () => {
     }
   };
 
-  // Handle Delete Request Archive
-  const handleDelete = async (id, agencyName) => {
-    if (window.confirm(`Are you sure you want to permanently delete archive record for "${agencyName}"? This action cannot be undone.`)) {
-      try {
-        const res = await api.delete(`/admin/sellers/${id}`);
-        if (res.data.success) {
-          if (setSellerRequests) {
-            setSellerRequests((prev) => prev.filter((req) => req.id !== id));
-          }
-          if (showToast) {
-            showToast(`Archived record for "${agencyName}" permanently removed.`, 'info');
-          }
-        }
-      } catch (err) {
-        if (showToast) showToast('Failed to delete seller record.', 'error');
-      }
-    }
-  };
+  // Delete Request Archive function removed
 
   // Document preview mock toast
   const handleViewDocs = (docName, agencyName) => {
@@ -384,14 +367,6 @@ const SellerRequests = () => {
                       </button>
                     )}
 
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(req.id, req.agencyName)}
-                      className="p-3 rounded-2xl bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 transition-all active:scale-95"
-                      title="Permanently Delete Archive Record"
-                    >
-                      <Trash2 size={17} />
-                    </button>
                   </div>
                 </div>
 

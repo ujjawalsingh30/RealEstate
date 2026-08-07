@@ -14,11 +14,9 @@ router.post('/logout', adminAuth, adminLogout);
 // Seller Management Endpoints
 router.get('/sellers', getAllSellers); // Temporarily bypass adminAuth for testing
 router.put('/sellers/:id/status', updateSellerStatus);
-router.delete('/sellers/:id', deleteSeller);
 
 // Unified User Management Endpoints
 router.get('/users', getAllUsers); // Temporarily bypass adminAuth for testing
 router.put('/users/:role/:id/status', updateUserStatusUnified);
-router.delete('/users/:role/:id', deleteUnifiedUser);
 
 export default router;
