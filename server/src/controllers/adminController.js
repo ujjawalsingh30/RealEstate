@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import Admin from '../models/adminModel.js';
 import Buyer from '../models/buyerModel.js';
 import Seller from '../models/sellerModel.js';
+import Property from '../models/propertyModel.js';
 
 /**
  * @desc    Authenticate Admin & Generate JWT Token (Uses Mongoose AdminModel + Auto-Seed)
@@ -389,3 +390,48 @@ export const deleteUnifiedUser = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error deleting user.' });
   }
 };
+
+/**
+ * @desc    Get Admin Dashboard Statistics
+ * @route   GET /api/admin/stats
+ * @access  Private (Admin Only)
+ */
+export const getAdminStats = async (req, res) => {
+  try {
+    const [totalBuyers, totalSellers, totalProperties, pendingSellers, recentSellers] = await Promise.all([
+      Buyer.countDocuments(),
+      Seller.countDocuments(),
+      Property.countDocuments(),
+      Seller.countDocuments({ status: 'pending' }),
+      Seller.find({ status: 'pending' }).select('name email status createdAt').sort({ createdAt: -1 }).limit(5)
+    ]);
+
+    const verifiedSellers = totalSellers - pendingSellers; // Approximation for active vs pending
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        totalBuyers,
+        totalSellers,
+        verifiedSellers,
+        pendingSellers,
+        totalProperties
+      },
+      recentRequests: recentSellers.map(s => ({
+        id: `SR-${s._id.toString().slice(-4).toUpperCase()}`,
+        seller: s.name,
+        type: 'Seller Account Approval',
+        date: new Date(s.createdAt).toISOString().split('T')[0],
+        status: 'Pending Review',
+        rawId: s._id
+      }))
+    });
+  } catch (error) {
+    console.error('❌ Get Admin Stats Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error retrieving admin stats.'
+    });
+  }
+};
+

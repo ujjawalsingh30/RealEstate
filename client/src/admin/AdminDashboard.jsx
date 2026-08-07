@@ -21,45 +21,19 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await api.get('/admin/users');
+        const response = await api.get('/admin/stats');
         
         if (response.data.success) {
-          const users = response.data.users;
+          const { stats, recentRequests } = response.data;
           
-          let tSellers = 0;
-          let tBuyers = 0;
-          let vSellers = 0;
-          let pSellers = 0;
-          const requests = [];
-
-          users.forEach(user => {
-            if (user.role === 'SELLER') {
-              tSellers++;
-              if (user.status === 'Active') vSellers++;
-              if (user.status === 'Pending' || user.status === 'Suspended') {
-                if (user.status === 'Pending') pSellers++; // Track actual pending sellers for audits
-                requests.push({
-                  id: `SR-${user.id.slice(-4).toUpperCase()}`,
-                  seller: user.name,
-                  type: 'Seller Account Approval',
-                  date: user.joined,
-                  status: 'Pending Review',
-                  rawId: user.id
-                });
-              }
-            } else if (user.role === 'BUYER') {
-              tBuyers++;
-            }
-          });
-
           setDashboardStats({
-            totalSellers: tSellers,
-            totalBuyers: tBuyers,
-            verifiedSellers: vSellers,
-            pendingSellers: pSellers
+            totalSellers: stats.totalSellers,
+            totalBuyers: stats.totalBuyers,
+            verifiedSellers: stats.verifiedSellers,
+            pendingSellers: stats.pendingSellers
           });
           
-          setRecentRequests(requests.slice(0, 4));
+          setRecentRequests(recentRequests);
         }
       } catch (error) {
         console.error('Error fetching dashboard stats:', error);

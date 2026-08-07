@@ -5,101 +5,51 @@ import {
   Maximize, ShieldCheck, Plus, Building, FileText, CheckCircle2, X, Save
 } from 'lucide-react';
 import { usePropertyContext } from '../context/PropertyContext';
+import api from '../config/api';
 
 const MyListings = () => {
   const { properties, setProperties, showToast } = usePropertyContext();
   const navigate = useNavigate();
 
   // Initial enriched listings matching & expanding on the user screenshot
-  const [listings, setListings] = useState(() => {
-    // Check if seller already has listings in context or format them
-    const baseListings = [
-      {
-        id: 101,
-        title: 'Luxury 3BHK Apartment in Downtown',
-        location: 'Worli, Mumbai',
-        priceText: '₹85,00,000',
-        priceVal: 0.85,
-        category: 'FLAT',
-        status: 'Available',
-        verified: true,
-        views: 3,
-        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
-        specs: { beds: 3, baths: 2, sqft: 1500, label1: 'BEDS', label2: 'BATHS', label3: 'SQ FT' }
-      },
-      {
-        id: 102,
-        title: 'Horizon Grande Luxury Towers',
-        location: 'New Town Action Area II, Rajarhat, Kolkata',
-        priceText: '₹1,48,00,000',
-        priceVal: 1.48,
-        category: 'VILLA',
-        status: 'Available',
-        verified: true,
-        views: 0,
-        image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80',
-        specs: { beds: 3, baths: 4, sqft: 2100, label1: 'BEDS', label2: 'BATHS', label3: 'SQ FT' }
-      },
-      {
-        id: 103,
-        title: 'Coral Bay Elite Residency',
-        location: 'Vibhuti Khand, Gomti Nagar Extension, Lucknow',
-        priceText: '₹56,00,000',
-        priceVal: 0.56,
-        category: 'COMMERCIAL',
-        status: 'Available',
-        verified: true,
-        views: 1,
-        image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80',
-        specs: { beds: 'sale', baths: '980', sqft: 'OK', label1: 'TYPE', label2: 'SQ FT', label3: 'LEGAL' }
-      },
-      {
-        id: 104,
-        title: 'Emerald Sky Signature Villas',
-        location: 'Sector 150, Near Noida-Greater Noida Expressway, Noida',
-        priceText: '₹1,85,00,000',
-        priceVal: 1.85,
-        category: 'FLAT',
-        status: 'Available',
-        verified: true,
-        views: 1,
-        image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80',
-        specs: { beds: 4, baths: 4, sqft: 2400, label1: 'BEDS', label2: 'BATHS', label3: 'SQ FT' }
-      }
-    ];
+  const [listings, setListings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    // Merge in any properties from Context if available
-    const contextListings = (properties || []).map((p) => ({
-      id: p.id,
-      title: p.title || 'Premium Residential Tower',
-      location: p.location || 'Prime Urban District',
-      priceText: p.priceText || '₹1,25,00,000',
-      priceVal: p.priceVal || 1.25,
-      category: p.category || 'FLAT',
-      status: p.status === 'Sold' ? 'Sold' : 'Available',
-      verified: p.verified !== false,
-      views: p.views || Math.floor(Math.random() * 15) + 1,
-      image: p.image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
-      specs: {
-        beds: p.bhk || 3,
-        baths: p.baths || 3,
-        sqft: p.sqft || 1800,
-        label1: 'BEDS',
-        label2: 'BATHS',
-        label3: 'SQ FT'
+  useEffect(() => {
+    const fetchSellerProperties = async () => {
+      try {
+        const response = await api.get('/properties/seller-listings');
+        if (response.data.success) {
+          const fetchedListings = response.data.properties.map((p) => ({
+            id: p._id,
+            title: p.title || 'Premium Residential Tower',
+            location: p.location || 'Prime Urban District',
+            priceText: p.priceText || '₹1,25,00,000',
+            priceVal: p.priceVal || 1.25,
+            category: p.category || 'FLAT',
+            status: p.status === 'Sold' ? 'Sold' : 'Available',
+            verified: p.verified !== false,
+            views: p.views || Math.floor(Math.random() * 15) + 1,
+            image: p.image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+            specs: {
+              beds: p.bhk || 3,
+              baths: p.baths || 3,
+              sqft: p.sqft || 1800,
+              label1: 'BEDS',
+              label2: 'BATHS',
+              label3: 'SQ FT'
+            }
+          }));
+          setListings(fetchedListings);
+        }
+      } catch (error) {
+        console.error('Error fetching seller listings:', error);
+      } finally {
+        setLoading(false);
       }
-    }));
-
-    // Avoid duplicates by title
-    const combined = [...baseListings];
-    contextListings.forEach((cp) => {
-      if (!combined.some((item) => item.title.toLowerCase() === cp.title.toLowerCase())) {
-        combined.push(cp);
-      }
-    });
-
-    return combined;
-  });
+    };
+    fetchSellerProperties();
+  }, []);
 
   // Active Dropdown state for selecting property status (Available vs Sold)
   const [openDropdownId, setOpenDropdownId] = useState(null);

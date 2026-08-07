@@ -6,6 +6,7 @@ import connectCloudinary from './src/config/cloudinary.js';
 import adminRoutes from './src/routes/adminRoutes.js';
 import sellerRoutes from './src/routes/sellerRoutes.js';
 import buyerRoutes from './src/routes/buyerRoutes.js';
+import propertyRoutes from './src/routes/propertyRoutes.js';
 import { setServers } from 'node:dns/promises';
 
 // Attempt to use Google Public DNS for reliable MongoDB Atlas srv resolution on Windows ISPs
@@ -37,6 +38,7 @@ app.options('/*path', cors()); // Pre-flight options handling compliant with Exp
 app.use('/api/admin', adminRoutes);
 app.use('/api/seller', sellerRoutes);
 app.use('/api/buyer', buyerRoutes);
+app.use('/api/properties', propertyRoutes);
 
 // Health Check / Default Root Route
 app.get('/', (req, res) => {

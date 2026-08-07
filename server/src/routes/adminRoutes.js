@@ -1,5 +1,5 @@
 import express from 'express';
-import { adminLogin, verifyAdminToken, adminLogout, getAllSellers, updateSellerStatus, deleteSeller, getAllUsers, updateUserStatusUnified, deleteUnifiedUser } from '../controllers/adminController.js';
+import { adminLogin, verifyAdminToken, adminLogout, getAllSellers, updateSellerStatus, deleteSeller, getAllUsers, updateUserStatusUnified, deleteUnifiedUser, getAdminStats } from '../controllers/adminController.js';
 import adminAuth from '../middleware/adminAuth.js';
 
 const router = express.Router();
@@ -11,12 +11,15 @@ router.post('/login', adminLogin);
 router.get('/verify', adminAuth, verifyAdminToken);
 router.post('/logout', adminAuth, adminLogout);
 
+// Dashboard Stats Endpoint
+router.get('/stats', adminAuth, getAdminStats);
+
 // Seller Management Endpoints
-router.get('/sellers', getAllSellers); // Temporarily bypass adminAuth for testing
-router.put('/sellers/:id/status', updateSellerStatus);
+router.get('/sellers', adminAuth, getAllSellers);
+router.put('/sellers/:id/status', adminAuth, updateSellerStatus);
 
 // Unified User Management Endpoints
-router.get('/users', getAllUsers); // Temporarily bypass adminAuth for testing
-router.put('/users/:role/:id/status', updateUserStatusUnified);
+router.get('/users', adminAuth, getAllUsers);
+router.put('/users/:role/:id/status', adminAuth, updateUserStatusUnified);
 
 export default router;

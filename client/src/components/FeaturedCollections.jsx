@@ -35,12 +35,12 @@ const FeaturedCollections = () => {
             3 PROPERTY CARDS IN ONE ROW GRID
             =================================================================== */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 text-left items-stretch">
-          {featuredList.map((prop) => {
-            const isFav = wishlistIds.includes(prop.id);
+          {featuredList.map((prop, idx) => {
+            const isFav = wishlistIds.includes(prop.id || prop._id);
             return (
               <div
-                key={prop.id}
-                onClick={() => navigate(`/properties/${prop.id}`)}
+                key={prop._id || prop.id || idx}
+                onClick={() => navigate(`/properties/${prop._id || prop.id}`)}
                 className="bg-white dark:bg-[#162231] rounded-[28px] sm:rounded-[32px] border border-gray-100 dark:border-gray-800 shadow-[0_8px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(4,114,98,0.12)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col group cursor-pointer"
               >
                 {/* Photo & Price Overlay */}
@@ -75,7 +75,7 @@ const FeaturedCollections = () => {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleWishlist(prop.id, navigate);
+                      toggleWishlist(prop._id || prop.id, navigate);
                     }}
                     className="absolute top-4 right-4 w-10 h-10 bg-white/95 hover:bg-white rounded-full flex items-center justify-center text-gray-700 transition-all duration-200 shadow-md transform active:scale-90 hover:scale-110 focus:outline-none z-10"
                     title={isFav ? "Remove from wishlist" : "Add to wishlist"}
@@ -170,7 +170,7 @@ const FeaturedCollections = () => {
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/properties/${prop.id}`);
+                        navigate(`/properties/${prop._id || prop.id}`);
                       }}
                       className="w-full py-3.5 px-4 bg-[#e0f5f0]/80 dark:bg-[#1e2f45] group-hover:bg-[#047262] dark:group-hover:bg-[#0dc5a5] text-[#047262] dark:text-[#0dc5a5] group-hover:text-white dark:group-hover:text-slate-950 rounded-2xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all duration-300 shadow-xs active:scale-95"
                     >
