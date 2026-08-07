@@ -21,7 +21,7 @@ const connectDB = async () => {
       : `${dbURI.replace(/\/$/, '')}/realestate_db`;
 
     const conn = await mongoose.connect(connectionString);
-    console.log(`📡 MongoDB Host: ${conn.connection.host}`);
+    console.log(`📡 MongoDB Host: ${conn.connection.host} | Active Database: [ ${conn.connection.name} ]`);
   } catch (error) {
     console.error("❌ Failed to connect to MongoDB:", error.message);
     console.error("💡 Tip: Ensure local MongoDB server is running or check your MONGODB_URI in the server/.env file.");

@@ -48,7 +48,7 @@ const AuthAwareLayout = () => {
   const role = localStorage.getItem('userRole');
   if (role === 'seller') return <SellerLayout />;
   if (role === 'buyer') return <BuyerLayout />;
-  if (role === 'admin') return <AdminLayout />;
+  if (role === 'admin' || role === 'superadmin') return <AdminLayout />;
   return <PublicLayout />;
 };
 
@@ -101,7 +101,7 @@ const App = () => {
         </Route>
 
         {/* Protected Admin Account Routes */}
-        <Route element={<ProtectedRoute allowedRole="admin"><AdminLayout /></ProtectedRoute>}>
+        <Route element={<ProtectedRoute allowedRoles={['admin', 'superadmin']}><AdminLayout /></ProtectedRoute>}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/users" element={<UsersManager />} />
           <Route path="/admin/seller-requests" element={<SellerRequests />} />

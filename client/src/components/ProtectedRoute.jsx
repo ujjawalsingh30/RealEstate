@@ -35,7 +35,7 @@ const ProtectedRoute = ({ allowedRole, allowedRoles, children }) => {
   if (permittedRoles && !permittedRoles.includes(currentRole)) {
     // Helper to safely navigate user back to their designated workspace
     const getFallbackPath = () => {
-      if (currentRole === 'admin') return '/admin/dashboard';
+      if (currentRole === 'admin' || currentRole === 'superadmin') return '/admin/dashboard';
       if (currentRole === 'seller') return '/seller/dashboard';
       return '/buyer/home';
     };
