@@ -10,7 +10,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="relative z-40 px-6 md:px-10 py-4 md:py-6 bg-white/60 dark:bg-[#0f1926]/80 backdrop-blur-md border-b border-gray-200/40 dark:border-gray-800 shadow-xs transition-all duration-300">
+      <nav className="fixed top-0 left-0 right-0 z-50 px-6 md:px-10 py-4 md:py-6 bg-white/60 dark:bg-[#0f1926]/80 backdrop-blur-md border-b border-gray-200/40 dark:border-gray-800 shadow-xs transition-all duration-300">
         <div className="flex items-center justify-between max-w-[1500px] mx-auto relative">
           {/* Logo Section */}
           <Link to="/" className="flex items-center gap-2.5 cursor-pointer z-10">
