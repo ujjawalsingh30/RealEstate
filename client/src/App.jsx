@@ -26,6 +26,7 @@ import Wishlist from './buyer/Wishlist';
 import AddProperty from './seller/AddProperty';
 import MyListings from './seller/MyListings';
 import SellerDashboard from './seller/SellerDashboard';
+import SellerMessages from './seller/messages';
 
 // Admin
 import AdminDashboard from './admin/AdminDashboard';
@@ -98,6 +99,7 @@ const App = () => {
           <Route path="/seller/my-listings" element={<MyListings />} />
           <Route path="/seller/profile" element={<Profile />} />
           <Route path="/seller/support" element={<ContactUs />} />
+          <Route path="/seller/messages" element={<SellerMessages />} />
         </Route>
 
         {/* Protected Admin Account Routes */}

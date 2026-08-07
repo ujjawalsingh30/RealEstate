@@ -105,28 +105,24 @@ const SellerLayout = () => {
           </Link>
 
           {/* Center: Rounded Nav Pill (Desktop) */}
-          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 bg-white dark:bg-[#162231] border border-gray-200/80 dark:border-[#28394e] rounded-full px-9 py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] items-center gap-8 z-10 transition-all">
+          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 bg-gray-100/90 dark:bg-[#18273a] backdrop-blur-md px-8 py-2.5 rounded-full items-center gap-8 shadow-xs border border-gray-200/60 dark:border-[#28394e] z-10 transition-all">
             <Link 
               to="/seller/home" 
-              className={`text-[15px] font-bold transition-colors py-1 ${
-                location.pathname === '/seller/home' ? 'text-[#047262] dark:text-[#0dc5a5]' : 'text-[#1a2b3c] dark:text-gray-300 hover:text-[#047262]'
-              }`}
+              className="text-[#1a2b3c] dark:text-gray-200 font-bold text-sm hover:text-[#047262] dark:hover:text-[#0dc5a5] transition-colors"
             >
               Home
             </Link>
             <Link 
               to="/properties" 
-              className={`text-[15px] font-bold transition-colors py-1 ${
-                location.pathname === '/properties' ? 'text-[#047262] dark:text-[#0dc5a5]' : 'text-[#1a2b3c] dark:text-gray-300 hover:text-[#047262]'
-              }`}
+              className="text-[#1a2b3c] dark:text-gray-200 font-bold text-sm hover:text-[#047262] dark:hover:text-[#0dc5a5] transition-colors"
             >
               Browse Properties
             </Link>
             <button 
               onClick={handleDashboardClick}
-              className="text-[#1a2b3c] dark:text-gray-300 font-bold text-[15px] hover:text-[#047262] dark:hover:text-[#0dc5a5] transition-colors py-1 focus:outline-none cursor-pointer flex items-center gap-1"
+              className="text-white bg-[#047262] hover:bg-[#03594d] dark:bg-[#0dc5a5] dark:text-[#0b131e] dark:hover:bg-[#0bb395] font-bold text-sm px-4 py-1.5 rounded-full transition-colors focus:outline-none"
             >
-              <span>Dashboard</span>
+              Dashboard
             </button>
           </nav>
 
