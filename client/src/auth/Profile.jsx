@@ -236,7 +236,7 @@ const Profile = () => {
   const wishlistCount = wishlistIds ? wishlistIds.length : 2;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b131e] py-6 sm:py-10 px-3 sm:px-6 md:px-8 lg:px-12 font-sans antialiased text-left transition-colors duration-300">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-black py-6 sm:py-10 px-3 sm:px-6 md:px-8 lg:px-12 font-sans antialiased text-left transition-colors duration-300">
       <div className="max-w-[1360px] mx-auto">
         
         {/* =========================================================================

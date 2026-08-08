@@ -101,7 +101,7 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-[1650px] mx-auto text-left font-sans antialiased bg-gray-50 dark:bg-[#0b131e] min-h-screen space-y-8 sm:space-y-10 transition-colors duration-300">
+    <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-[1650px] mx-auto text-left font-sans antialiased bg-gray-50 dark:bg-black min-h-screen space-y-8 sm:space-y-10 transition-colors duration-300">
       
       {/* Header & Status Banner */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-gray-200/80 dark:border-gray-800">

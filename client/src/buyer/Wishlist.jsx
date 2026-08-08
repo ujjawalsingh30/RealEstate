@@ -12,7 +12,7 @@ const Wishlist = () => {
   const savedProperties = properties.filter(p => wishlistIds.includes(p.id));
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0b131e] flex flex-col justify-between font-sans antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-black flex flex-col justify-between font-sans antialiased transition-colors duration-300">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 pt-8 sm:pt-12 pb-24 w-full">
         
         {/* Breadcrumb Navigation */}

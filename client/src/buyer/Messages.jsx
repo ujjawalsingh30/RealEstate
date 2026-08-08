@@ -6,7 +6,7 @@ const Messages = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0b131e] py-10 px-6 md:px-12 transition-colors duration-300 font-sans antialiased text-left">
+    <div className="min-h-screen bg-gray-50 dark:bg-black py-10 px-6 md:px-12 transition-colors duration-300 font-sans antialiased text-left">
       <div className="max-w-[1200px] mx-auto">
         
         {/* Header & Theme Controls */}

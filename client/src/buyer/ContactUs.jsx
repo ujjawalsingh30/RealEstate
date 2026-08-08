@@ -102,7 +102,7 @@ const ContactUs = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50/70 dark:bg-[#0b131e] transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50/70 dark:bg-black transition-colors duration-300">
       
       {/* Header Banner Section */}
       <section className="bg-white dark:bg-[#162231] pt-10 md:pt-16 pb-16 px-6 md:px-12 border-b border-gray-100 dark:border-gray-800 relative transition-colors">

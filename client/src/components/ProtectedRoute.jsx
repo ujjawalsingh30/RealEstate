@@ -13,7 +13,7 @@ const ProtectedRoute = ({ allowedRole, allowedRoles, children }) => {
   // Display clean spinner during active authentication state transition
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-[#0b131e] transition-colors duration-300 gap-3.5">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-black transition-colors duration-300 gap-3.5">
         <div className="w-12 h-12 rounded-2xl bg-[#e0f5f0] dark:bg-[#047262]/20 flex items-center justify-center text-[#047262] dark:text-[#2de2c5] shadow-lg animate-pulse">
           <Loader2 size={26} className="animate-spin" />
         </div>

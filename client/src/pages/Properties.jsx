@@ -95,7 +95,7 @@ const Properties = () => {
   }, [allProperties, searchLocation, priceLimit, selectedTypes, selectedBhk, sortBy]);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b131e] py-5 sm:py-8 px-3 sm:px-6 md:px-8 lg:px-12 font-sans text-left antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-black py-5 sm:py-8 px-3 sm:px-6 md:px-8 lg:px-12 font-sans text-left antialiased transition-colors duration-300">
       <div className="max-w-[1500px] mx-auto">
         
         {/* =========================================================================

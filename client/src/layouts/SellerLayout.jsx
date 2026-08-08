@@ -47,7 +47,7 @@ const SellerLayout = () => {
   // =========================================================================
   if (isDashboardMode) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0b131e] flex flex-col lg:flex-row font-sans transition-colors duration-300">
+      <div className="min-h-screen bg-white dark:bg-black flex flex-col lg:flex-row font-sans transition-colors duration-300">
         {/* Mobile Header Bar for Dashboard Mode */}
         <header className="lg:hidden sticky top-0 z-40 bg-white dark:bg-[#0f1926] border-b border-gray-100 dark:border-gray-800 px-6 py-3.5 flex items-center justify-between shadow-xs">
           <Link to="/seller/home" className="flex items-center gap-2.5">
@@ -80,7 +80,7 @@ const SellerLayout = () => {
         />
 
         {/* Dashboard Main Content Area (shifted left by 64 (256px) on Desktop) */}
-        <main className="flex-1 min-h-screen bg-white dark:bg-[#0b131e] flex flex-col transition-all duration-300">
+        <main className="flex-1 min-h-screen bg-white dark:bg-black flex flex-col transition-all duration-300">
           {isSellerVerified ? <Outlet /> : <PendingApproval />}
         </main>
         </div>
@@ -92,7 +92,7 @@ const SellerLayout = () => {
   // STATE 2: SELLER BROWSING VIEW (Top Navbar for Home, Browse Properties, etc.)
   // =========================================================================
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0b131e] flex flex-col font-sans antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-black flex flex-col font-sans antialiased transition-colors duration-300">
       
       {/* Seller Top Navbar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#0f1926]/95 backdrop-blur-md px-6 md:px-12 py-3.5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between shadow-[0_2px_15px_rgba(0,0,0,0.03)] transition-all">
@@ -256,7 +256,7 @@ const SellerLayout = () => {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 pt-20 md:pt-22 flex flex-col bg-white dark:bg-[#0b131e] transition-colors duration-300">
+      <main className="flex-1 pt-20 md:pt-22 flex flex-col bg-white dark:bg-black transition-colors duration-300">
         <Outlet />
       </main>
     </div>

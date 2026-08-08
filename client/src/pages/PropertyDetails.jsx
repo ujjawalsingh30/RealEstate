@@ -52,7 +52,7 @@ const PropertyDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0b131e] text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-300">
       {/* Main Content Area */}
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 pt-6 sm:pt-10 pb-20">
         

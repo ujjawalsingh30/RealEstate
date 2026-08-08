@@ -21,9 +21,11 @@ export const PropertyProvider = ({ children }) => {
   };
 
   const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProperties = async () => {
+      setLoading(true);
       try {
         const response = await api.get('/properties');
         if (response.data.success) {
@@ -31,6 +33,8 @@ export const PropertyProvider = ({ children }) => {
         }
       } catch (err) {
         console.error('Failed to fetch properties from backend:', err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProperties();
@@ -252,7 +256,8 @@ export const PropertyProvider = ({ children }) => {
     setIsSellerVerified,
     addSellerRequest,
     theme,
-    toggleTheme
+    toggleTheme,
+    loading
   };
 
   return (

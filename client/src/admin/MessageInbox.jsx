@@ -93,7 +93,7 @@ const MessageInbox = () => {
   const buyerCount = adminMessages.filter((m) => m.senderRole === 'BUYER').length;
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-[1650px] mx-auto text-left font-sans antialiased bg-gray-50 dark:bg-[#0b131e] min-h-screen transition-colors duration-300">
+    <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-[1650px] mx-auto text-left font-sans antialiased bg-gray-50 dark:bg-black min-h-screen transition-colors duration-300">
       
       {/* =====================================================================
           HEADER SECTION

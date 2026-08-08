@@ -17,7 +17,7 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0b131e] flex flex-col font-sans antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-black flex flex-col font-sans antialiased transition-colors duration-300">
       
       {/* Mobile Top App Bar (Visible on < 1024px) */}
       <header className="lg:hidden relative z-40 bg-white/95 dark:bg-[#0f1926]/95 backdrop-blur-md px-5 py-3.5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between shadow-xs">
@@ -57,7 +57,7 @@ const AdminLayout = () => {
         />
 
         {/* Main Admin Content Area */}
-        <main className="flex-1 min-h-screen bg-gray-50 dark:bg-[#0b131e] flex flex-col transition-colors duration-300 w-full overflow-hidden">
+        <main className="flex-1 min-h-screen bg-gray-50 dark:bg-black flex flex-col transition-colors duration-300 w-full overflow-hidden">
           <Outlet />
         </main>
       </div>
