@@ -22,7 +22,7 @@ const BuyerLayout = () => {
     { name: 'Property', path: '/properties', icon: <Building size={18} /> },
     { name: 'Wishlist', path: '/wishlist', icon: <Heart size={18} /> },
     { name: 'Messages', path: '/messages', icon: <MessageSquare size={18} /> },
-    { name: 'Contact Us', path: '/contact-us', icon: <Phone size={18} /> },
+   
   ];
 
   return (

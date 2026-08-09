@@ -69,8 +69,6 @@ const App = () => {
         <Route element={<AuthAwareLayout />}>
           <Route path="/properties" element={<Properties />} />
           <Route path="/properties/:id" element={<PropertyDetails />} />
-          <Route path="/property/:id" element={<PropertyDetails />} />
-          <Route path="/property-details" element={<PropertyDetails />} />
           <Route path="/property-details/:id" element={<PropertyDetails />} />
         </Route>
 
@@ -87,8 +85,7 @@ const App = () => {
           <Route path="/buyer/messages" element={<Messages />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/buyer/wishlist" element={<Wishlist />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/buyer/contact-us" element={<ContactUs />} />
+
         </Route>
 
         {/* Protected Seller Account Layout Routes */}
@@ -109,8 +106,6 @@ const App = () => {
           <Route path="/admin/seller-requests" element={<SellerRequests />} />
           <Route path="/admin/properties" element={<Properties />} />
           <Route path="/admin/message-inbox" element={<MessageInbox />} />
-          <Route path="/admin/message inbox" element={<MessageInbox />} />
-          <Route path="/admin/messages" element={<MessageInbox />} />
           <Route path="/admin/inquiries" element={<MessageInbox />} />
           <Route path="/admin/contact-inbox" element={<MessageInbox />} />
           <Route path="/admin/profile" element={<Profile />} />

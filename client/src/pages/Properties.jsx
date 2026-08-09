@@ -148,16 +148,8 @@ const Properties = () => {
               <option value="views">Most Viewed</option>
             </select>
 
-            {/* View Mode & Theme Toggle on Phone */}
+            {/* View Mode on Phone */}
             <div className="flex items-center gap-1 bg-white dark:bg-[#162231] p-1 rounded-xl border border-gray-200/90 dark:border-gray-700 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
-              <button
-                type="button"
-                onClick={toggleTheme}
-                title="Toggle Theme"
-                className="p-2 rounded-lg text-gray-500 dark:text-amber-400 hover:bg-gray-100 dark:hover:bg-[#1e2f45] transition-all"
-              >
-                {theme === 'dark' ? <Sun size={17} className="animate-spin-slow" /> : <Moon size={17} />}
-              </button>
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg transition-all ${
@@ -528,17 +520,6 @@ const Properties = () => {
                     <option value="views">Most Viewed</option>
                   </select>
                 </div>
-
-                {/* Desktop Theme Toggle Switch */}
-                <button
-                  type="button"
-                  onClick={toggleTheme}
-                  title="Toggle Display Theme"
-                  className="px-4 py-2 bg-gray-100 dark:bg-[#1b2b3f] hover:bg-gray-200 dark:hover:bg-[#23354c] text-gray-700 dark:text-amber-400 border border-gray-200/80 dark:border-gray-700 rounded-xl transition-all flex items-center gap-2 font-bold text-xs shadow-2xs"
-                >
-                  {theme === 'dark' ? <Sun size={15} className="animate-spin-slow" /> : <Moon size={15} />}
-                  <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-                </button>
               </div>
             </div>
 

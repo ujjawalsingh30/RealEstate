@@ -36,16 +36,7 @@ const Wishlist = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Theme Toggle Button */}
-            <button
-              type="button"
-              onClick={toggleTheme}
-              title="Toggle Theme"
-              className="p-3.5 bg-white dark:bg-[#162231] hover:bg-gray-100 dark:hover:bg-[#1e2f45] text-gray-700 dark:text-amber-400 border border-gray-200 dark:border-gray-700 rounded-2xl transition-all flex items-center gap-2 font-bold text-sm shadow-xs"
-            >
-              {theme === 'dark' ? <Sun size={18} className="animate-spin-slow text-amber-400" /> : <Moon size={18} />}
-              <span className="hidden sm:inline text-xs">{theme === 'dark' ? 'Light' : 'Dark'}</span>
-            </button>
+
 
             <button 
               onClick={() => navigate('/properties')}

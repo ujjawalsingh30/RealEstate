@@ -21,15 +21,7 @@ const Messages = () => {
             </h1>
           </div>
 
-          <button
-            type="button"
-            onClick={toggleTheme}
-            title="Toggle Display Theme"
-            className="p-3.5 rounded-2xl bg-white dark:bg-[#162231] hover:bg-gray-100 dark:hover:bg-[#1e2f45] text-gray-700 dark:text-amber-400 border border-gray-200 dark:border-gray-700 font-bold text-sm flex items-center gap-2 transition-all shadow-xs"
-          >
-            {theme === 'dark' ? <Sun size={18} className="animate-spin-slow text-amber-400" /> : <Moon size={18} />}
-            <span className="text-xs">{theme === 'dark' ? 'Light' : 'Dark'} Mode</span>
-          </button>
+
         </div>
 
         {/* Empty State Banner */}
