@@ -13,7 +13,7 @@ const FeaturedCollections = () => {
   const featuredList = properties.slice(0, 6);
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 md:px-8 bg-white dark:bg-black text-center font-sans antialiased border-t border-gray-100/80 dark:border-gray-800 transition-colors duration-300">
+    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 md:px-8 bg-[#ffffff] dark:bg-black text-center font-sans antialiased border-t border-gray-100/80 dark:border-gray-800 transition-colors duration-300">
       <div className="max-w-[1500px] mx-auto">
         
         {/* ===================================================================
@@ -37,26 +37,26 @@ const FeaturedCollections = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 text-left items-stretch">
           {loading ? (
             Array(6).fill(0).map((_, idx) => (
-              <div key={`shimmer-${idx}`} className="bg-white dark:bg-[#162231] rounded-[28px] sm:rounded-[32px] border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden flex flex-col h-[520px]">
-                <div className="h-64 sm:h-72 bg-gray-200 dark:bg-[#203147] animate-pulse shrink-0 w-full relative">
-                  <div className="absolute top-4 left-4 h-6 w-20 bg-gray-300 dark:bg-[#2a405c] rounded-full animate-pulse z-10"></div>
-                  <div className="absolute top-4 right-4 h-10 w-10 bg-gray-300 dark:bg-[#2a405c] rounded-full animate-pulse z-10"></div>
-                  <div className="absolute bottom-4 left-5 h-8 w-32 bg-gray-300 dark:bg-[#2a405c] rounded-md animate-pulse z-10"></div>
+              <div key={`shimmer-${idx}`} className="bg-[#ffffff] dark:bg-black rounded-[28px] sm:rounded-[32px] border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden flex flex-col h-[520px]">
+                <div className="h-64 sm:h-72 bg-gray-200 dark:bg-gray-900 animate-pulse shrink-0 w-full relative">
+                  <div className="absolute top-4 left-4 h-6 w-20 bg-gray-300 dark:bg-gray-800 rounded-full animate-pulse z-10"></div>
+                  <div className="absolute top-4 right-4 h-10 w-10 bg-gray-300 dark:bg-gray-800 rounded-full animate-pulse z-10"></div>
+                  <div className="absolute bottom-4 left-5 h-8 w-32 bg-gray-300 dark:bg-gray-800 rounded-md animate-pulse z-10"></div>
                 </div>
                 <div className="p-6 flex flex-col flex-1">
                   <div className="flex justify-between mb-4">
-                    <div className="h-4 w-24 bg-gray-200 dark:bg-[#203147] rounded animate-pulse"></div>
-                    <div className="h-4 w-12 bg-gray-200 dark:bg-[#203147] rounded animate-pulse"></div>
+                    <div className="h-4 w-24 bg-gray-200 dark:bg-gray-900 rounded animate-pulse"></div>
+                    <div className="h-4 w-12 bg-gray-200 dark:bg-gray-900 rounded animate-pulse"></div>
                   </div>
-                  <div className="h-6 w-3/4 bg-gray-200 dark:bg-[#203147] rounded animate-pulse mb-3"></div>
-                  <div className="h-4 w-1/2 bg-gray-200 dark:bg-[#203147] rounded animate-pulse"></div>
+                  <div className="h-6 w-3/4 bg-gray-200 dark:bg-gray-900 rounded animate-pulse mb-3"></div>
+                  <div className="h-4 w-1/2 bg-gray-200 dark:bg-gray-900 rounded animate-pulse"></div>
                   <div className="grid grid-cols-3 gap-2 pt-5 mt-5 border-t border-gray-100 dark:border-gray-800">
-                    <div className="h-10 bg-gray-200 dark:bg-[#203147] rounded animate-pulse"></div>
-                    <div className="h-10 bg-gray-200 dark:bg-[#203147] rounded animate-pulse"></div>
-                    <div className="h-10 bg-gray-200 dark:bg-[#203147] rounded animate-pulse"></div>
+                    <div className="h-10 bg-gray-200 dark:bg-gray-900 rounded animate-pulse"></div>
+                    <div className="h-10 bg-gray-200 dark:bg-gray-900 rounded animate-pulse"></div>
+                    <div className="h-10 bg-gray-200 dark:bg-gray-900 rounded animate-pulse"></div>
                   </div>
                   <div className="pt-5 mt-auto">
-                    <div className="h-12 w-full bg-gray-200 dark:bg-[#203147] rounded-2xl animate-pulse"></div>
+                    <div className="h-12 w-full bg-gray-200 dark:bg-gray-900 rounded-2xl animate-pulse"></div>
                   </div>
                 </div>
               </div>
@@ -68,7 +68,7 @@ const FeaturedCollections = () => {
                 <div
                   key={prop._id || prop.id || idx}
                   onClick={() => navigate(`/properties/${prop._id || prop.id}`)}
-                  className="bg-white dark:bg-[#162231] rounded-[28px] sm:rounded-[32px] border border-gray-100 dark:border-gray-800 shadow-[0_8px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(4,114,98,0.12)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col group cursor-pointer"
+                  className="bg-[#ffffff] dark:bg-black rounded-[28px] sm:rounded-[32px] border border-gray-100 dark:border-gray-800 shadow-[0_8px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(4,114,98,0.12)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col group cursor-pointer"
                 >
                   {/* Photo & Price Overlay */}
                   <div className="relative h-64 sm:h-72 overflow-hidden bg-gray-100 shrink-0">
