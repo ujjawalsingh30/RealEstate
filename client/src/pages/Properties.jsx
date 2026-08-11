@@ -9,7 +9,7 @@ import { useTheme } from '../context/ThemeContext';
 
 const Properties = () => {
   const navigate = useNavigate();
-  const { properties: allProperties, wishlistIds, toggleWishlist } = usePropertyContext();
+  const { properties: allProperties, wishlistIds, toggleWishlist, loading } = usePropertyContext();
   const { theme, toggleTheme } = useTheme();
 
   // Filter & UI States
@@ -529,7 +529,42 @@ const Properties = () => {
             </div>
 
             {/* Properties Grid / List Display */}
-            {filteredProperties.length === 0 ? (
+            {loading ? (
+              <div className={
+                viewMode === 'grid'
+                  ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-7"
+                  : "space-y-5 sm:space-y-6"
+              }>
+                {Array.from({ length: 6 }).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className={`bg-white rounded-[24px] sm:rounded-[2rem] overflow-hidden border border-gray-100/90 shadow-[0_4px_25px_rgba(0,0,0,0.04)] flex ${
+                      viewMode === 'grid' ? 'flex-col' : 'flex-col sm:flex-row'
+                    } animate-pulse`}
+                  >
+                    <div className={`bg-gray-200 ${viewMode === 'grid' ? 'h-56 sm:h-60' : 'sm:w-80 sm:h-full h-56'} w-full flex-shrink-0`}></div>
+                    <div className="p-5 sm:p-6 flex flex-col justify-between flex-1">
+                      <div>
+                        <div className="flex justify-between mb-3">
+                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                          <div className="h-4 bg-gray-200 rounded w-1/6"></div>
+                        </div>
+                        <div className="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
+                        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                      </div>
+                      <div>
+                        <div className="grid grid-cols-3 gap-2 py-3.5 my-3.5 border-y border-gray-100">
+                          <div className="h-12 bg-gray-200 rounded"></div>
+                          <div className="h-12 bg-gray-200 rounded"></div>
+                          <div className="h-12 bg-gray-200 rounded"></div>
+                        </div>
+                        <div className="h-12 bg-gray-200 rounded-xl sm:rounded-2xl w-full"></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filteredProperties.length === 0 ? (
               <div className="bg-white rounded-[28px] p-8 sm:p-12 text-center border border-gray-100 shadow-sm my-4">
                 <SlidersHorizontal size={44} className="mx-auto text-gray-300 mb-4" />
                 <h3 className="text-lg sm:text-xl font-bold text-[#1a2b3c] mb-2">No properties matched</h3>

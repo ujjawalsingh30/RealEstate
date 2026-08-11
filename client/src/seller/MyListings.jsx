@@ -170,7 +170,33 @@ const MyListings = () => {
       {/* =====================================================================
           PROPERTY CARDS GRID (Responsive: 1 -> 2 -> 3 -> 4 Columns)
           ===================================================================== */}
-      {listings.length === 0 ? (
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-7 lg:gap-8">
+          {Array.from({ length: 6 }).map((_, idx) => (
+            <div key={idx} className="bg-white dark:bg-[#162231] rounded-[26px] sm:rounded-[30px] border border-gray-100 dark:border-[#28394e] shadow-[0_4px_20px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex flex-col justify-between overflow-hidden animate-pulse">
+              <div className="relative h-56 sm:h-60 overflow-hidden bg-gray-200 dark:bg-gray-800"></div>
+              <div className="p-5 sm:p-6 text-left">
+                <div className="flex justify-between mb-4">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/6"></div>
+                </div>
+                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-3"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-6"></div>
+                <div className="grid grid-cols-3 gap-2 py-3 px-3 rounded-2xl bg-gray-50/80 dark:bg-[#111c2a]/50 border border-gray-100 dark:border-gray-800 text-center">
+                  <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                  <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                  <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                </div>
+              </div>
+              <div className="p-5 pt-0 flex items-center justify-between gap-2 border-t border-gray-50/0">
+                <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-xl w-full"></div>
+                <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-xl w-20 shrink-0"></div>
+                <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-xl w-10 shrink-0"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : listings.length === 0 ? (
         <div className="bg-white dark:bg-[#162231] rounded-[32px] p-12 text-center max-w-xl mx-auto my-12 border border-gray-100 dark:border-[#28394e] shadow-sm transition-colors">
           <div className="w-20 h-20 rounded-3xl bg-[#047262]/10 dark:bg-[#0dc5a5]/10 text-[#047262] dark:text-[#0dc5a5] flex items-center justify-center mx-auto mb-6">
             <Building size={36} />
