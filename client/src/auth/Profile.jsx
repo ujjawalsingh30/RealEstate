@@ -209,14 +209,32 @@ const Profile = () => {
     }
   };
 
-  const handlePasswordUpdate = (e) => {
+  const [updatingPassword, setUpdatingPassword] = useState(false);
+
+  const handlePasswordUpdate = async (e) => {
     e.preventDefault();
     if (!passwordForm.newPassword || passwordForm.newPassword !== passwordForm.confirmPassword) {
       if (showToast) showToast('New password and confirm password do not match!', 'error');
       return;
     }
-    setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
-    if (showToast) showToast('Password successfully changed!', 'success');
+    
+    try {
+      setUpdatingPassword(true);
+      await api.put(`/${role}/change-password`, {
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword
+      });
+      
+      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      if (showToast) showToast('Password successfully changed!', 'success');
+    } catch (error) {
+      console.error('Failed to change password:', error);
+      if (showToast) {
+        showToast(error.response?.data?.message || 'Failed to change password', 'error');
+      }
+    } finally {
+      setUpdatingPassword(false);
+    }
   };
 
   const handleLogout = () => {
@@ -865,10 +883,20 @@ const Profile = () => {
                   <div className="pt-4">
                     <button
                       type="submit"
-                      className="px-8 py-3.5 bg-[#047262] hover:bg-[#03594d] text-white font-black text-sm rounded-2xl shadow-lg shadow-[#047262]/25 transition-transform active:scale-95 flex items-center gap-2"
+                      disabled={updatingPassword}
+                      className="px-8 py-3.5 bg-[#047262] hover:bg-[#03594d] disabled:opacity-60 text-white font-black text-sm rounded-2xl shadow-lg shadow-[#047262]/25 transition-transform active:scale-95 flex items-center gap-2"
                     >
-                      <CheckCircle2 size={18} />
-                      <span>Update Password</span>
+                      {updatingPassword ? (
+                        <>
+                          <Loader2 size={18} className="animate-spin" />
+                          <span>Updating Password...</span>
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 size={18} />
+                          <span>Update Password</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>

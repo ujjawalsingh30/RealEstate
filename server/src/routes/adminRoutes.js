@@ -1,5 +1,5 @@
 import express from 'express';
-import { adminLogin, verifyAdminToken, adminLogout, getAllSellers, updateSellerStatus, deleteSeller, getAllUsers, updateUserStatusUnified, deleteUnifiedUser, getAdminStats } from '../controllers/adminController.js';
+import { adminLogin, verifyAdminToken, adminLogout, getAllSellers, updateSellerStatus, deleteSeller, getAllUsers, updateUserStatusUnified, deleteUnifiedUser, getAdminStats, changeAdminPassword } from '../controllers/adminController.js';
 import adminAuth from '../middleware/adminAuth.js';
 
 const router = express.Router();
@@ -21,5 +21,6 @@ router.put('/sellers/:id/status', adminAuth, updateSellerStatus);
 // Unified User Management Endpoints
 router.get('/users', adminAuth, getAllUsers);
 router.put('/users/:role/:id/status', adminAuth, updateUserStatusUnified);
+router.put('/change-password', adminAuth, changeAdminPassword);
 
 export default router;

@@ -248,8 +248,42 @@ export const deleteSeller = async (req, res) => {
     console.error('❌ Delete Seller Error:', error);
     res.status(500).json({
       success: false,
-      message: 'Server error while deleting seller.'
+      message: 'Server error while deleting message.'
     });
+  }
+};
+
+/**
+ * @desc    Change Admin Password
+ * @route   PUT /api/admin/change-password
+ * @access  Private (Admin Only)
+ */
+export const changeAdminPassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Please provide current and new password.' });
+    }
+    
+    const admin = await Admin.findOne({ email: req.admin.email });
+    if (!admin) {
+      return res.status(404).json({ success: false, message: 'Admin not found.' });
+    }
+    
+    const isMatch = await bcrypt.compare(currentPassword, admin.password);
+    if (!isMatch && currentPassword !== admin.password) {
+      return res.status(401).json({ success: false, message: 'Invalid current password.' });
+    }
+    
+    const salt = await bcrypt.genSalt(10);
+    admin.password = await bcrypt.hash(newPassword, salt);
+    await admin.save();
+    
+    return res.status(200).json({ success: true, message: 'Password updated successfully!' });
+  } catch (error) {
+    console.error('❌ Change Admin Password Error:', error);
+    return res.status(500).json({ success: false, message: 'Error changing password.' });
   }
 };
 
@@ -434,4 +468,3 @@ export const getAdminStats = async (req, res) => {
     });
   }
 };
-

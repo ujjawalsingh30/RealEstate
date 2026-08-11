@@ -231,3 +231,37 @@ export const updateSellerProfile = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Error updating profile.' });
   }
 };
+
+/**
+ * @desc    Change Seller Password
+ * @route   PUT /api/seller/change-password
+ * @access  Private (Seller Only)
+ */
+export const changeSellerPassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Please provide current and new password.' });
+    }
+    
+    const seller = await Seller.findById(req.seller.id);
+    if (!seller) {
+      return res.status(404).json({ success: false, message: 'Seller not found.' });
+    }
+    
+    const isMatch = await bcrypt.compare(currentPassword, seller.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Invalid current password.' });
+    }
+    
+    const salt = await bcrypt.genSalt(10);
+    seller.password = await bcrypt.hash(newPassword, salt);
+    await seller.save();
+    
+    return res.status(200).json({ success: true, message: 'Password updated successfully!' });
+  } catch (error) {
+    console.error('❌ Change Seller Password Error:', error);
+    return res.status(500).json({ success: false, message: 'Error changing password.' });
+  }
+};
