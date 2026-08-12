@@ -51,11 +51,14 @@ const Navbar = () => {
             {/* Theme Toggling Button */}
             <button
               onClick={toggleTheme}
-              className="w-10 h-10 rounded-2xl bg-gray-100 dark:bg-[#1b2b3f] text-[#1a2b3c] dark:text-amber-400 border border-gray-200/70 dark:border-gray-700/60 flex items-center justify-center shadow-xs hover:scale-105 active:scale-95 transition-all duration-200"
+              className="group relative w-10 h-10 rounded-2xl bg-gray-100 dark:bg-[#1b2b3f] text-[#1a2b3c] dark:text-amber-400 border border-gray-200/70 dark:border-gray-700/60 flex items-center justify-center shadow-xs hover:scale-110 active:scale-90 transition-all duration-300 overflow-hidden"
               title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
               aria-label="Toggle Theme"
             >
-              {theme === 'dark' ? <Sun size={19} className="animate-spin-slow" /> : <Moon size={19} />}
+              {/* Added a rotating flip effect to the button contents */}
+              <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:rotate-180">
+                {theme === 'dark' ? <Sun size={19} className="animate-spin-slow" /> : <Moon size={19} />}
+              </div>
             </button>
 
             <button 

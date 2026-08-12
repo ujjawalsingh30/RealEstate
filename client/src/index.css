@@ -265,4 +265,4 @@ html.dark, html.dark body {
 .dark .shadow-2xl,
 .dark [class*="shadow-[0_"] {
   box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.45) !important;
-}
+}::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; } ::view-transition-old(root) { z-index: 1; } ::view-transition-new(root) { z-index: 9999; animation: 0.7s cubic-bezier(0.25, 1, 0.3, 1) both circle-reveal; } @keyframes circle-reveal { 0% { clip-path: circle(0% at 95% 5%); } 100% { clip-path: circle(150% at 95% 5%); } } .dark::view-transition-old(root) { z-index: 9999; animation: 0.7s cubic-bezier(0.25, 1, 0.3, 1) both circle-reveal-out; } .dark::view-transition-new(root) { z-index: 1; animation: none; } @keyframes circle-reveal-out { 0% { clip-path: circle(150% at 95% 5%); } 100% { clip-path: circle(0% at 95% 5%); } }

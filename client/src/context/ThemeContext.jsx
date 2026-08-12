@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { flushSync } from 'react-dom';
 
 const ThemeContext = createContext();
 
@@ -23,8 +24,21 @@ export const ThemeProvider = ({ children }) => {
 
   const toggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(nextTheme);
-    localStorage.setItem('theme', nextTheme);
+    
+    // Check if browser supports View Transitions API
+    if (!document.startViewTransition) {
+      setTheme(nextTheme);
+      localStorage.setItem('theme', nextTheme);
+      return;
+    }
+
+    // Use View Transitions API for a smooth native page fade/morph effect
+    document.startViewTransition(() => {
+      flushSync(() => {
+        setTheme(nextTheme);
+      });
+      localStorage.setItem('theme', nextTheme);
+    });
   };
 
   return (
