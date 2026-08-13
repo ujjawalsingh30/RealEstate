@@ -160,10 +160,11 @@ const Footer = () => {
       {showScroll && (
         <button 
           onClick={scrollTop} 
-          className="fixed right-5 bottom-5 md:right-10 md:bottom-10 bg-[#047262] hover:bg-[#03594d] text-white p-3.5 rounded-full shadow-2xl z-50 transition-all transform hover:-translate-y-1 focus:outline-none border-2 border-white"
+          className="group fixed right-5 bottom-5 md:right-10 md:bottom-10 bg-[#047262] hover:bg-[#03594d] text-white p-3.5 rounded-full shadow-2xl shadow-[#047262]/40 z-50 transition-all duration-300 transform hover:-translate-y-2 hover:scale-110 active:scale-90 focus:outline-none border-2 border-white dark:border-[#162231]"
           aria-label="Scroll to top"
         >
-          <ChevronUp size={24} strokeWidth={3} />
+          {/* Arrow bounces on hover */}
+          <ChevronUp size={24} strokeWidth={3} className="transition-transform duration-300 group-hover:animate-bounce" />
         </button>
       )}
     </footer>
