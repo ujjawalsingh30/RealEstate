@@ -9,7 +9,7 @@ const Wishlist = () => {
   const { properties, wishlistIds, toggleWishlist } = usePropertyContext();
   const { theme, toggleTheme } = useTheme();
 
-  const savedProperties = properties.filter(p => wishlistIds.includes(p.id));
+  const savedProperties = properties.filter(p => wishlistIds.includes(p._id || p.id));
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black flex flex-col justify-between font-sans antialiased transition-colors duration-300">
@@ -48,12 +48,12 @@ const Wishlist = () => {
         </div>
 
         {savedProperties.length === 0 ? (
-          <div className="bg-white rounded-[32px] border border-gray-100 p-12 sm:p-20 text-center shadow-sm my-8">
-            <div className="w-16 h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+          <div className="bg-white dark:bg-[#162231] rounded-[32px] border border-gray-100 dark:border-gray-800 p-12 sm:p-20 text-center shadow-sm my-8">
+            <div className="w-16 h-16 bg-rose-50 dark:bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
               <Heart size={32} className="fill-rose-500" />
             </div>
-            <h2 className="text-2xl font-black text-[#1a2b3c] mb-2">Your wishlist is empty</h2>
-            <p className="text-gray-500 text-base max-w-md mx-auto mb-8 leading-relaxed">
+            <h2 className="text-2xl font-black text-[#1a2b3c] dark:text-white mb-2">Your wishlist is empty</h2>
+            <p className="text-gray-500 dark:text-gray-400 text-base max-w-md mx-auto mb-8 leading-relaxed">
               Explore our verified luxury apartments and signature villas to save your favorite properties for quick access later.
             </p>
             <button
@@ -68,10 +68,10 @@ const Wishlist = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {savedProperties.map((prop) => (
               <div 
-                key={prop.id}
-                className="bg-white rounded-[28px] border border-gray-100 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-xl transition-all duration-300 flex flex-col group relative"
+                key={prop._id || prop.id}
+                className="bg-white dark:bg-[#162231] rounded-[28px] border border-gray-100 dark:border-gray-800 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-xl transition-all duration-300 flex flex-col group relative"
               >
-                <div className="relative h-56 sm:h-64 overflow-hidden cursor-pointer" onClick={() => navigate(`/properties/${prop.id}`)}>
+                <div className="relative h-56 sm:h-64 overflow-hidden cursor-pointer" onClick={() => navigate(`/properties/${prop._id || prop.id}`)}>
                   <img 
                     src={prop.images?.[0] || prop.image} 
                     alt={prop.title} 
@@ -84,7 +84,7 @@ const Wishlist = () => {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleWishlist(prop.id, navigate);
+                      toggleWishlist(prop._id || prop.id, navigate);
                     }}
                     title="Remove from Wishlist"
                     className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md text-rose-600 hover:bg-rose-500 hover:text-white rounded-full flex items-center justify-center shadow-md transition-all duration-200"
@@ -98,8 +98,8 @@ const Wishlist = () => {
                     {prop.priceText}
                   </p>
                   <h3 
-                    onClick={() => navigate(`/properties/${prop.id}`)}
-                    className="text-lg font-bold text-[#1a2b3c] line-clamp-1 group-hover:text-[#047262] transition-colors mb-2 cursor-pointer"
+                    onClick={() => navigate(`/properties/${prop._id || prop.id}`)}
+                    className="text-lg font-bold text-[#1a2b3c] dark:text-white line-clamp-1 group-hover:text-[#047262] transition-colors mb-2 cursor-pointer"
                   >
                     {prop.title}
                   </h3>
@@ -127,7 +127,7 @@ const Wishlist = () => {
 
                   <button
                     type="button"
-                    onClick={() => navigate(`/properties/${prop.id}`)}
+                    onClick={() => navigate(`/properties/${prop._id || prop.id}`)}
                     className="w-full py-3.5 bg-[#047262] hover:bg-[#03594d] text-white font-bold text-sm rounded-2xl transition-all shadow-sm"
                   >
                     View Details

@@ -63,7 +63,7 @@ const FeaturedCollections = () => {
             ))
           ) : (
             featuredList.map((prop, idx) => {
-              const isFav = wishlistIds.includes(prop.id || prop._id);
+              const isFav = wishlistIds.includes(prop._id || prop.id);
               return (
                 <div
                   key={prop._id || prop.id || idx}
@@ -199,7 +199,7 @@ const FeaturedCollections = () => {
                           e.stopPropagation();
                           navigate(`/properties/${prop._id || prop.id}`);
                         }}
-                        className="w-full py-3.5 px-4 bg-[#e0f5f0]/80 dark:bg-[#1e2f45] group-hover:bg-[#047262] dark:group-hover:bg-[#0dc5a5] text-[#047262] dark:text-[#0dc5a5] group-hover:text-white dark:group-hover:text-slate-950 rounded-2xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all duration-300 shadow-xs active:scale-95"
+                        className="w-full py-3.5 px-4 bg-[#e0f5f0]/80 dark:bg-[#1e2f45] group-hover:bg-[#047262] dark:group-hover:bg-[#0dc5a5] text:white dark:text-[#0dc5a5] group-hover:text-white dark:group-hover:text-white rounded-2xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all duration-300 shadow-xs active:scale-95"
                       >
                         <span>View Details</span>
                         <ArrowRight size={17} strokeWidth={2.5} className="transform group-hover:translate-x-1.5 transition-transform duration-300" />

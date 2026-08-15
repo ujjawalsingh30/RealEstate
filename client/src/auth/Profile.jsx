@@ -320,20 +320,8 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* Right: Actions & Theme Toggle */}
+              {/* Right: Actions */}
               <div className="flex items-center flex-wrap gap-2.5 sm:gap-3 w-full sm:w-auto justify-center md:justify-end shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-gray-100 dark:border-gray-800">
-                
-                {/* Dedicated Profile Theme Toggle */}
-                <button
-                  type="button"
-                  onClick={toggleTheme}
-                  title="Switch Display Theme"
-                  className="p-3.5 bg-gray-100 dark:bg-[#1b2b3f] hover:bg-gray-200 dark:hover:bg-[#23354c] text-gray-700 dark:text-amber-400 border border-gray-200/80 dark:border-gray-700 rounded-2xl transition-all flex items-center justify-center gap-2 font-bold text-sm"
-                >
-                  {theme === 'dark' ? <Sun size={18} className="animate-spin-slow" /> : <Moon size={18} />}
-                  <span className="hidden sm:inline-block text-xs uppercase">{theme === 'dark' ? 'Light' : 'Dark'}</span>
-                </button>
-
                 <button
                   onClick={() => {
                     setIsEditing(!isEditing);

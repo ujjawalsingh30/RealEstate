@@ -16,7 +16,7 @@ const PropertyDetails = () => {
   const property = getPropertyById(id || '1');
   const similarProperties = getSimilarProperties(property.id, property.city);
   
-  const isWishlisted = wishlistIds.includes(property.id);
+  const isWishlisted = wishlistIds.includes(property._id || property.id);
   const [inquiryMsg, setInquiryMsg] = useState('');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -73,16 +73,7 @@ const PropertyDetails = () => {
             </span>
           </nav>
 
-          {/* Theme Toggle Button */}
-          <button
-            type="button"
-            onClick={toggleTheme}
-            title="Toggle Light/Dark Theme"
-            className="px-3.5 py-2 rounded-xl bg-gray-100 dark:bg-[#1b2b3f] hover:bg-gray-200 dark:hover:bg-[#22354c] text-gray-700 dark:text-amber-400 border border-gray-200 dark:border-gray-700 font-bold text-xs flex items-center gap-2 transition-all shadow-2xs"
-          >
-            {theme === 'dark' ? <Sun size={15} className="animate-spin-slow text-amber-400" /> : <Moon size={15} />}
-            <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-          </button>
+
         </div>
 
         {/* Hero Photo Gallery Grid */}
@@ -161,7 +152,7 @@ const PropertyDetails = () => {
                 {/* Wishlist Heart Toggle Button */}
                 <button
                   type="button"
-                  onClick={() => toggleWishlist(property.id, navigate)}
+                  onClick={() => toggleWishlist(property._id || property.id, navigate)}
                   aria-label="Save to Wishlist"
                   className={`w-11 h-11 sm:w-12 sm:h-12 rounded-full border flex items-center justify-center transition-all duration-300 shadow-sm ${
                     isWishlisted 
@@ -173,12 +164,12 @@ const PropertyDetails = () => {
                 </button>
               </div>
 
-              <h1 className="text-2xl sm:text-4xl font-black text-[#1a2b3c] tracking-tight mb-3 sm:mb-4 leading-tight">
+              <h1 className="text-2xl sm:text-4xl font-black text-[#1a2b3c] dark:text-white tracking-tight mb-3 sm:mb-4 leading-tight">
                 {property.title}
               </h1>
 
-              <div className="flex items-start sm:items-center gap-2 sm:gap-2.5 text-gray-600 font-medium text-sm sm:text-base">
-                <MapPin size={20} className="text-[#047262] shrink-0 mt-0.5 sm:mt-0" />
+              <div className="flex items-start sm:items-center gap-2 sm:gap-2.5 text-gray-600 dark:text-gray-300 font-medium text-sm sm:text-base">
+                <MapPin size={20} className="text-[#047262] dark:text-[#0dc5a5] shrink-0 mt-0.5 sm:mt-0" />
                 <span className="leading-snug">{property.location}, India</span>
               </div>
             </div>
@@ -187,44 +178,44 @@ const PropertyDetails = () => {
             <div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
                 
-                <div className="bg-slate-50/70 border border-gray-100/80 rounded-[22px] p-4 sm:p-5 text-center transition-all hover:shadow-md hover:bg-white">
-                  <div className="w-10 h-10 rounded-2xl bg-white text-[#047262] flex items-center justify-center mx-auto mb-3 shadow-[0_2px_10px_rgba(4,114,98,0.08)]">
-                    <Bed size={20} className="text-[#047262]" />
+                <div className="bg-slate-50/70 dark:bg-[#162231] border border-gray-100/80 dark:border-gray-800 rounded-[22px] p-4 sm:p-5 text-center transition-all hover:shadow-md hover:bg-white dark:hover:bg-[#1e2f45]">
+                  <div className="w-10 h-10 rounded-2xl bg-white dark:bg-[#0b131e] text-[#047262] dark:text-[#0dc5a5] flex items-center justify-center mx-auto mb-3 shadow-[0_2px_10px_rgba(4,114,98,0.08)] dark:shadow-none">
+                    <Bed size={20} />
                   </div>
-                  <div className="text-[#1a2b3c] font-black text-xl sm:text-2xl leading-tight mb-0.5">{property.bhk}</div>
-                  <div className="text-gray-400 text-[11px] sm:text-xs font-black uppercase tracking-wider">BEDROOMS</div>
+                  <div className="text-[#1a2b3c] dark:text-white font-black text-xl sm:text-2xl leading-tight mb-0.5">{property.bhk}</div>
+                  <div className="text-gray-400 dark:text-gray-500 text-[11px] sm:text-xs font-black uppercase tracking-wider">BEDROOMS</div>
                 </div>
 
-                <div className="bg-slate-50/70 border border-gray-100/80 rounded-[22px] p-4 sm:p-5 text-center transition-all hover:shadow-md hover:bg-white">
-                  <div className="w-10 h-10 rounded-2xl bg-white text-[#047262] flex items-center justify-center mx-auto mb-3 shadow-[0_2px_10px_rgba(4,114,98,0.08)]">
-                    <Bath size={20} className="text-[#047262]" />
+                <div className="bg-slate-50/70 dark:bg-[#162231] border border-gray-100/80 dark:border-gray-800 rounded-[22px] p-4 sm:p-5 text-center transition-all hover:shadow-md hover:bg-white dark:hover:bg-[#1e2f45]">
+                  <div className="w-10 h-10 rounded-2xl bg-white dark:bg-[#0b131e] text-[#047262] dark:text-[#0dc5a5] flex items-center justify-center mx-auto mb-3 shadow-[0_2px_10px_rgba(4,114,98,0.08)] dark:shadow-none">
+                    <Bath size={20} />
                   </div>
-                  <div className="text-[#1a2b3c] font-black text-xl sm:text-2xl leading-tight mb-0.5">{property.baths}</div>
-                  <div className="text-gray-400 text-[11px] sm:text-xs font-black uppercase tracking-wider">BATHROOMS</div>
+                  <div className="text-[#1a2b3c] dark:text-white font-black text-xl sm:text-2xl leading-tight mb-0.5">{property.baths}</div>
+                  <div className="text-gray-400 dark:text-gray-500 text-[11px] sm:text-xs font-black uppercase tracking-wider">BATHROOMS</div>
                 </div>
 
-                <div className="bg-slate-50/70 border border-gray-100/80 rounded-[22px] p-4 sm:p-5 text-center transition-all hover:shadow-md hover:bg-white">
-                  <div className="w-10 h-10 rounded-2xl bg-white text-[#047262] flex items-center justify-center mx-auto mb-3 shadow-[0_2px_10px_rgba(4,114,98,0.08)]">
-                    <Armchair size={20} className="text-[#047262]" />
+                <div className="bg-slate-50/70 dark:bg-[#162231] border border-gray-100/80 dark:border-gray-800 rounded-[22px] p-4 sm:p-5 text-center transition-all hover:shadow-md hover:bg-white dark:hover:bg-[#1e2f45]">
+                  <div className="w-10 h-10 rounded-2xl bg-white dark:bg-[#0b131e] text-[#047262] dark:text-[#0dc5a5] flex items-center justify-center mx-auto mb-3 shadow-[0_2px_10px_rgba(4,114,98,0.08)] dark:shadow-none">
+                    <Armchair size={20} />
                   </div>
-                  <div className="text-[#1a2b3c] font-black text-base sm:text-xl leading-tight mb-0.5 truncate">{property.furnishing}</div>
-                  <div className="text-gray-400 text-[11px] sm:text-xs font-black uppercase tracking-wider">FURNISHING</div>
+                  <div className="text-[#1a2b3c] dark:text-white font-black text-base sm:text-xl leading-tight mb-0.5 truncate">{property.furnishing}</div>
+                  <div className="text-gray-400 dark:text-gray-500 text-[11px] sm:text-xs font-black uppercase tracking-wider">FURNISHING</div>
                 </div>
 
-                <div className="bg-slate-50/70 border border-gray-100/80 rounded-[22px] p-4 sm:p-5 text-center transition-all hover:shadow-md hover:bg-white">
-                  <div className="w-10 h-10 rounded-2xl bg-white text-[#047262] flex items-center justify-center mx-auto mb-3 shadow-[0_2px_10px_rgba(4,114,98,0.08)]">
-                    <Maximize size={20} className="text-[#047262]" />
+                <div className="bg-slate-50/70 dark:bg-[#162231] border border-gray-100/80 dark:border-gray-800 rounded-[22px] p-4 sm:p-5 text-center transition-all hover:shadow-md hover:bg-white dark:hover:bg-[#1e2f45]">
+                  <div className="w-10 h-10 rounded-2xl bg-white dark:bg-[#0b131e] text-[#047262] dark:text-[#0dc5a5] flex items-center justify-center mx-auto mb-3 shadow-[0_2px_10px_rgba(4,114,98,0.08)] dark:shadow-none">
+                    <Maximize size={20} />
                   </div>
-                  <div className="text-[#1a2b3c] font-black text-base sm:text-xl leading-tight mb-0.5 truncate">{property.sqft} Sqft</div>
-                  <div className="text-gray-400 text-[11px] sm:text-xs font-black uppercase tracking-wider">LIVING AREA</div>
+                  <div className="text-[#1a2b3c] dark:text-white font-black text-base sm:text-xl leading-tight mb-0.5 truncate">{property.sqft} Sqft</div>
+                  <div className="text-gray-400 dark:text-gray-500 text-[11px] sm:text-xs font-black uppercase tracking-wider">LIVING AREA</div>
                 </div>
 
-                <div className="col-span-2 sm:col-span-1 bg-slate-50/70 border border-gray-100/80 rounded-[22px] p-4 sm:p-5 text-center transition-all hover:shadow-md hover:bg-white">
-                  <div className="w-10 h-10 rounded-2xl bg-white text-[#047262] flex items-center justify-center mx-auto mb-3 shadow-[0_2px_10px_rgba(4,114,98,0.08)]">
-                    <Building size={20} className="text-[#047262]" />
+                <div className="col-span-2 sm:col-span-1 bg-slate-50/70 dark:bg-[#162231] border border-gray-100/80 dark:border-gray-800 rounded-[22px] p-4 sm:p-5 text-center transition-all hover:shadow-md hover:bg-white dark:hover:bg-[#1e2f45]">
+                  <div className="w-10 h-10 rounded-2xl bg-white dark:bg-[#0b131e] text-[#047262] dark:text-[#0dc5a5] flex items-center justify-center mx-auto mb-3 shadow-[0_2px_10px_rgba(4,114,98,0.08)] dark:shadow-none">
+                    <Building size={20} />
                   </div>
-                  <div className="text-[#1a2b3c] font-black text-base sm:text-xl leading-tight mb-0.5 truncate">{property.type}</div>
-                  <div className="text-gray-400 text-[11px] sm:text-xs font-black uppercase tracking-wider">TYPE</div>
+                  <div className="text-[#1a2b3c] dark:text-white font-black text-base sm:text-xl leading-tight mb-0.5 truncate">{property.type}</div>
+                  <div className="text-gray-400 dark:text-gray-500 text-[11px] sm:text-xs font-black uppercase tracking-wider">TYPE</div>
                 </div>
 
               </div>
@@ -232,22 +223,22 @@ const PropertyDetails = () => {
 
             {/* Description Section matching Pic 3 */}
             <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1a2b3c] mb-4">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1a2b3c] dark:text-white mb-4">
                 Description
               </h2>
-              <p className="text-gray-600 text-base sm:text-lg leading-relaxed font-normal">
+              <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg leading-relaxed font-normal">
                 {property.description}
               </p>
             </div>
 
             {/* Amenities Section matching Pic 3 & 5 */}
             <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1a2b3c] mb-6">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1a2b3c] dark:text-white mb-6">
                 Amenities
               </h2>
               <div className="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 md:grid-cols-4 sm:gap-x-6 sm:gap-y-5">
                 {(property.amenities || ['Parking', 'Power Backup', 'Club House', 'Pool', 'Gym', 'Garden', 'Security', 'Wifi']).map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-3 text-gray-800 font-semibold sm:font-medium text-base sm:text-lg">
+                  <div key={idx} className="flex items-center gap-3 text-gray-800 dark:text-gray-200 font-semibold sm:font-medium text-base sm:text-lg">
                     <div className="w-6 h-6 rounded-full bg-[#047262] flex items-center justify-center text-white shrink-0 shadow-sm">
                       <CheckCircle size={16} className="text-white fill-current" />
                     </div>
@@ -275,8 +266,8 @@ const PropertyDetails = () => {
               </div>
 
               {/* Seller Profile & Inquire Widget */}
-              <div className="bg-white rounded-[28px] p-6 sm:p-8 border border-gray-100 shadow-[0_4px_25px_rgba(0,0,0,0.03)] mb-6">
-                <div className="flex items-center gap-4 border-b border-gray-100 pb-5 mb-5">
+              <div className="bg-white dark:bg-[#162231] rounded-[28px] p-6 sm:p-8 border border-gray-100 dark:border-gray-800 shadow-[0_4px_25px_rgba(0,0,0,0.03)] mb-6">
+                <div className="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-5 mb-5">
                   {property.seller?.name === 'Hexagon' || property.seller?.icon === 'hexagon' ? (
                     <div className="w-14 h-14 bg-gradient-to-tr from-[#0b3370] to-[#1c64e5] rounded-2xl flex items-center justify-center text-white shrink-0 shadow-md transform rotate-45 overflow-hidden">
                       <div className="transform -rotate-45 text-2xl font-black tracking-tighter text-white drop-shadow">
@@ -289,9 +280,9 @@ const PropertyDetails = () => {
                     </div>
                   )}
                   <div>
-                    <h3 className="text-xl font-black text-[#1a2b3c]">{property.seller?.name || 'Seller'}</h3>
-                    <div className="flex items-center gap-1.5 text-[#047262] font-bold text-sm mt-0.5">
-                      <ShieldCheck size={16} className="text-[#047262] shrink-0 fill-current text-white" />
+                    <h3 className="text-xl font-black text-[#1a2b3c] dark:text-white">{property.seller?.name || 'Seller'}</h3>
+                    <div className="flex items-center gap-1.5 text-[#047262] dark:text-[#0dc5a5] font-bold text-sm mt-0.5">
+                      <ShieldCheck size={16} className="text-[#047262] dark:text-[#0dc5a5] shrink-0 fill-current text-white dark:text-[#162231]" />
                       <span>{property.seller?.role || 'Verified Seller'}</span>
                     </div>
                   </div>
@@ -300,19 +291,19 @@ const PropertyDetails = () => {
                 <button
                   type="button"
                   onClick={() => alert(`Starting interactive live chat with ${property.seller?.name || 'Seller'}`)}
-                  className="w-full py-3.5 text-[#1a2b3c] hover:text-[#047262] bg-gray-50/80 hover:bg-gray-100 font-bold text-sm sm:text-base rounded-2xl transition-all flex items-center justify-center gap-2 mb-6 border border-gray-100"
+                  className="w-full py-3.5 text-[#1a2b3c] dark:text-white hover:text-[#047262] dark:hover:text-[#0dc5a5] bg-gray-50/80 dark:bg-[#1e2f45]/50 hover:bg-gray-100 dark:hover:bg-[#1e2f45] font-bold text-sm sm:text-base rounded-2xl transition-all flex items-center justify-center gap-2 mb-6 border border-gray-100 dark:border-gray-800"
                 >
                   <MessageSquare size={18} />
                   <span>Chat</span>
                 </button>
 
-                <h4 className="text-lg sm:text-xl font-bold text-[#1a2b3c] mb-4">
+                <h4 className="text-lg sm:text-xl font-bold text-[#1a2b3c] dark:text-white mb-4">
                   Inquire
                 </h4>
 
                 {!isBuyer ? (
-                  <div className="bg-[#f8fafc] p-6 rounded-[22px] border border-gray-100 text-center">
-                    <p className="text-sm sm:text-base font-semibold text-gray-600 mb-4">
+                  <div className="bg-[#f8fafc] dark:bg-[#0b131e] p-6 rounded-[22px] border border-gray-100 dark:border-gray-800 text-center">
+                    <p className="text-sm sm:text-base font-semibold text-gray-600 dark:text-gray-400 mb-4">
                       Please login as a buyer to send inquiries.
                     </p>
                     <button
@@ -345,7 +336,7 @@ const PropertyDetails = () => {
 
             {/* Property Details Table Card matching Pic 1 & Pic 4 */}
             <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1a2b3c] mb-6">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1a2b3c] dark:text-white mb-6">
                 Property Details
               </h2>
               <div className="bg-white rounded-[28px] sm:rounded-[32px] p-6 sm:p-10 border border-gray-100 shadow-[0_4px_25px_rgba(0,0,0,0.03)]">
@@ -394,8 +385,8 @@ const PropertyDetails = () => {
             </div>
 
             {/* Seller Profile & Inquire Widget */}
-            <div className="bg-white rounded-[28px] p-8 border border-gray-100 shadow-[0_10px_35px_rgba(0,0,0,0.04)]">
-              <div className="flex items-center gap-4 border-b border-gray-100 pb-6 mb-6">
+            <div className="bg-white dark:bg-[#162231] rounded-[28px] p-8 border border-gray-100 dark:border-gray-800 shadow-[0_10px_35px_rgba(0,0,0,0.04)]">
+              <div className="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-6 mb-6">
                 {property.seller?.name === 'Hexagon' || property.seller?.icon === 'hexagon' ? (
                   <div className="w-14 h-14 bg-gradient-to-tr from-[#0b3370] to-[#1c64e5] rounded-2xl flex items-center justify-center text-white shrink-0 shadow-md transform rotate-45 overflow-hidden">
                     <div className="transform -rotate-45 text-2xl font-black tracking-tighter text-white drop-shadow">
@@ -408,9 +399,9 @@ const PropertyDetails = () => {
                   </div>
                 )}
                 <div>
-                  <h3 className="text-xl font-black text-[#1a2b3c]">{property.seller?.name || 'Seller'}</h3>
-                  <div className="flex items-center gap-1.5 text-[#047262] font-bold text-sm mt-0.5">
-                    <ShieldCheck size={16} className="text-[#047262] shrink-0 fill-current text-white" />
+                  <h3 className="text-xl font-black text-[#1a2b3c] dark:text-white">{property.seller?.name || 'Seller'}</h3>
+                  <div className="flex items-center gap-1.5 text-[#047262] dark:text-[#0dc5a5] font-bold text-sm mt-0.5">
+                    <ShieldCheck size={16} className="text-[#047262] dark:text-[#0dc5a5] shrink-0 fill-current text-white dark:text-[#162231]" />
                     <span>{property.seller?.role || 'Verified Seller'}</span>
                   </div>
                 </div>
@@ -419,19 +410,19 @@ const PropertyDetails = () => {
               <button
                 type="button"
                 onClick={() => alert(`Starting interactive live chat with ${property.seller?.name || 'Seller'}`)}
-                className="w-full py-3.5 text-[#1a2b3c] hover:text-[#047262] bg-gray-50 hover:bg-gray-100 font-bold text-sm rounded-2xl transition-all flex items-center justify-center gap-2 mb-6 border border-gray-100/80"
+                className="w-full py-3.5 text-[#1a2b3c] dark:text-white hover:text-[#047262] dark:hover:text-[#0dc5a5] bg-gray-50/80 dark:bg-[#1e2f45]/50 hover:bg-gray-100 dark:hover:bg-[#1e2f45] font-bold text-sm rounded-2xl transition-all flex items-center justify-center gap-2 mb-6 border border-gray-100/80 dark:border-gray-800"
               >
                 <MessageSquare size={18} />
                 <span>Chat</span>
               </button>
 
-              <h4 className="text-xl font-bold text-[#1a2b3c] mb-4">
+              <h4 className="text-xl font-bold text-[#1a2b3c] dark:text-white mb-4">
                 Inquire
               </h4>
 
               {!isBuyer ? (
-                <div className="bg-[#f8fafc] p-6 rounded-[22px] border border-gray-100 text-center">
-                  <p className="text-sm font-semibold text-gray-600 mb-4">
+                <div className="bg-[#f8fafc] dark:bg-[#0b131e] p-6 rounded-[22px] border border-gray-100 dark:border-gray-800 text-center">
+                  <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-4">
                     Please login as a buyer to send inquiries.
                   </p>
                   <button

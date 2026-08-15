@@ -10,7 +10,14 @@ export const usePropertyContext = () => useContext(PropertyContext);
 
 export const PropertyProvider = ({ children }) => {
   const { theme, toggleTheme } = useTheme();
-  const [wishlistIds, setWishlistIds] = useState([1, 2]);
+  const [wishlistIds, setWishlistIds] = useState(() => {
+    const saved = localStorage.getItem('wishlistIds');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('wishlistIds', JSON.stringify(wishlistIds));
+  }, [wishlistIds]);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
   const showToast = (message, type = 'success') => {

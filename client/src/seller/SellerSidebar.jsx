@@ -38,20 +38,7 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
         </NavLink>
       ))}
 
-      {/* Dedicated Theme Toggle Item in Sidebar */}
-      <button
-        type="button"
-        onClick={toggleTheme}
-        className="w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-[15px] text-gray-500 dark:text-gray-300 hover:text-[#047262] dark:hover:text-amber-400 hover:bg-gray-50 dark:hover:bg-gray-800/60 font-semibold transition-all"
-      >
-        <div className="flex items-center gap-4">
-          {theme === 'dark' ? <Sun size={20} className="text-amber-400 animate-spin-slow" /> : <Moon size={20} />}
-          <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-        </div>
-        <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-400">
-          {theme === 'dark' ? 'DARK' : 'LIGHT'}
-        </span>
-      </button>
+
     </nav>
   );
 
@@ -60,10 +47,10 @@ const SellerSidebar = ({ isMobileOpen, onCloseMobile = () => {}, onLogout = () =
       {/* =====================================================================
           DESKTOP LEFT SIDEBAR
           ===================================================================== */}
-      <aside className="hidden lg:flex w-64 shrink-0 sticky top-0 h-screen bg-white dark:bg-[#111c2a] border-r border-gray-100/80 dark:border-gray-800 p-6 flex-col justify-between z-40 shadow-[2px_0_20px_rgba(0,0,0,0.01)] transition-colors duration-300 overflow-y-auto">
-        <div>
-          {/* Header & Logo */}
-          <div className="mb-10 px-2 pt-2">
+      <aside className="hidden lg:flex w-64 shrink-0 sticky top-[76px] h-[calc(100vh-76px)] bg-white dark:bg-[#111c2a] border-r border-gray-100/80 dark:border-gray-800 p-6 flex-col justify-between z-40 shadow-[2px_0_20px_rgba(0,0,0,0.01)] transition-colors duration-300 overflow-y-auto">
+        <div className="pt-2">
+          {/* Header & Logo (Hidden because Top Navbar already has it) */}
+          <div className="hidden">
             <Link to="/seller/home" className="flex items-center gap-3 group" title="Go to Seller Home">
               <img src={logo} alt="RealEstate Logo" className="w-9 h-9 object-contain transition-transform duration-300 group-hover:scale-105" />
               <span className="text-[#047262] dark:text-[#0dc5a5] font-bold text-2xl tracking-tight">
