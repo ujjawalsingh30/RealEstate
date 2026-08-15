@@ -25,19 +25,19 @@ const Hero = () => {
   ];
 
   return (
-    <section className="relative pt-6 sm:pt-10 md:pt-12 pb-20 px-4 sm:px-6 md:px-10 lg:px-12 max-w-[1500px] mx-auto text-left font-sans antialiased">
+    <section className="relative pt-6 sm:pt-10 md:pt-12 pb-20 px-4 sm:px-6 md:px-10 lg:px-12 max-w-[1500px] mx-auto overflow-hidden text-left font-sans antialiased">
       
       {/* Background Accent Glows */}
       <div className="absolute top-10 left-1/4 -z-10 w-96 h-96 bg-[#047262]/5 dark:bg-[#0dc5a5]/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-20 right-20 -z-10 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Main Bento Grid Container */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6 w-full">
         
         {/* =========================================================================
             BENTO CARD 1: MAIN SHOWCASE (Image + Headline) - Spans 8 Cols
            ========================================================================= */}
-        <div className="lg:col-span-8 relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-gray-900 shadow-2xl h-[420px] sm:h-[480px] lg:h-[540px] group border border-gray-200/50 dark:border-gray-800 flex flex-col justify-end p-6 sm:p-10">
+        <div className="md:col-span-12 lg:col-span-8 relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-gray-900 shadow-2xl h-[360px] sm:h-[480px] lg:h-[540px] group border border-gray-200/50 dark:border-gray-800 flex flex-col justify-end p-5 sm:p-10">
           
           {/* Background Image with Hover Scale */}
           <img 
@@ -58,7 +58,7 @@ const Hero = () => {
             </div>
             
             {/* Headline */}
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white leading-[1.1] tracking-tight mb-4 drop-shadow-lg">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white leading-[1.1] tracking-tight mb-3 drop-shadow-lg">
               Find Your <br className="hidden sm:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-400">Perfect</span> Next Chapter.
             </h1>
@@ -72,7 +72,7 @@ const Hero = () => {
         {/* =========================================================================
             BENTO CARD 2: SEARCH CONSOLE - Spans 4 Cols
            ========================================================================= */}
-        <div className="lg:col-span-4 bg-white/95 dark:bg-[#162231]/95 backdrop-blur-xl rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-[0_15px_50px_rgba(0,0,0,0.06)] dark:shadow-2xl border border-gray-100 dark:border-gray-800 flex flex-col justify-between">
+        <div className="md:col-span-12 lg:col-span-4 bg-white/95 dark:bg-[#162231]/95 backdrop-blur-xl rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-8 shadow-[0_15px_50px_rgba(0,0,0,0.06)] dark:shadow-2xl border border-gray-100 dark:border-gray-800 flex flex-col justify-between">
           
           <div>
             <h3 className="text-xl sm:text-2xl font-black text-[#1a2b3c] dark:text-white mb-6 flex items-center gap-2">
@@ -174,7 +174,7 @@ const Hero = () => {
            ========================================================================= */}
         
         {/* Metric 1: Verified Properties */}
-        <div className="lg:col-span-4 bg-[#f0faf7] dark:bg-emerald-900/10 border border-[#047262]/10 dark:border-emerald-500/20 rounded-[2rem] p-6 sm:p-8 flex items-center gap-5 shadow-sm transform hover:-translate-y-1 transition-transform">
+        <div className="md:col-span-4 bg-[#f0faf7] dark:bg-emerald-900/10 border border-[#047262]/10 dark:border-emerald-500/20 rounded-[2rem] p-5 sm:p-6 xl:p-8 flex flex-row md:flex-col xl:flex-row items-center md:items-start xl:items-center gap-4 xl:gap-5 shadow-sm transform hover:-translate-y-1 transition-transform text-left md:text-center xl:text-left">
           <div className="w-14 h-14 bg-white dark:bg-emerald-500/20 rounded-2xl shadow-sm flex items-center justify-center text-[#047262] dark:text-emerald-400 shrink-0">
             <Building size={26} strokeWidth={2.5} />
           </div>
@@ -185,7 +185,7 @@ const Hero = () => {
         </div>
 
         {/* Metric 2: RERA Certified */}
-        <div className="lg:col-span-4 bg-white dark:bg-[#162231] border border-gray-100 dark:border-gray-800 rounded-[2rem] p-6 sm:p-8 flex items-center gap-5 shadow-sm transform hover:-translate-y-1 transition-transform">
+        <div className="md:col-span-4 bg-white dark:bg-[#162231] border border-gray-100 dark:border-gray-800 rounded-[2rem] p-5 sm:p-6 xl:p-8 flex flex-row md:flex-col xl:flex-row items-center md:items-start xl:items-center gap-4 xl:gap-5 shadow-sm transform hover:-translate-y-1 transition-transform text-left md:text-center xl:text-left">
           <div className="w-14 h-14 bg-blue-50 dark:bg-blue-500/10 rounded-2xl shadow-sm flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
             <ShieldCheck size={26} strokeWidth={2.5} />
           </div>
@@ -196,7 +196,7 @@ const Hero = () => {
         </div>
 
         {/* Metric 3: User Rating */}
-        <div className="lg:col-span-4 bg-gradient-to-br from-[#1a2b3c] to-[#0b131e] dark:from-[#0b131e] dark:to-black border border-gray-800 rounded-[2rem] p-6 sm:p-8 flex items-center justify-between shadow-xl relative overflow-hidden transform hover:-translate-y-1 transition-transform group">
+        <div className="md:col-span-4 bg-gradient-to-br from-[#1a2b3c] to-[#0b131e] dark:from-[#0b131e] dark:to-black border border-gray-800 rounded-[2rem] p-5 sm:p-6 xl:p-8 flex flex-row md:flex-col-reverse xl:flex-row items-center justify-between md:justify-center xl:justify-between shadow-xl relative overflow-hidden transform hover:-translate-y-1 transition-transform group text-left md:text-center xl:text-left gap-2 md:gap-3 xl:gap-0">
           <div className="relative z-10">
             <div className="text-2xl sm:text-3xl font-black text-white tracking-tight">4.9/5</div>
             <div className="text-xs sm:text-sm font-bold text-gray-400 mt-0.5">User Satisfaction</div>
